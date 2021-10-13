@@ -13,6 +13,16 @@ export default {
   module: {
     rules: [
       {
+        test: /\.(html|svelte)$/,
+        use: 'svelte-loader',
+      },
+      {
+        test: /node_modules\/svelte\/.*\.mjs$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+      {
         test: /\.js?/,
         exclude: /node_modules/,
         loader: 'babel-loader',
@@ -45,7 +55,11 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.js', '.mjs', '.cjs', '.tsx', '.ts'],
+    extensions: ['.js', '.mjs', '.cjs', '.tsx', '.ts', '.svelte'],
+    alias: {
+      svelte: path.resolve('node_modules', 'svelte'),
+    },
+    mainFields: ['svelte', 'browser', 'module', 'main'],
   },
   devtool: 'inline-source-map',
 };
