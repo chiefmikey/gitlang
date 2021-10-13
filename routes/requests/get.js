@@ -11,8 +11,8 @@ router.get('/user', async (ctx) => {
     const results = await findUser(shape);
     ctx.response.status = 200;
     ctx.response.body = results;
-  } catch (error) {
-    console.error('error with get', error);
+  } catch (e) {
+    console.error('error with get', e);
     ctx.response.status = 200;
   }
 });
@@ -23,8 +23,8 @@ router.get('/post', async (ctx) => {
     const results = await findPost(shape);
     ctx.response.status = 200;
     ctx.response.body = results;
-  } catch (error) {
-    console.error('error with get', error);
+  } catch (e) {
+    console.error('error with get', e);
     ctx.response.status = 200;
   }
 });
