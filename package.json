@@ -4,12 +4,16 @@
   "description": "GitHub Languages",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "build": "webpack --mode development",
+    "dev": "webpack --mode development -w",
+    "start": "node app.js",
+    "test": "nodemon app.js"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "axios": "^0.23.0",
+    "dotenv": "^10.0.0",
     "koa": "^2.13.3",
     "koa-bodyparser": "^4.3.0",
     "koa-static": "^5.0.0",
@@ -24,7 +28,7 @@
     "url": "git+https://github.com/chiefmikey/github-languages.git"
   },
   "homepage": "https://github.com/chiefmikey/github-languages#readme",
-  "author": "me",
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
   "bugs": {
     "url": "https://github.com/chiefmikey/github-languages/issues"
   },
@@ -33,6 +37,10 @@
     "github",
     "languages"
   ],
+  "contributors": [
+    "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"
+  ],
+  "type": "module",
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
     "extends": "@mikey-pro/eslint-config"
