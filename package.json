@@ -1,0 +1,24 @@
+{
+  "name": "github-languages",
+  "version": "0.0.1",
+  "description": "GitHub Languages",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chiefmikey/github-languages.git"
+  },
+  "keywords": [
+    "github-languages",
+    "github",
+    "languages"
+  ],
+  "author": "me",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chiefmikey/github-languages/issues"
+  },
+  "homepage": "https://github.com/chiefmikey/github-languages#readme"
+}
