@@ -2,9 +2,13 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import cors from '@koa/cors';
 import serve from 'koa-static';
+import dotenv from 'dotenv';
 import path from 'path';
 import index from './routes/index.js';
-import './db/index.js';
+
+if (process.env.ENV !== 'production') {
+  dotenv.config();
+}
 
 const port = process.env.PORT || 3000;
 
