@@ -10,7 +10,8 @@ const getRepos = async (owner) => {
         Authorization: `token ${process.env.TOKEN}`,
       },
     };
-    return await axios(options);
+    const res = await axios(options);
+    return res.data;
   } catch (e) {
     return e;
   }
