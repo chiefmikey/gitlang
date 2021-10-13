@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const getLanguages = async () => {
+const getLanguages = async (owner, repo) => {
   try {
     const options = {
-      url: `https://api.github.com//repos/${process.env.OWNER}/${repo}/languages`,
+      url: `https://api.github.com/repos/${owner}/${repo}/languages`,
+      method: 'get',
       headers: {
-        'User-Agent': 'request',
         Accept: 'application/vnd.github.v3+json',
-        // Authorization: `token ${process.env.AUTH}`,
+        Authorization: `token ${process.env.TOKEN}`,
       },
     };
     return await axios(options);
