@@ -1,14 +1,15 @@
 /* eslint-disable no-param-reassign */
 import Router from '@koa/router';
 import process from '../helpers/process.js';
-import { findUser, findPost } from '../../db/queries/find.js';
+import getLanguages from '../github/languages.js';
+import getRepos from '../github/repos.js';
 
 const router = new Router({ prefix: '/get' });
 
-router.get('/user', async (ctx) => {
+router.get('/languages', async (ctx) => {
   try {
-    const shape = process(ctx.request.query.something);
-    const results = await findUser(shape);
+    console.log(ctx.request.query);
+    const results = await getLanguages();
     ctx.response.status = 200;
     ctx.response.body = results;
   } catch (e) {
@@ -17,10 +18,10 @@ router.get('/user', async (ctx) => {
   }
 });
 
-router.get('/post', async (ctx) => {
+router.get('/repos', async (ctx) => {
   try {
-    const shape = process(ctx.request.query.something);
-    const results = await findPost(shape);
+    const shape = process(ctx.request.query.owner);
+    const results = await getRepos(shape);
     ctx.response.status = 200;
     ctx.response.body = results;
   } catch (e) {
