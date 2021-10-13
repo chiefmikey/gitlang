@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const getRepos = async () => {
+const getRepos = async (owner) => {
   try {
     const options = {
-      url: `https://api.github.com/users/${process.env.OWNER}`,
+      url: `https://api.github.com/users/${owner}/repos`,
+      method: 'get',
       headers: {
-        'User-Agent': 'request',
-        // Authorization: `token ${process.env.AUTH}`,
+        Accept: 'application/vnd.github.v3+json',
+        Authorization: `token ${process.env.TOKEN}`,
       },
     };
     return await axios(options);
