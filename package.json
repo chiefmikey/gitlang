@@ -6,19 +6,32 @@
   "scripts": {
     "test": "test"
   },
+  "dependencies": {
+    "axios": "^0.23.0"
+  },
+  "devDependencies": {
+    "@mikey-pro/style-guide": "^1.5.6"
+  },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chiefmikey/github-languages.git"
+  },
+  "homepage": "https://github.com/chiefmikey/github-languages#readme",
+  "author": "me",
+  "bugs": {
+    "url": "https://github.com/chiefmikey/github-languages/issues"
   },
   "keywords": [
     "github-languages",
     "github",
     "languages"
   ],
-  "author": "me",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/chiefmikey/github-languages/issues"
+  "prettier": "@mikey-pro/prettier-config",
+  "eslintConfig": {
+    "extends": "@mikey-pro/eslint-config"
   },
-  "homepage": "https://github.com/chiefmikey/github-languages#readme"
+  "stylelint": {
+    "extends": "@mikey-pro/stylelint-config"
+  }
 }
