@@ -2,7 +2,7 @@ const percentage = (size, allSizes) => {
   const allResults = {};
   const keys = Object.keys(allSizes);
   for (let i = 0; i < keys.length; i += 1) {
-    allResults[keys[i]] = (allSizes[keys[i]] / size) * 100;
+    allResults[keys[i]] = allSizes[keys[i]] / size;
   }
   return allResults;
 };
