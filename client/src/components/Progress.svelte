@@ -1,46 +1,76 @@
 <script>
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
+
+  export let d;
+  export let i;
+
+  let data;
+
+  let speed = 250 * (i + 1);
+
   const progress = tweened(0, {
     duration: 1000,
     easing: cubicOut,
   });
 
-  export let d;
-  setTimeout(() => progress.set(d.percent), 0);
+  setTimeout(() => progress.set(d.percent), speed);
 </script>
 
 <template>
-  <tr>
-    <td class="name">
-      <span>{d.name}</span>
-    </td>
+  <tr style="animation: fadeIn {i / 4}s ease 0s forwards;">
+    <div id="info">
+      <td class="name">
+        <span>{d.name}</span>
+      </td>
+      <td class="percent">
+        <span>{`${Number((d.percent * 100).toFixed(2))}%`}</span>
+      </td>
+    </div>
     <td class="bar">
       <progress value={$progress} />
-    </td>
-    <td class="percent">
-      <span>{`${Number((d.percent * 100).toFixed(2))}%`}</span>
     </td>
   </tr>
 </template>
 
 <style>
-  .name {
+  progress {
+    width: 100%;
+    height: 50px;
+    fill: red;
+  }
+
+  #info {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
-    justify-content: center;
-    text-align: right;
-    font-size: 16px;
-    width: 80px;
+    margin-bottom: -37px;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .name span {
+    font-size: 14px;
+    padding: 0 5px 0 14px;
+    font-weight: 600;
+  }
+
+  .bar {
+    padding: 0;
+    height: 44px;
   }
 
   .percent {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    text-align: left;
+    align-items: flex-end;
+    height: 18px;
+    padding-right: 10px;
+  }
+
+  .percent span {
     font-size: 12px;
+    padding: 0;
   }
 </style>
