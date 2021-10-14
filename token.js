@@ -18,8 +18,9 @@ client.getSecretValue({ SecretId: secretName }, (err, data) => {
       err.code === 'ResourceNotFoundException')
   ) {
     throw err;
+  } else if (data && data.SecretString) {
+    secret = data.SecretString;
   }
-  secret = data.SecretString;
 });
 
 const token = () => JSON.parse(secret).TOKEN;
