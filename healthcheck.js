@@ -2,7 +2,7 @@ import http from 'http';
 
 const options = {
   host: 'localhost',
-  port: '3001',
+  port: '3004',
   timeout: 2000,
 };
 const request = http.request(options, (res) => {
@@ -13,7 +13,7 @@ const request = http.request(options, (res) => {
     process.exit(1);
   }
 });
-request.on('error', function (error) {
+request.on('error', (error) => {
   console.log(`ERROR: ${error}`);
   process.exit(1);
 });
