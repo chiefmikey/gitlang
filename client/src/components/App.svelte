@@ -2,9 +2,14 @@
   import Styles from './Styles.svelte';
   import axios from 'axios';
   import Progress from './Progress.svelte';
+  import Card from './Card.svelte';
 
   let owner = '';
+  let currentOwner = '';
   let data;
+  let langCount;
+  let repoCount;
+  let placeholder = '[ GitHub Username ]';
 
   const getData = async (owner) => {
     try {
@@ -17,16 +22,25 @@
     }
   };
 
-  const submit = async () => {
-    const collectData = [];
-    const allData = await getData(owner);
-    const keys = Object.keys(allData);
-    for (let i = 0; i < keys.length; i += 1) {
-      collectData.push({ name: [keys[i]], percent: allData[keys[i]] });
+  const submit = async (e) => {
+    if (!e.key || e.key === 'Enter') {
+      e.target.blur();
+      data = undefined;
+      langCount = undefined;
+      repoCount = undefined;
+      currentOwner = owner;
+      owner = '';
+      const collectData = [];
+      const allData = await getData(currentOwner);
+      repoCount = allData.names.length;
+      const keys = Object.keys(allData.size);
+      langCount = keys.length;
+      for (let i = 0; i < keys.length; i += 1) {
+        collectData.push({ name: [keys[i]], percent: allData.size[keys[i]] });
+      }
+      collectData.sort((a, b) => b.percent - a.percent);
+      data = collectData;
     }
-    collectData.sort((a, b) => b.percent - a.percent);
-    data = collectData;
-    owner = '';
   };
 </script>
 
@@ -38,25 +52,49 @@
     View language usage from all public repositories of a GitHub user profile
   </h6>
 
-  <input bind:value={owner} placeholder="GitHub Username" />
+  <input
+    type="text"
+    bind:value={owner}
+    {placeholder}
+    on:focus={() => {
+      placeholder = '';
+    }}
+    on:blur={() => {
+      placeholder = '[ GitHub Username ]';
+    }}
+    on:keydown={submit}
+  />
+
   <button on:click={submit}>Submit</button>
 
-  {#if data}
-    <div id="results">
+  <div id="results">
+    {#if currentOwner}
+      <Card {langCount} {repoCount} {currentOwner} {data} />
+    {/if}
+    {#if data}
       <table>
         <tbody>
           {#if data.length > 0}
-            {#each data as d}
-              <Progress {d} />
+            {#each data as d, i}
+              <Progress {d} {i} />
             {/each}
           {:else}
-            <h4>User Not Found</h4>
+            <h5>User Not Found</h5>
           {/if}
         </tbody>
       </table>
-    </div>
-  {/if}
+    {/if}
+  </div>
 </template>
 
 <style>
+  #results {
+    width: 100%;
+    height: 100%;
+    padding: 20px 0 40px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 </style>
