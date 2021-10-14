@@ -14,7 +14,7 @@
   const getData = async (owner) => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/languages?owner=${owner}`,
+        `https://hullowurld.com:3000/languages?owner=${owner}`,
       );
       return res.data;
     } catch (e) {
