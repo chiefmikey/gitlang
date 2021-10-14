@@ -13,9 +13,7 @@
 
   const getData = async (owner) => {
     try {
-      const res = await axios.get(
-        `https://hullowurld.com:3000/languages?owner=${owner}`,
-      );
+      const res = await axios.get(`/languages?owner=${owner}`);
       return res.data;
     } catch (e) {
       return e;
@@ -67,6 +65,8 @@
       placeholder = '[ GitHub Username ]';
     }}
     on:keydown={submit}
+    autocorrect="off"
+    autocapitalize="none"
   />
 
   <button on:click={submit}>Submit</button>
