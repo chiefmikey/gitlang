@@ -33,6 +33,7 @@
   button {
     width: 50%;
     opacity: 50%;
+    color: grey;
   }
 
   button:hover {
@@ -63,6 +64,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    opacity: 0%;
   }
 
   h1,
