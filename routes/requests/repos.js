@@ -1,5 +1,5 @@
 import axios from 'axios';
-import TOKEN from '../../token.js';
+import token from '../../token.js';
 
 const getRepos = async (owner) => {
   try {
@@ -8,11 +8,14 @@ const getRepos = async (owner) => {
       method: 'get',
       headers: {
         Accept: 'application/vnd.github.v3+json',
-        Authorization: `token ${process.env.TOKEN || TOKEN}`,
+        Authorization: `token ${process.env.TOKEN || token()}`,
       },
     };
     const res = await axios(options);
-    return res.data;
+    if (res.data) {
+      return res.data;
+    }
+    return {};
   } catch (e) {
     return e;
   }
