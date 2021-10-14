@@ -32,11 +32,15 @@
       owner = '';
       const collectData = [];
       const allData = await getData(currentOwner);
-      repoCount = allData.names.length;
-      const keys = Object.keys(allData.size);
-      langCount = keys.length;
-      for (let i = 0; i < keys.length; i += 1) {
-        collectData.push({ name: [keys[i]], percent: allData.size[keys[i]] });
+      if (allData.names) {
+        repoCount = allData.names.length;
+      }
+      if (allData.size) {
+        const keys = Object.keys(allData.size);
+        langCount = keys.length;
+        for (let i = 0; i < keys.length; i += 1) {
+          collectData.push({ name: [keys[i]], percent: allData.size[keys[i]] });
+        }
       }
       collectData.sort((a, b) => b.percent - a.percent);
       data = collectData;
