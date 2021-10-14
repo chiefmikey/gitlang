@@ -1,4 +1,5 @@
 import axios from 'axios';
+import TOKEN from '../../token.js';
 
 const fetchLanguage = async (owner, repo) => {
   try {
@@ -7,7 +8,7 @@ const fetchLanguage = async (owner, repo) => {
       method: 'get',
       headers: {
         Accept: 'application/vnd.github.v3+json',
-        Authorization: `token ${process.env.TOKEN}`,
+        Authorization: `token ${process.env.TOKEN || TOKEN}`,
       },
     };
     const res = await axios(options);
