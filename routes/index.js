@@ -14,7 +14,7 @@ router.get('/languages', async (ctx) => {
     const languages = await getLanguages(owner, names);
     const size = getSize(languages);
     ctx.response.status = 200;
-    ctx.response.body = size;
+    ctx.response.body = { names, size };
   } catch (e) {
     console.error('error with get', e);
     ctx.response.status = 200;
