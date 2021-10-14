@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <tr style="animation: fadeIn {i / 4}s ease 0s forwards;">
+  <tr style="animation: fadeIn .5s ease {i / 8}s forwards;">
     <div id="info">
       <td class="name">
         <span>{d.name}</span>
