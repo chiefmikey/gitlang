@@ -64,7 +64,7 @@
 
   .name span {
     font-size: 14px;
-    padding: 0 5px 0 14px;
+    padding: 0 5px 0 10px;
     font-weight: 600;
   }
 
