@@ -12,7 +12,7 @@
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
-    "aws-sdk": "^2.1007.0",
+    "aws-sdk": "^2.1008.0",
     "axios": "^0.23.0",
     "dotenv": "^10.0.0",
     "koa": "^2.13.3",
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
-    "@mikey-pro/style-guide": "^1.5.6",
+    "@mikey-pro/style-guide": "^1.5.8",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.4.0",
     "mini-css-extract-plugin": "^2.4.2",
