@@ -6,7 +6,6 @@
   export let i;
 
   let data;
-
   let speed = 250 * (i + 1);
 
   const progress = tweened(0, {
@@ -36,15 +35,29 @@
 <style>
   progress {
     width: 100%;
-    height: 50px;
-    fill: red;
+    appearance: none;
+    -webkit-appearance: none;
+    height: 35px;
+    background-color: transparent;
+  }
+
+  progress::-moz-progress-bar {
+    background-color: transparent;
+  }
+
+  progress::-webkit-progress-bar {
+    background-color: transparent;
+  }
+
+  progress::-webkit-progress-value {
+    background: pink;
   }
 
   #info {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    margin-bottom: -37px;
+    margin-bottom: -30px;
     z-index: 1;
     width: 100%;
   }
@@ -57,7 +70,8 @@
 
   .bar {
     padding: 0;
-    height: 44px;
+    height: 35px;
+    float: none;
   }
 
   .percent {
