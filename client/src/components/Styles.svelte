@@ -4,15 +4,18 @@
     flex-direction: column;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
+    min-width: 250px;
+    min-height: 450px;
+    padding: 0;
+    margin: 0;
   }
 
   #app {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 450px;
+    overflow: hidden;
   }
 
   a {
@@ -25,13 +28,14 @@
     border: none;
     box-sizing: border-box;
     text-align: center;
-    padding: 14px;
+    padding: 10px;
     font-size: 14px;
     outline: none;
   }
 
   button {
-    width: 50%;
+    width: 135px;
+    height: 35px;
     color: black;
     background-color: gainsboro;
   }
@@ -42,6 +46,7 @@
 
   input {
     width: 100%;
+    min-width: 150px;
     font-size: 18px;
   }
 
@@ -51,7 +56,7 @@
   }
 
   table {
-    width: 86%;
+    width: 102%;
   }
 
   span {
