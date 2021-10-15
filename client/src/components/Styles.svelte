@@ -32,12 +32,11 @@
 
   button {
     width: 50%;
-    opacity: 50%;
-    color: grey;
+    color: black;
+    background-color: gainsboro;
   }
 
   button:hover {
-    opacity: 100%;
     cursor: pointer;
   }
 
@@ -48,7 +47,6 @@
 
   input::placeholder {
     color: black;
-    opacity: 40%;
     font-size: 14px;
   }
 
