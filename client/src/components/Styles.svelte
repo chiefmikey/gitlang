@@ -88,11 +88,22 @@
     font-size: 16px;
   }
 
-  h6 {
+  h5 {
     font-weight: 200;
     font-size: 12px;
     margin: 0;
     padding: 0 20px 20px 20px;
+  }
+
+  h6 {
+    font-weight: 200;
+    font-size: 10px;
+    margin: 0;
+    padding: 10px 20px 10px 20px;
+  }
+
+  h6 a {
+    color: pink;
   }
 
   @keyframes fadeIn {

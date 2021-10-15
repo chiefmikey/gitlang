@@ -50,9 +50,9 @@
   <Styles />
   <h1>Profile Languages</h1>
 
-  <h6>
+  <h5>
     View language usage from all public repositories of a GitHub user profile
-  </h6>
+  </h5>
 
   <input
     type="text"
@@ -83,19 +83,21 @@
               <Progress {d} {i} />
             {/each}
           {:else}
-            <h5>User Not Found</h5>
+            <h4>User Not Found</h4>
           {/if}
         </tbody>
       </table>
     {/if}
   </div>
+
+  <h6><a href="https://github.com/chiefmikey">made by chiefmikey</a></h6>
 </template>
 
 <style>
   #results {
     width: 100%;
     height: 100%;
-    padding: 20px 0 40px 0;
+    padding: 20px 0 10px 0;
     text-align: center;
     display: flex;
     flex-direction: column;

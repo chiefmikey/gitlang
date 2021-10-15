@@ -24,7 +24,7 @@
         </div>
       {/if}
     {:else}
-      <h6 id="loading">Loading...</h6>
+      <h5 id="loading">Loading...</h5>
     {/if}
   </div>
 </template>
