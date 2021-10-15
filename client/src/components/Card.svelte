@@ -42,7 +42,7 @@
     padding: 10px 10px 10px 10px;
     margin-bottom: 12px;
     animation: fadeIn 0.1s ease 0s forwards;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid gray;
   }
   #counts {
     display: flex;
