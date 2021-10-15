@@ -51,7 +51,7 @@
   }
 
   input::placeholder {
-    color: black;
+    color: gray;
     font-size: 14px;
   }
 
@@ -90,9 +90,9 @@
 
   h6 {
     font-weight: 200;
-    font-size: 14px;
+    font-size: 12px;
     margin: 0;
-    padding-bottom: 20px;
+    padding: 0 20px 20px 20px;
   }
 
   @keyframes fadeIn {
