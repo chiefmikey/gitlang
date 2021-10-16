@@ -1,19 +1,27 @@
 <script>
   import { tweened } from 'svelte/motion';
-  import { cubicOut } from 'svelte/easing';
+  import { cubicOut, easyease, cubicInOut } from 'svelte/easing';
 
   export let d;
   export let i;
 
+  let currentPercent = 0;
+  let finalPercent = Number((d.percent * 100).toFixed(2));
   let data;
-  let speed = 250 * (i + 1);
+  let speed = 80 * (i + 1) + 250;
 
   const progress = tweened(0, {
     duration: 1000,
     easing: cubicOut,
   });
 
-  setTimeout(() => progress.set(d.percent), speed);
+  const progress2 = tweened(0, {
+    duration: 1000,
+    easing: cubicOut,
+  });
+
+  setTimeout(() => ($progress = d.percent), speed);
+  setTimeout(() => ($progress2 = finalPercent), speed);
 </script>
 
 <template>
@@ -23,7 +31,7 @@
         <span>{d.name}</span>
       </td>
       <td class="percent">
-        <span>{`${Number((d.percent * 100).toFixed(2))}%`}</span>
+        <span>{$progress2.toFixed(2)}</span>
       </td>
     </div>
     <td class="bar">
@@ -37,7 +45,7 @@
     width: 100%;
     appearance: none;
     -webkit-appearance: none;
-    height: 35px;
+    height: 35.5px;
     background-color: transparent;
   }
 
