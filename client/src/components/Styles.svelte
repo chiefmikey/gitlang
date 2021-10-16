@@ -18,6 +18,20 @@
     overflow: hidden;
   }
 
+  @media (min-width: 400px), (min-height: 960px) {
+    #app {
+      transform: scale(1.3);
+      transform-origin: top;
+    }
+  }
+
+  @media (min-width: 1900px), (min-height: 960px) {
+    #app {
+      transform: scale(1.8);
+      transform-origin: top;
+    }
+  }
+
   a {
     text-decoration: none;
     color: black;
@@ -80,7 +94,7 @@
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 20px;
     padding: 20px 0 0 0;
   }
 
