@@ -70,7 +70,7 @@
   }
 
   table {
-    width: 100.81%;
+    width: 101.25%;
   }
 
   span {
