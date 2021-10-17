@@ -22,20 +22,29 @@
 
   setTimeout(() => ($progress = d.percent), speed);
   setTimeout(() => ($progress2 = finalPercent), speed);
+  setTimeout(() => {
+    const prog = document.getElementById(`bar${i}`);
+    const info = document.getElementsByClassName(`info${i}`);
+    prog.style.setProperty(
+      '--c',
+      `rgb(${255 - i * 10}, ${192 - i * 10}, ${203 - i * 4})`,
+    );
+    info[0].style.color = `rgb(${0 + i * 10}, ${0 + i * 10}, ${0 + i * 10})`;
+  }, 0);
 </script>
 
 <template>
   <tr style="animation: fadeIn .5s ease {i / 8}s forwards;">
-    <div id="info">
+    <div class="info info{i}">
       <td class="name">
         <span>{d.name}</span>
       </td>
       <td class="percent">
-        <span>{$progress2.toFixed(2)}</span>
+        <span>{$progress2.toFixed(2)}%</span>
       </td>
     </div>
     <td class="bar">
-      <progress value={$progress} />
+      <progress id="bar{i}" value={$progress} />
     </td>
   </tr>
 </template>
@@ -58,10 +67,10 @@
   }
 
   progress::-webkit-progress-value {
-    background: pink;
+    background: var(--c, pink);
   }
 
-  #info {
+  .info {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
