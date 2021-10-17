@@ -70,6 +70,11 @@
     width: 100%;
   }
 
+  .name {
+    width: 100%;
+    text-align: left;
+  }
+
   .name span {
     font-size: 14px;
     padding: 0 5px 0 10px;

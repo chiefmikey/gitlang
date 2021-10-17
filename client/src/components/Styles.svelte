@@ -18,7 +18,7 @@
     overflow: hidden;
   }
 
-  @media (min-width: 400px), (min-height: 960px) {
+  @media (min-width: 560px), (min-height: 960px) {
     #app {
       transform: scale(1.3);
       transform-origin: top;
@@ -70,7 +70,7 @@
   }
 
   table {
-    width: 101.25%;
+    width: 100.81%;
   }
 
   span {
