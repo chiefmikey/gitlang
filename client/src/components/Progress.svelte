@@ -1,6 +1,6 @@
 <script>
   import { tweened } from 'svelte/motion';
-  import { cubicOut } from 'svelte/easing';
+  import { cubicOut, cubicInOut } from 'svelte/easing';
 
   export let d;
   export let i;
@@ -12,12 +12,12 @@
 
   const progress = tweened(0, {
     duration: 1000,
-    easing: cubicOut,
+    easing: cubicInOut,
   });
 
   const progress2 = tweened(0, {
     duration: 1000,
-    easing: cubicOut,
+    easing: cubicInOut,
   });
 
   setTimeout(() => ($progress = d.percent), speed);
@@ -74,7 +74,7 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    margin-bottom: -9%;
+    margin-bottom: -37px;
     z-index: 1;
     width: 100%;
     height: 37px;
