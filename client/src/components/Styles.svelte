@@ -71,6 +71,7 @@
 
   table {
     width: 101.25%;
+    min-width: 425px;
   }
 
   span {

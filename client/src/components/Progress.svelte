@@ -27,7 +27,7 @@
     const info = document.getElementsByClassName(`info${i}`);
     prog.style.setProperty(
       '--c',
-      `rgb(${255 - i * 10}, ${192 - i * 10}, ${203 - i * 4})`,
+      `rgb(${255 - i * 15}, ${192 - i * 10}, ${203 - i * 0})`,
     );
     info[0].style.color = `rgb(${0 + i * 10}, ${0 + i * 10}, ${0 + i * 10})`;
   }, 0);
@@ -54,7 +54,7 @@
     width: 100%;
     appearance: none;
     -webkit-appearance: none;
-    height: 35.5px;
+    height: 100%;
     background-color: transparent;
   }
 
@@ -74,7 +74,7 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    margin-bottom: -30px;
+    margin-bottom: -7.1%;
     z-index: 1;
     width: 100%;
   }
