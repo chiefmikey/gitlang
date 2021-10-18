@@ -83,6 +83,7 @@
     flex-direction: column;
     justify-content: center;
     opacity: 0%;
+    overflow: hidden;
   }
 
   h1,

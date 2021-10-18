@@ -74,25 +74,27 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    margin-bottom: -7.1%;
+    margin-bottom: -9%;
     z-index: 1;
     width: 100%;
+    height: 37px;
   }
 
   .name {
     width: 100%;
     text-align: left;
+    padding: 0;
   }
 
   .name span {
-    font-size: 14px;
+    font-size: 16px;
     padding: 0 5px 0 10px;
     font-weight: 600;
   }
 
   .bar {
     padding: 0;
-    height: 35px;
+    height: 51px;
     float: none;
   }
 
