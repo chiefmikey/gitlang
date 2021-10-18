@@ -70,10 +70,11 @@
     width: 100%;
     min-width: 150px;
     font-size: 18px;
+    background: none;
   }
 
   input::placeholder {
-    color: gray;
+    color: black;
     font-size: 14px;
   }
 
@@ -104,8 +105,9 @@
   }
 
   h1 {
-    font-size: 20px;
-    padding: 20px 0 0 0;
+    margin-top: 30px;
+    font-size: 24px;
+    width: 100%;
   }
 
   h4 {
@@ -123,7 +125,7 @@
     font-weight: 200;
     font-size: 10px;
     margin: 0;
-    padding: 10px 20px 10px 20px;
+    padding: 10px 20px 40px 20px;
   }
 
   h6 a {

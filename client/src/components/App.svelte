@@ -20,34 +20,41 @@
     }
   };
 
+  const focusInput = () => document.getElementById('search').focus();
+
   const submit = async (e) => {
-    if (!e.key || e.key === 'Enter') {
-      e.target.blur();
-      data = undefined;
-      langCount = undefined;
-      repoCount = undefined;
-      currentOwner = owner;
-      owner = '';
-      const collectData = [];
-      const allData = await getData(currentOwner);
-      if (allData.names) {
-        repoCount = allData.names.length;
-      }
-      if (allData.size) {
-        const keys = Object.keys(allData.size);
-        langCount = keys.length;
-        for (let i = 0; i < keys.length; i += 1) {
-          collectData.push({ name: keys[i], percent: allData.size[keys[i]] });
+    try {
+      if (!e.key || e.key === 'Enter') {
+        data = undefined;
+        langCount = undefined;
+        repoCount = undefined;
+        currentOwner = owner;
+        owner = '';
+        const collectData = [];
+        const allData = await getData(currentOwner);
+        if (allData.names) {
+          repoCount = allData.names.length;
         }
-        collectData.sort((a, b) => b.percent - a.percent);
-        data = collectData;
+        if (allData.size) {
+          const keys = Object.keys(allData.size);
+          langCount = keys.length;
+          for (let i = 0; i < keys.length; i += 1) {
+            collectData.push({ name: keys[i], percent: allData.size[keys[i]] });
+          }
+          collectData.sort((a, b) => b.percent - a.percent);
+          data = collectData;
+        }
       }
+    } catch (e) {
+      return e;
     }
   };
+  setTimeout(focusInput, 0);
 </script>
 
 <template>
   <Styles />
+
   <h1>Profile Languages</h1>
 
   <h5>
@@ -55,6 +62,7 @@
   </h5>
 
   <input
+    id="search"
     type="text"
     bind:value={owner}
     {placeholder}
@@ -80,7 +88,7 @@
         <tbody>
           {#if data.length > 0}
             {#each data as d, i}
-              <Progress {d} {i} />
+              <Progress {d} {i} {langCount} />
             {/each}
           {:else}
             <h4>User Not Found</h4>

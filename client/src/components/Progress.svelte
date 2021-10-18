@@ -4,6 +4,7 @@
 
   export let d;
   export let i;
+  export let langCount;
 
   let currentPercent = 0;
   let finalPercent = Number((d.percent * 100).toFixed(2));
@@ -20,16 +21,31 @@
     easing: cubicInOut,
   });
 
-  setTimeout(() => ($progress = d.percent), speed);
+  const setProgress = (perc) => {
+    if (perc < 0.003) {
+      return 0.003;
+    }
+    return perc;
+  };
+
+  setTimeout(() => ($progress = setProgress(d.percent)), speed);
   setTimeout(() => ($progress2 = finalPercent), speed);
   setTimeout(() => {
     const prog = document.getElementById(`bar${i}`);
     const info = document.getElementsByClassName(`info${i}`);
+    // prog.style.setProperty(
+    //   '--c',
+    //   `rgb(${255 - i * (255 / langCount)}, ${192 - i * (192 / langCount)}, ${
+    //     203 - i * (203 / langCount)
+    //   })`,
+    // );
     prog.style.setProperty(
       '--c',
-      `rgb(${255 - i * 15}, ${192 - i * 10}, ${203 - i * 0})`,
+      `rgb(${255 - i * 15}, ${192 - i * 10}, ${203})`,
     );
-    info[0].style.color = `rgb(${0 + i * 10}, ${0 + i * 10}, ${0 + i * 10})`;
+    info[0].style.color = `rgb(${(225 / langCount) * i}, ${
+      (225 / langCount) * i
+    }, ${(225 / langCount) * i})`;
   }, 0);
 </script>
 
