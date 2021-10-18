@@ -15,7 +15,15 @@
     flex-direction: column;
     align-items: center;
     max-width: 450px;
+    min-width: 250px;
     overflow: hidden;
+  }
+
+  @media (orientation: landscape) {
+    #app {
+      transform: scale(1);
+      transform-origin: top;
+    }
   }
 
   @media (min-width: 560px), (min-height: 960px) {
@@ -71,7 +79,6 @@
 
   table {
     width: 101.25%;
-    min-width: 425px;
   }
 
   span {
@@ -84,6 +91,7 @@
     justify-content: center;
     opacity: 0%;
     overflow: hidden;
+    height: 50px;
   }
 
   h1,

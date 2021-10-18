@@ -54,7 +54,7 @@
     width: 100%;
     appearance: none;
     -webkit-appearance: none;
-    height: 100%;
+    height: 104%;
     background-color: transparent;
   }
 
@@ -94,7 +94,7 @@
 
   .bar {
     padding: 0;
-    height: 51px;
+    height: 50px;
     float: none;
   }
 
