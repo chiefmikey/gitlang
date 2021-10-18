@@ -49,7 +49,6 @@
       return e;
     }
   };
-  setTimeout(focusInput, 0);
 </script>
 
 <template>
