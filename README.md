@@ -1,8 +1,8 @@
 <div align=center>
 
-# **Profile Languages**
+# **GitHub Languages**
 
-View language usage from all public repositories of a GitHub user profile
+View language usage across all public repositories of a GitHub user
 
 ### [hullowurld.com](https://hullowurld.com)
 
