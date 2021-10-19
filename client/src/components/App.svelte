@@ -54,11 +54,9 @@
 <template>
   <Styles />
 
-  <h1>Profile Languages</h1>
+  <h1>GitHub Languages</h1>
 
-  <h5>
-    View language usage from all public repositories of a GitHub user profile
-  </h5>
+  <h5>View language usage across all public repositories of a GitHub user</h5>
 
   <input
     id="search"
