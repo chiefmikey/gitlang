@@ -1,9 +1,9 @@
 <div align=center>
 
-# **GitHub Languages**
+# **GitLang**
 
 View language usage across all public repositories of a GitHub users profile
 
-### [hullowurld.com](https://hullowurld.com)
+### [gitlang.net](https://gitlang.net)
 
 </div>
