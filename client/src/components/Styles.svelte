@@ -105,9 +105,10 @@
   }
 
   h1 {
-    margin-top: 30px;
-    font-size: 24px;
+    margin-top: 50px;
+    font-size: 44px;
     width: 100%;
+    line-height: 10px;
   }
 
   h4 {
