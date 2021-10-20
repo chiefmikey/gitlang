@@ -1,6 +1,6 @@
 {
-  "name": "github-languages",
-  "version": "1.0.0",
+  "name": "gitlang",
+  "version": "1.1.0",
   "description": "View language usage across all public repositories of a GitHub users profile",
   "main": "app.js",
   "scripts": {
@@ -34,20 +34,23 @@
     "svelte-loader": "^3.1.2",
     "svelte-preprocess": "^4.9.8",
     "url-loader": "^4.1.1",
-    "webpack": "^5.59.0",
+    "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chiefmikey/github-languages.git"
+    "url": "git+https://github.com/chiefmikey/gitlang.git"
   },
-  "homepage": "https://github.com/chiefmikey/github-languages#readme",
+  "homepage": "https://github.com/chiefmikey/gitlang#readme",
   "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
   "bugs": {
-    "url": "https://github.com/chiefmikey/github-languages/issues"
+    "url": "https://github.com/chiefmikey/gitlang/issues"
   },
   "keywords": [
+    "gitlang",
+    "git",
+    "lang",
     "github-languages",
     "github",
     "languages",
