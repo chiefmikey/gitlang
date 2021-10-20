@@ -1,7 +1,7 @@
 {
-  "name": "profile-languages",
+  "name": "github-languages",
   "version": "1.0.0",
-  "description": "View language usage from all public repositories of a GitHub user profile",
+  "description": "View language usage across all public repositories of a GitHub users profile",
   "main": "app.js",
   "scripts": {
     "build": "webpack --mode development",
@@ -48,12 +48,15 @@
     "url": "https://github.com/chiefmikey/github-languages/issues"
   },
   "keywords": [
-    "profile-languages",
+    "github-languages",
     "github",
-    "profile",
     "languages",
+    "language",
+    "user",
+    "profile",
     "all",
-    "top"
+    "top",
+    "total"
   ],
   "contributors": [
     "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"
