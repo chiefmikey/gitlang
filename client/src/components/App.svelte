@@ -56,7 +56,9 @@
 
   <h1>GitHub Languages</h1>
 
-  <h5>View language usage across all public repositories of a GitHub user</h5>
+  <h5>
+    View language usage across all public repositories of a GitHub users profile
+  </h5>
 
   <input
     id="search"

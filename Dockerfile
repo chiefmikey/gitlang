@@ -1,8 +1,8 @@
 FROM alpine:latest
 EXPOSE 3004
-WORKDIR /profile-languages
+WORKDIR /github-languages
 COPY . .
 COPY init.sh /bin
-RUN rm /profile-languages/init.sh
+RUN rm /github-languages/init.sh
 RUN chmod +x /bin/init.sh
 ENTRYPOINT "init.sh"

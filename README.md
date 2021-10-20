@@ -2,7 +2,7 @@
 
 # **GitHub Languages**
 
-View language usage across all public repositories of a GitHub user
+View language usage across all public repositories of a GitHub users profile
 
 ### [hullowurld.com](https://hullowurld.com)
 
