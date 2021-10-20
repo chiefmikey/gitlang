@@ -14,11 +14,9 @@ const client = new SecretsManagerClient({
 const data = await client.send(
   new GetSecretValueCommand({ SecretId: secretName }),
 );
-
 if (data && data.SecretString) {
   secret = data.SecretString;
 }
 
 const token = () => JSON.parse(secret).TOKEN;
-
 export default token;
