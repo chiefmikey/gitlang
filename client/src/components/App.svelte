@@ -20,11 +20,10 @@
     }
   };
 
-  const focusInput = () => document.getElementById('search').focus();
-
   const submit = async (e) => {
     try {
       if (!e.key || e.key === 'Enter') {
+        e.target.blur();
         data = undefined;
         langCount = undefined;
         repoCount = undefined;
