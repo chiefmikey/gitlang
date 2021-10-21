@@ -2,7 +2,7 @@
 
 # **GitLang**
 
-View language usage across all public repositories of a GitHub users profile
+View language usage across all public repositories of a GitHub profile
 
 ### [gitlang.net](https://gitlang.net)
 
