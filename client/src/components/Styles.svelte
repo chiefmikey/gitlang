@@ -1,4 +1,8 @@
 <style global>
+  html {
+    background-color: #232323;
+  }
+
   body {
     display: flex;
     flex-direction: column;
@@ -10,12 +14,15 @@
     margin: 0;
     color: #e8e6e2;
     background-color: #232323;
+    height: 100%;
+    width: 100%;
   }
 
   #app {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
     max-width: 450px;
     min-width: 250px;
     overflow: hidden;
