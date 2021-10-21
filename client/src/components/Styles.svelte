@@ -1,6 +1,8 @@
 <style global>
   html {
     background-color: #232323;
+    width: 100%;
+    height: 100%;
   }
 
   body {
@@ -114,10 +116,10 @@
     text-align: center;
   }
 
-  h1 {
-    margin-top: 50px;
+  #logo {
+    margin: 50px 0 20px 0;
     font-size: 44px;
-    width: 100%;
+    width: 300px;
     line-height: 10px;
   }
 

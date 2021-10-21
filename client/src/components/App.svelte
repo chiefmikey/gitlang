@@ -53,7 +53,7 @@
 <template>
   <Styles />
 
-  <h1>GitLang</h1>
+  <img id="logo" src="../assets/img/gitlang.svg" alt="GitLang logo" />
 
   <h5>
     View language usage across all<br />public repositories of a GitHub profile
