@@ -96,7 +96,11 @@
     {/if}
   </div>
 
-  <h6><a href="https://github.com/chiefmikey">made by chiefmikey</a></h6>
+  <h6>
+    <a href="https://github.com/chiefmikey" target="_blank"
+      >made by chiefmikey</a
+    >
+  </h6>
 </template>
 
 <style>
