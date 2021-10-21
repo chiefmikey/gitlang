@@ -1,10 +1,8 @@
 <div align=center>
 
-<img src="assets/../client/public/assets/img/gitlang.svg" style="height: 75px" alt="Mikey Pro Logo" />
-
-<br />
-
-View language usage across all public repositories of a GitHub profile
+<a href="https://gitlang.net">
+  <img src="assets/../client/public/assets/img/gitlang.svg" style="height: 75px" alt="GitLang logo" />
+</a>
 
 ### [gitlang.net](https://gitlang.net)
 
