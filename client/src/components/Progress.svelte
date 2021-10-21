@@ -41,11 +41,11 @@
     // );
     prog.style.setProperty(
       '--c',
-      `rgb(${255 - i * 15}, ${192 - i * 10}, ${203})`,
+      `rgb(${255 - i * 15}, ${160 - i * 10}, ${203})`,
     );
-    info[0].style.color = `rgb(${(225 / langCount) * i}, ${
-      (225 / langCount) * i
-    }, ${(225 / langCount) * i})`;
+    info[0].style.color = `rgb(${275 - (225 / langCount) * i}, ${
+      275 - (225 / langCount) * i
+    }, ${275 - (225 / langCount) * i})`;
   }, 0);
 </script>
 
@@ -83,7 +83,7 @@
   }
 
   progress::-webkit-progress-value {
-    background: var(--c, pink);
+    background: var(--c, #fe9fc9);
   }
 
   .info {

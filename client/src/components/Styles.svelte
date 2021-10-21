@@ -8,6 +8,8 @@
     min-height: 450px;
     padding: 0;
     margin: 0;
+    color: #e8e6e2;
+    background-color: #232323;
   }
 
   #app {
@@ -42,7 +44,7 @@
 
   a {
     text-decoration: none;
-    color: black;
+    color: #232323;
   }
 
   input,
@@ -58,8 +60,8 @@
   button {
     width: 135px;
     height: 35px;
-    color: black;
-    background-color: gainsboro;
+    background-color: #e8e6e2;
+    color: #232323;
   }
 
   button:hover {
@@ -71,11 +73,12 @@
     min-width: 150px;
     font-size: 18px;
     background: none;
+    color: #e8e6e2;
   }
 
   input::placeholder {
-    color: black;
     font-size: 14px;
+    color: #e8e6e2;
   }
 
   table {
@@ -130,7 +133,7 @@
   }
 
   h6 a {
-    color: pink;
+    color: #fe9fc9;
   }
 
   @keyframes fadeIn {

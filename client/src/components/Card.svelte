@@ -35,6 +35,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #e8e6e2;
   }
 
   #owner {
@@ -42,7 +43,8 @@
     padding: 10px 10px 10px 10px;
     margin-bottom: 12px;
     animation: fadeIn 0.1s ease 0s forwards;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #e8e6e2;
+    color: #e8e6e2;
   }
   #counts {
     display: flex;

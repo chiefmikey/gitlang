@@ -56,7 +56,7 @@
   <h1>GitLang</h1>
 
   <h5>
-    View language usage across all public repositories of a GitHub users profile
+    View language usage across all public repositories of a GitHub profile
   </h5>
 
   <input
