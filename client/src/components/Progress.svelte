@@ -33,15 +33,11 @@
   setTimeout(() => {
     const prog = document.getElementById(`bar${i}`);
     const info = document.getElementsByClassName(`info${i}`);
-    // prog.style.setProperty(
-    //   '--c',
-    //   `rgb(${255 - i * (255 / langCount)}, ${192 - i * (192 / langCount)}, ${
-    //     203 - i * (203 / langCount)
-    //   })`,
-    // );
     prog.style.setProperty(
       '--c',
-      `rgb(${255 - i * 15}, ${160 - i * 10}, ${203})`,
+      `rgb(${255 - (255 / langCount) * i}, ${
+        160 - (160 / langCount) * i
+      }, ${203})`,
     );
     info[0].style.color = `rgb(${275 - (225 / langCount) * i}, ${
       275 - (225 / langCount) * i
