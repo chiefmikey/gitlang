@@ -114,6 +114,7 @@
     font-size: 44px;
     width: 300px;
     line-height: 10px;
+    height: 75px;
   }
 
   h4 {
