@@ -97,7 +97,7 @@
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
-    height: 5px;
+    height: 0px;
   }
 
   h1,
@@ -152,7 +152,7 @@
   @keyframes fadeInHeight {
     from {
       opacity: 0%;
-      height: 44px;
+      height: 0px;
     }
 
     to {
