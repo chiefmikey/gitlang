@@ -6,7 +6,6 @@
   export let i;
   export let langCount;
 
-  let currentPercent = 0;
   let finalPercent = Number((d.percent * 100).toFixed(2));
   let data;
   let speed = 80 * (i + 1) + 250;
@@ -39,14 +38,23 @@
         160 - (160 / langCount) * i
       }, ${203})`,
     );
+
     info[0].style.color = `rgb(${275 - (225 / langCount) * i}, ${
       275 - (225 / langCount) * i
     }, ${275 - (225 / langCount) * i})`;
   }, 0);
+
+  // for (let i = 0; i < langCount * 100; i += 1) {
+  //   setTimeout(() => {
+  //     document.getElementById('footer').scrollIntoView({
+  //       behavior: 'auto',
+  //     });
+  //   }, (i / 8) * 1000);
+  // }
 </script>
 
 <template>
-  <tr style="animation: fadeIn .5s ease {i / 8}s forwards;">
+  <tr id="row{i}" style="animation: fadeInHeight .5s ease {i / 8}s forwards;">
     <div class="info info{i}">
       <td class="name">
         <span>{d.name}</span>

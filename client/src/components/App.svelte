@@ -60,6 +60,7 @@
   </h5>
 
   <input
+    tabindex="0"
     id="search"
     type="text"
     bind:value={owner}
@@ -83,7 +84,7 @@
     {/if}
     {#if data}
       <table>
-        <tbody>
+        <tbody id="tbody">
           {#if data.length > 0}
             {#each data as d, i}
               <Progress {d} {i} {langCount} />
@@ -96,7 +97,7 @@
     {/if}
   </div>
 
-  <h6>
+  <h6 id="footer">
     <a href="https://github.com/chiefmikey" target="_blank"
       >made by chiefmikey</a
     >

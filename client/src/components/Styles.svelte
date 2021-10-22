@@ -97,7 +97,7 @@
     justify-content: center;
     opacity: 0%;
     overflow: hidden;
-    height: 50px;
+    height: 0;
   }
 
   h1,
@@ -146,6 +146,18 @@
 
     to {
       opacity: 100%;
+    }
+  }
+
+  @keyframes fadeInHeight {
+    from {
+      opacity: 0%;
+      height: 0;
+    }
+
+    to {
+      opacity: 100%;
+      height: 50px;
     }
   }
 </style>
