@@ -25,7 +25,7 @@
 
   @media (orientation: landscape) {
     #app {
-      transform: scale(1);
+      transform: scale(0.8);
       transform-origin: top;
     }
   }
