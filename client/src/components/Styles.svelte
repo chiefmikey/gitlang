@@ -25,7 +25,7 @@
 
   @media (orientation: landscape) {
     #app {
-      transform: scale(0.8);
+      transform: scale(0.6);
       transform-origin: top;
     }
   }
@@ -92,10 +92,10 @@
   }
 
   tr {
+    opacity: 0%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    opacity: 0%;
     overflow: hidden;
     height: 5px;
   }
@@ -152,7 +152,7 @@
   @keyframes fadeInHeight {
     from {
       opacity: 0%;
-      height: 40px;
+      height: 44px;
     }
 
     to {
