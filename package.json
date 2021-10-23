@@ -11,7 +11,7 @@
     "test": "nodemon app.js"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.37.0",
+    "@aws-sdk/client-secrets-manager": "^3.38.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "axios": "^0.23.0",
@@ -27,10 +27,10 @@
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
-    "@mikey-pro/style-guide": "^1.5.8",
-    "babel-loader": "^8.2.2",
+    "@mikey-pro/style-guide": "^1.5.12",
+    "babel-loader": "^8.2.3",
     "css-loader": "^6.4.0",
-    "mini-css-extract-plugin": "^2.4.2",
+    "mini-css-extract-plugin": "^2.4.3",
     "nodemon": "^2.0.14",
     "svelte-loader": "^3.1.2",
     "svelte-preprocess": "^4.9.8",
