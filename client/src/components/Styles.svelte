@@ -149,6 +149,16 @@
     }
   }
 
+  @keyframes fadeOut {
+    from {
+      opacity: 100%;
+    }
+
+    to {
+      opacity: 0%;
+    }
+  }
+
   @keyframes fadeInHeight {
     from {
       opacity: 0%;
