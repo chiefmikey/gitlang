@@ -5,10 +5,10 @@
   export let d;
   export let i;
   export let langCount;
+  export let isDone;
 
   let finalPercent = Number((d.percent * 100).toFixed(2));
-  let data;
-  let speed = 80 * (i + 1) + 250;
+  let speed = (i / 8) * 1000 + 222;
 
   const progress = tweened(0, {
     duration: 1000,
@@ -28,7 +28,12 @@
   };
 
   setTimeout(() => ($progress = setProgress(d.percent)), speed);
-  setTimeout(() => ($progress2 = finalPercent), speed);
+  setTimeout(() => {
+    $progress2 = finalPercent;
+    if (i === langCount - 1) {
+      isDone();
+    }
+  }, speed);
   setTimeout(() => {
     const prog = document.getElementById(`bar${i}`);
     const info = document.getElementsByClassName(`info${i}`);
@@ -43,14 +48,6 @@
       275 - (225 / langCount) * i
     }, ${275 - (225 / langCount) * i})`;
   }, 0);
-
-  // for (let i = 0; i < langCount * 100; i += 1) {
-  //   setTimeout(() => {
-  //     document.getElementById('footer').scrollIntoView({
-  //       behavior: 'auto',
-  //     });
-  //   }, (i / 8) * 1000);
-  // }
 </script>
 
 <template>
