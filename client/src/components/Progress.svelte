@@ -54,7 +54,10 @@
 </script>
 
 <template>
-  <tr id="row{i}" style="animation: fadeInHeight .5s ease {i / 8}s forwards;">
+  <tr
+    id="row{i}"
+    style="animation: fadeInHeight .5s ease-out {i / 8}s forwards;"
+  >
     <div class="info info{i}">
       <td class="name">
         <span>{d.name}</span>

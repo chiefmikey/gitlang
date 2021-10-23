@@ -132,7 +132,7 @@
     font-weight: 200;
     font-size: 10px;
     margin: 0;
-    padding: 10px 20px 40px 20px;
+    padding: 20px 20px 40px 20px;
   }
 
   h6 a {
