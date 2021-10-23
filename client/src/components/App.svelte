@@ -3,6 +3,7 @@
   import axios from 'axios';
   import Progress from './Progress.svelte';
   import Card from './Card.svelte';
+  import ScrollTop from './ScrollTop.svelte';
 
   let owner = '';
   let currentOwner = '';
@@ -10,6 +11,11 @@
   let langCount;
   let repoCount;
   let placeholder = '[ GitHub Username ]';
+  let done = false;
+
+  const isDone = () => {
+    done = true;
+  };
 
   const getData = async (owner) => {
     try {
@@ -24,6 +30,7 @@
     try {
       if (!e.key || e.key === 'Enter') {
         e.target.blur();
+        done = false;
         data = undefined;
         langCount = undefined;
         repoCount = undefined;
@@ -87,7 +94,7 @@
         <tbody id="tbody">
           {#if data.length > 0}
             {#each data as d, i}
-              <Progress {d} {i} {langCount} />
+              <Progress {d} {i} {langCount} {isDone} />
             {/each}
           {:else}
             <h4>User Not Found</h4>
@@ -96,7 +103,9 @@
       </table>
     {/if}
   </div>
-
+  {#if done}
+    <ScrollTop />
+  {/if}
   <h6 id="footer">
     <a href="https://github.com/chiefmikey" target="_blank"
       >made by chiefmikey</a
