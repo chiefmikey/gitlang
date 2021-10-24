@@ -1,6 +1,6 @@
 <script>
   import { tweened } from 'svelte/motion';
-  import { cubicOut, cubicInOut } from 'svelte/easing';
+  import { cubicInOut } from 'svelte/easing';
 
   export let d;
   export let i;
@@ -11,12 +11,12 @@
   let speed = (i / 8) * 1000 + 222;
 
   const progress = tweened(0, {
-    duration: 1000,
+    duration: 1400,
     easing: cubicInOut,
   });
 
   const progress2 = tweened(0, {
-    duration: 1000,
+    duration: 1400,
     easing: cubicInOut,
   });
 
