@@ -15,7 +15,7 @@ export default {
       svelte: path.resolve('node_modules', 'svelte'),
     },
     extensions: ['.mjs', '.js', '.svelte'],
-    mainFields: ['svelte', 'browser', 'module', 'index'],
+    mainFields: ['svelte', 'browser', 'module', 'main', 'index'],
   },
   output: {
     filename: 'bundle.js',

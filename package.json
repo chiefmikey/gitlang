@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack --mode development",
-    "dev": "webpack --mode development -w",
+    "dev": "webpack --mode development -w --stats-error-details",
     "prod": "webpack --mode production",
     "start": "node app.js",
     "test": "nodemon app.js"
@@ -22,7 +22,6 @@
     "koa-bodyparser": "^4.3.0",
     "koa-static": "^5.0.0",
     "path": "^0.12.7",
-    "smoothscroll-polyfill": "^0.4.4",
     "svelte": "^3.44.1"
   },
   "devDependencies": {
