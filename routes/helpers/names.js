@@ -1,7 +1,7 @@
 const allNames = (repos) => {
   const names = [];
-  for (let i = 0; i < repos.length; i += 1) {
-    names.push(repos[i].name);
+  for (const repo of repos) {
+    names.push(repo.name);
   }
   return names;
 };

@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import cors from '@koa/cors';
 import serve from 'koa-static';
 import dotenv from 'dotenv';
-import path from 'path';
+import path from 'node:path';
 import index from './routes/index.js';
 
 if (process.env.ENV !== 'production') {

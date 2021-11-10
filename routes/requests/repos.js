@@ -11,13 +11,13 @@ const getRepos = async (owner) => {
         Authorization: `token ${process.env.TOKEN || token()}`,
       },
     };
-    const res = await axios(options);
-    if (res.data) {
-      return res.data;
+    const response = await axios(options);
+    if (response.data) {
+      return response.data;
     }
     return {};
-  } catch (e) {
-    return e;
+  } catch (error) {
+    return error;
   }
 };
 

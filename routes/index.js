@@ -6,18 +6,18 @@ import getSize from './helpers/size.js';
 
 const router = new Router();
 
-router.get('/languages', async (ctx) => {
+router.get('/languages', async (context) => {
   try {
-    const { owner } = ctx.request.query;
+    const { owner } = context.request.query;
     const repos = await getRepos(owner);
     const names = allNames(repos);
     const languages = await getLanguages(owner, names);
     const size = getSize(languages);
-    ctx.response.status = 200;
-    ctx.response.body = { names, size };
-  } catch (e) {
-    console.error('error with get', e);
-    ctx.response.status = 200;
+    context.response.status = 200;
+    context.response.body = { names, size };
+  } catch (error) {
+    console.error('error with get', error);
+    context.response.status = 200;
   }
 });
 

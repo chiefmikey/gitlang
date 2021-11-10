@@ -11,23 +11,21 @@ const fetchLanguage = async (owner, repo) => {
         Authorization: `token ${process.env.TOKEN || token()}`,
       },
     };
-    const res = await axios(options);
-    if (res.data) {
-      return res.data;
+    const response = await axios(options);
+    if (response.data) {
+      return response.data;
     }
     return {};
-  } catch (e) {
-    return e;
+  } catch (error) {
+    return error;
   }
 };
 
 const getLanguages = async (owner, names) => {
   const languages = [];
-  for (let i = 0; i < names.length; i += 1) {
-    const repo = names[i];
+  for (const repo of names) {
     languages.push(fetchLanguage(owner, repo));
   }
-  // eslint-disable-next-line compat/compat
   return Promise.all(languages);
 };
 

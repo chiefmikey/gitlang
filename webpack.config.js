@@ -1,9 +1,9 @@
-import path from 'path';
+import path from 'node:path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import sveltePreprocess from 'svelte-preprocess';
 
 const mode = process.env.NODE_ENV || 'development';
-const prod = mode === 'production';
+const production = mode === 'production';
 
 const SRC_DIR = path.join(path.resolve(), '/client/src');
 const DIST_DIR = path.join(path.resolve(), '/client/public/dist');
@@ -30,10 +30,10 @@ export default {
           loader: 'svelte-loader',
           options: {
             compilerOptions: {
-              dev: !prod,
+              dev: !production,
             },
-            emitCss: prod,
-            hotReload: !prod,
+            emitCss: production,
+            hotReload: !production,
             preprocess: sveltePreprocess(),
           },
         },
@@ -56,7 +56,7 @@ export default {
       filename: '[name].css',
     }),
   ],
-  devtool: prod ? false : 'source-map',
+  devtool: production ? false : 'source-map',
   devServer: {
     hot: true,
   },

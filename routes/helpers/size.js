@@ -1,21 +1,21 @@
 const percentage = (size, allSizes) => {
   const allResults = {};
   const keys = Object.keys(allSizes);
-  for (let i = 0; i < keys.length; i += 1) {
-    allResults[keys[i]] = allSizes[keys[i]] / size;
+  for (const key of keys) {
+    allResults[key] = allSizes[key] / size;
   }
   return allResults;
 };
 
 const eachSize = (languages) => {
   const allSizes = {};
-  for (let i = 0; i < languages.length; i += 1) {
-    const keys = Object.keys(languages[i]);
-    for (let j = 0; j < keys.length; j += 1) {
-      if (allSizes[keys[j]]) {
-        allSizes[keys[j]] += languages[i][keys[j]];
+  for (const language of languages) {
+    const keys = Object.keys(language);
+    for (const key of keys) {
+      if (allSizes[key]) {
+        allSizes[key] += language[key];
       } else {
-        allSizes[keys[j]] = languages[i][keys[j]];
+        allSizes[key] = language[key];
       }
     }
   }
@@ -24,10 +24,10 @@ const eachSize = (languages) => {
 
 const totalSize = (languages) => {
   let size = 0;
-  for (let i = 0; i < languages.length; i += 1) {
-    const keys = Object.keys(languages[i]);
-    for (let j = 0; j < keys.length; j += 1) {
-      size += languages[i][keys[j]];
+  for (const language of languages) {
+    const keys = Object.keys(language);
+    for (const key of keys) {
+      size += language[key];
     }
   }
   return size;
