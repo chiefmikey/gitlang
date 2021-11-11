@@ -1,6 +1,7 @@
 <script>
-  import Styles from './Styles.svelte';
+  import { onMount } from 'svelte';
   import axios from 'axios';
+  import Styles from './Styles.svelte';
   import Progress from './Progress.svelte';
   import Card from './Card.svelte';
   import ScrollTop from './ScrollTop.svelte';
@@ -13,46 +14,61 @@
   let placeholder = '[ GitHub Username ]';
   let done = false;
 
+  onMount(async () => {
+    const windowOwner = `${window.location.pathname.split('/')[1]}`;
+    if (windowOwner && windowOwner.length > 0) {
+      currentOwner = windowOwner;
+      owner = windowOwner;
+      await submit('window');
+    }
+  });
+
   const isDone = () => {
     done = true;
   };
 
   const getData = async (owner) => {
     try {
-      const res = await axios.get(`/languages?owner=${owner}`);
-      return res.data;
-    } catch (e) {
-      return e;
+      const response = await axios.get(`/languages?owner=${owner}`);
+      return response.data;
+    } catch (error) {
+      return error;
     }
   };
 
-  const submit = async (e) => {
+  const submit = async (event) => {
     try {
-      if (!e.key || e.key === 'Enter') {
-        e.target.blur();
+      if (event === 'window' || !event.key || event.key === 'Enter') {
+        if (event !== 'window') {
+          event.target.blur();
+        }
         done = false;
         data = undefined;
         langCount = undefined;
         repoCount = undefined;
         currentOwner = owner;
-        owner = '';
+        if (event === window) {
+          owner = '';
+        }
         const collectData = [];
         const allData = await getData(currentOwner);
         if (allData.names) {
           repoCount = allData.names.length;
         }
+        // eslint-disable-next-line unicorn/explicit-length-check
         if (allData.size) {
           const keys = Object.keys(allData.size);
           langCount = keys.length;
-          for (let i = 0; i < keys.length; i += 1) {
-            collectData.push({ name: keys[i], percent: allData.size[keys[i]] });
+          for (const key of keys) {
+            collectData.push({ name: key, percent: allData.size[key] });
           }
           collectData.sort((a, b) => b.percent - a.percent);
           data = collectData;
         }
       }
-    } catch (e) {
-      return e;
+      return true;
+    } catch (error) {
+      return error;
     }
   };
 </script>
@@ -115,8 +131,8 @@
 
 <style>
   #results {
-    width: 100%;
     height: 100%;
+    width: 100%;
     padding: 20px 0 10px 0;
     text-align: center;
     display: flex;
