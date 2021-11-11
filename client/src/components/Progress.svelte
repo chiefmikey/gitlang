@@ -7,8 +7,8 @@
   export let langCount;
   export let isDone;
 
-  let finalPercent = Number((d.percent * 100).toFixed(2));
-  let speed = (i / 8) * 1000 + 222;
+  const finalPercent = Number((d.percent * 100).toFixed(2));
+  const speed = (i / 8) * 1000 + 222;
 
   const progress = tweened(0, {
     duration: 1400,
