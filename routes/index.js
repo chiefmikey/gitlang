@@ -1,4 +1,5 @@
 import Router from '@koa/router';
+import send from 'koa-send';
 import getLanguages from './requests/languages.js';
 import getRepos from './requests/repos.js';
 import allNames from './helpers/names.js';
@@ -21,4 +22,12 @@ router.get('/languages', async (context) => {
   }
 });
 
+router.get('/:owner', async (context) => {
+  try {
+    await send(context, '/index.html', { root: './client/public' });
+  } catch (error) {
+    console.error('error with get', error);
+    context.response.status = 200;
+  }
+});
 export default router;
