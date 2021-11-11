@@ -60,8 +60,8 @@
   }
 
   button {
-    width: 135px;
     height: 35px;
+    width: 135px;
     background-color: #e8e6e2;
     color: #232323;
   }
