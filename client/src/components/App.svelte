@@ -13,12 +13,14 @@
   let repoCount;
   let placeholder = '[ GitHub Username ]';
   let done = false;
+  let url = false;
 
   onMount(async () => {
     const windowOwner = `${window.location.pathname.split('/')[1]}`;
     if (windowOwner && windowOwner.length > 0) {
       currentOwner = windowOwner;
       owner = windowOwner;
+      url = true;
       await submit('window');
     }
   });
@@ -77,29 +79,33 @@
   <Styles />
 
   <img id="logo" src="../assets/img/gitlang.svg" alt="GitLang logo" />
+  {#if !url}
+    <h5>
+      View language usage across all<br />public repositories of a GitHub
+      profile
+    </h5>
 
-  <h5>
-    View language usage across all<br />public repositories of a GitHub profile
-  </h5>
+    <div id="input-area">
+      <input
+        tabindex="0"
+        id="search"
+        type="text"
+        bind:value={owner}
+        {placeholder}
+        on:focus={() => {
+          placeholder = '';
+        }}
+        on:blur={() => {
+          placeholder = '[ GitHub Username ]';
+        }}
+        on:keydown={submit}
+        autocorrect="off"
+        autocapitalize="none"
+      />
 
-  <input
-    tabindex="0"
-    id="search"
-    type="text"
-    bind:value={owner}
-    {placeholder}
-    on:focus={() => {
-      placeholder = '';
-    }}
-    on:blur={() => {
-      placeholder = '[ GitHub Username ]';
-    }}
-    on:keydown={submit}
-    autocorrect="off"
-    autocapitalize="none"
-  />
-
-  <button on:click={submit}>Submit</button>
+      <button on:click={submit}>Submit</button>
+    </div>
+  {/if}
 
   <div id="results">
     {#if currentOwner}
@@ -130,10 +136,17 @@
 </template>
 
 <style>
+  #input-area {
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   #results {
     height: 100%;
     width: 100%;
-    padding: 20px 0 10px 0;
+    padding: 0 0 10px 0;
     text-align: center;
     display: flex;
     flex-direction: column;
