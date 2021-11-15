@@ -19,7 +19,7 @@
             <span id="repos">Repos: {repoCount}</span>
           {/if}
           {#if langCount}
-            <span id="lang">Languages: {langCount}</span>
+            <span id="lang">Langs: {langCount}</span>
           {/if}
         </div>
       {/if}
