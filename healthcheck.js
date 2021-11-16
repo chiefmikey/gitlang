@@ -1,7 +1,5 @@
 /* eslint-disable unicorn/no-process-exit */
-/* eslint-disable prefer-arrow-callback */
-/* eslint-disable unicorn/prefer-node-protocol */
-import http from 'http';
+import http from 'node:http';
 
 const options = {
   host: 'localhost',
@@ -16,7 +14,7 @@ const request = http.request(options, (response) => {
     process.exit(1);
   }
 });
-request.on('error', function (error) {
+request.on('error', (error) => {
   console.log(`ERROR: ${error}`);
   process.exit(1);
 });

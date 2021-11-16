@@ -11,7 +11,7 @@
     "test": "nodemon app.js"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.40.0",
+    "@aws-sdk/client-secrets-manager": "^3.41.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "airbnb-browser-shims": "^3.3.0",
@@ -33,7 +33,7 @@
     "svelte-loader": "^3.1.2",
     "svelte-preprocess": "^4.9.8",
     "url-loader": "^4.1.1",
-    "webpack": "^5.64.0",
+    "webpack": "^5.64.1",
     "webpack-cli": "^4.9.1"
   },
   "license": "MIT",
