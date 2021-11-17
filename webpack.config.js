@@ -60,4 +60,7 @@ export default {
   devServer: {
     hot: true,
   },
+  experiments: {
+    topLevelAwait: true,
+  },
 };
