@@ -7,8 +7,8 @@
     "build": "webpack --mode development",
     "dev": "webpack --mode development -w --stats-error-details",
     "prod": "webpack --mode production",
-    "start": "node app.js",
-    "test": "nodemon app.js"
+    "start": "node client/app.js",
+    "test": "nodemon client/app.js"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.41.0",

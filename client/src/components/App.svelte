@@ -1,10 +1,10 @@
 <script>
   import { onMount } from 'svelte';
-  import axios from 'axios';
   import Styles from './Styles.svelte';
   import Progress from './Progress.svelte';
   import Card from './Card.svelte';
   import ScrollTop from './ScrollTop.svelte';
+  import langs from '../../routes/index.js';
 
   let owner = '';
   let currentOwner = '';
@@ -31,7 +31,7 @@
 
   const getData = async (owner) => {
     try {
-      const response = await axios.get(`/languages?owner=${owner}`);
+      const response = await langs(owner);
       return response.data;
     } catch (error) {
       return error;
