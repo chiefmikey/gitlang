@@ -6,7 +6,7 @@ const port = 3004;
 
 const app = new Koa();
 
-app.use(serve(path.resolve()));
+app.use(serve(path.join(path.resolve(), '/docs')));
 
 app.listen(port, () => console.log('Koa is listening on port', port));
 
