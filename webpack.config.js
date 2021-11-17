@@ -6,7 +6,7 @@ const mode = process.env.NODE_ENV || 'development';
 const production = mode === 'production';
 
 const SRC_DIR = path.join(path.resolve(), '/client/src');
-const DIST_DIR = path.join(path.resolve(), '/client/public/dist');
+const DIST_DIR = path.join(path.resolve(), '/docs/public/dist');
 
 export default {
   entry: `${SRC_DIR}/index.js`,
