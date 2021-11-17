@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.41.0",
+    "@aws-sdk/credential-providers": "^3.41.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "airbnb-browser-shims": "^3.3.0",

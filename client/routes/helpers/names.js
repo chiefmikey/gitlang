@@ -1,7 +1,9 @@
 const allNames = (repos) => {
   const names = [];
-  for (const repo of repos) {
-    names.push(repo.name);
+  if (repos.length > 0) {
+    for (const repo of repos) {
+      names.push(repo.name);
+    }
   }
   return names;
 };

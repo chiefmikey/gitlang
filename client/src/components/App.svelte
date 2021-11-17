@@ -78,7 +78,11 @@
 <template>
   <Styles />
 
-  <img id="logo" src="../assets/img/gitlang.svg" alt="GitLang logo" />
+  <img
+    id="logo"
+    src="client/public/assets/img/gitlang.svg"
+    alt="GitLang logo"
+  />
   {#if !url}
     <h5>
       View language usage across all<br />public repositories of a GitHub
