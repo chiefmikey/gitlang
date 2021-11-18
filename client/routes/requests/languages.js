@@ -24,10 +24,10 @@ const fetchLanguage = async (owner, repo) => {
 
 const getLanguages = async (owner, names) => {
   const languages = [];
-  for (const repo of names) {
-    languages.push(fetchLanguage(owner, repo));
+  for await (const repo of names) {
+    languages.push(await fetchLanguage(owner, repo));
   }
-  return Promise.all(languages);
+  return languages.flat();
 };
 
 export default getLanguages;
