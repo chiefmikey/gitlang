@@ -14,7 +14,16 @@
  * https://github.com/paulmillr/es6-shim/
  */
 
+/*!
+ * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
 /*! @source http://purl.eligrey.com/github/classList.js/blob/master/classList.js */
+
+/*! fromentries. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. MIT license */
 
