@@ -1,20 +1,20 @@
-import axios from 'axios';
+import { Octokit } from 'octokit';
+
+const octokit = new Octokit();
 
 const getRepos = async (owner) => {
   try {
-    const options = {
-      url: `https://api.github.com/users/${owner}/repos`,
-      method: 'get',
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-      },
-    };
-    const response = await axios(options);
-    if (response.data) {
-      return response.data;
+    const response = await octokit.paginate('GET /users/{owner}/repos', {
+      owner,
+      type: 'public',
+      per_page: 100,
+    });
+    if (response) {
+      return response;
     }
     return {};
   } catch (error) {
+    console.log('Error getting repos', error);
     return error;
   }
 };

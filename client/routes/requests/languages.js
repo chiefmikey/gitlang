@@ -1,17 +1,20 @@
-import axios from 'axios';
+import { Octokit } from 'octokit';
+
+const octokit = new Octokit();
 
 const fetchLanguage = async (owner, repo) => {
   try {
-    const options = {
-      url: `https://api.github.com/repos/${owner}/${repo}/languages`,
-      method: 'get',
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
+    const response = await octokit.paginate(
+      'GET /repos/{owner}/{repo}/languages',
+      {
+        owner,
+        repo,
+        type: 'public',
+        per_page: 100,
       },
-    };
-    const response = await axios(options);
-    if (response.data) {
-      return response.data;
+    );
+    if (response) {
+      return response;
     }
     return {};
   } catch (error) {
