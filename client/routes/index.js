@@ -8,8 +8,8 @@ const langs = async (owner) => {
     const repos = await getRepos(owner);
     const names = allNames(repos);
     const languages = await getLanguages(owner, names);
-    const size = getSize(languages);
-    return { data: { names, size } };
+    const space = getSize(languages.flat());
+    return { data: { names, space } };
   } catch (error) {
     console.error('Error getting langs', error);
     return error;

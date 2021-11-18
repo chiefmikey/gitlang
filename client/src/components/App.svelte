@@ -58,12 +58,14 @@
           repoCount = allData.names.length;
         }
         // eslint-disable-next-line unicorn/explicit-length-check
-        if (allData.size) {
-          const keys = Object.keys(allData.size);
+        console.log(allData.space);
+        if (allData.space) {
+          const keys = Object.keys(allData.space);
           langCount = keys.length;
           for (const key of keys) {
-            collectData.push({ name: key, percent: allData.size[key] });
+            collectData.push({ name: key, percent: allData.space[key] });
           }
+          console.log(collectData);
           collectData.sort((a, b) => b.percent - a.percent);
           data = collectData;
         }
