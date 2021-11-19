@@ -9,7 +9,7 @@
     padding: 0;
     margin: 0;
     color: #e8e6e2;
-    background-color: #1b1b1c;
+    background-color: #292a2b;
   }
 
   #app {
