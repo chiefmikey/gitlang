@@ -6,7 +6,7 @@ const auth = async () => {
   try {
     if (!token) {
       token = await axios.get(
-        `http://${environment.tokenApi}/auth/github/repo`,
+        `https://${environment.tokenApi}/auth/github/repo`,
       );
     }
     return token.data;
