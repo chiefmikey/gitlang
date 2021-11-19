@@ -21,7 +21,8 @@ const fetchLanguage = async (owner, repo, token) => {
     }
     return {};
   } catch (error) {
-    return error;
+    console.log('Error getting languages', error);
+    return {};
   }
 };
 

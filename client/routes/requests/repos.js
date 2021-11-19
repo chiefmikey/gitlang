@@ -18,7 +18,7 @@ const getRepos = async (owner, token) => {
     return {};
   } catch (error) {
     console.log('Error getting repos', error);
-    return error;
+    return {};
   }
 };
 
