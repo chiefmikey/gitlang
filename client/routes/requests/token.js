@@ -5,13 +5,11 @@ let token;
 const auth = async () => {
   try {
     if (!token) {
-      token = await axios.get(
-        `https://${environment.tokenApi}/auth/github/repo`,
-      );
+      token = await axios.get(`${environment.tokenApi}/auth/github/repo`);
     }
     return token.data;
-  } catch {
-    console.log('Error getting token from auth api', token);
+  } catch (error) {
+    console.log('Error getting token from auth api', error);
     return token;
   }
 };
