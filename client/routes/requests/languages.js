@@ -1,13 +1,14 @@
 import { Octokit } from 'octokit';
 
 let octokit;
+const allLangs = [];
 
 const fetchLanguage = async (owner, repo, token) => {
   try {
     if (!octokit) {
       octokit = new Octokit({ auth: token });
     }
-    const response = await octokit.paginate(
+    const response = await octokit.paginate.iterator(
       'GET /repos/{owner}/{repo}/languages',
       {
         owner,
@@ -16,13 +17,13 @@ const fetchLanguage = async (owner, repo, token) => {
         per_page: 100,
       },
     );
-    if (response) {
-      return response;
+    for await (const { data } of response) {
+      allLangs.push(data);
     }
-    return {};
+    return allLangs;
   } catch (error) {
     console.log('Error getting languages', error);
-    return {};
+    return [];
   }
 };
 
