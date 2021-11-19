@@ -1,10 +1,10 @@
 import { Octokit } from 'octokit';
 
 let octokit;
-const allLangs = [];
 
 const fetchLanguage = async (owner, repo, token) => {
   try {
+    const allLangs = [];
     if (!octokit) {
       octokit = new Octokit({ auth: token });
     }
