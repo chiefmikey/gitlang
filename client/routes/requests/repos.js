@@ -1,9 +1,12 @@
 import { Octokit } from 'octokit';
 
-const octokit = new Octokit();
+let octokit;
 
-const getRepos = async (owner) => {
+const getRepos = async (owner, token) => {
   try {
+    if (!octokit) {
+      octokit = new Octokit({ auth: token });
+    }
     const response = await octokit.paginate('GET /users/{owner}/repos', {
       owner,
       type: 'public',

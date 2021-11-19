@@ -1,9 +1,12 @@
 import { Octokit } from 'octokit';
 
-const octokit = new Octokit();
+let octokit;
 
-const fetchLanguage = async (owner, repo) => {
+const fetchLanguage = async (owner, repo, token) => {
   try {
+    if (!octokit) {
+      octokit = new Octokit({ auth: token });
+    }
     const response = await octokit.paginate(
       'GET /repos/{owner}/{repo}/languages',
       {

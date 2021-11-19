@@ -33,9 +33,7 @@ const totalSize = (languages) => {
   return size;
 };
 
-const getSize = (languages) => {
-  console.log(languages);
+const getSize = (languages) =>
   percentage(totalSize(languages), eachSize(languages));
-};
 
 export default getSize;
