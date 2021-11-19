@@ -1,5 +1,5 @@
 const environment = {
-  tokenApi: 'https://hullowurld.com',
+  tokenApi: 'https://api.hullowurld.com',
 };
 
 export default environment;
