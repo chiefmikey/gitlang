@@ -49,9 +49,7 @@
         langCount = undefined;
         repoCount = undefined;
         currentOwner = owner;
-        if (event === window) {
-          owner = '';
-        }
+        owner = '';
         const collectData = [];
         const allData = await getData(currentOwner);
         if (allData.names) {
