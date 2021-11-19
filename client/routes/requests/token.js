@@ -7,10 +7,11 @@ const auth = async () => {
     if (!token) {
       token = await axios.get(`${environment.tokenApi}/auth/github/repo`);
     }
-    return token.data;
+    if (token && token.data && token.data.length > 0) return token.data;
+    return '';
   } catch (error) {
     console.log('Error getting token from auth api', error);
-    return token;
+    return '';
   }
 };
 
