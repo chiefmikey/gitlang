@@ -75,7 +75,6 @@
 
 <template>
   <Styles />
-
   <img id="logo" src="public/assets/img/gitlang.svg" alt="GITLANG" />
   {#if !url}
     <h5>

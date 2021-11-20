@@ -10,15 +10,26 @@
     margin: 0;
     color: #e8e6e2;
     background-color: #292a2b;
+    height: 100vh;
+  }
+
+  #wrapper {
+    height: 100vh;
+    background-color: #232323;
+    max-width: 450px;
+    min-width: 250px;
+    width: 100%;
+    position: absolute;
+    z-index: -100;
   }
 
   #app {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     max-width: 450px;
     min-width: 250px;
+    width: 100%;
     overflow: hidden;
     background-color: #232323;
   }
@@ -28,6 +39,9 @@
       transform: scale(0.6);
       transform-origin: top;
     }
+    #wrapper {
+      transform: scaleX(0.6);
+    }
   }
 
   @media (min-width: 560px), (min-height: 960px) {
@@ -35,12 +49,18 @@
       transform: scale(1.3);
       transform-origin: top;
     }
+    #wrapper {
+      transform: scaleX(1.3);
+    }
   }
 
   @media (min-width: 1900px), (min-height: 960px) {
     #app {
       transform: scale(1.8);
       transform-origin: top;
+    }
+    #wrapper {
+      transform: scaleX(1.8);
     }
   }
 
@@ -160,12 +180,12 @@
 
   @keyframes fadeInHeight {
     from {
-      opacity: 0%;
+      /* opacity: 0%; */
       height: 0px;
     }
 
     to {
-      opacity: 100%;
+      /* opacity: 100%; */
       height: 50px;
     }
   }
