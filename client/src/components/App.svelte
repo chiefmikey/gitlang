@@ -141,7 +141,6 @@
   }
 
   #results {
-    height: 100%;
     width: 100%;
     padding: 0 0 10px 0;
     text-align: center;

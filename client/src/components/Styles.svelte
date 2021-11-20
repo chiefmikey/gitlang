@@ -10,19 +10,26 @@
     margin: 0;
     color: #e8e6e2;
     background-color: #292a2b;
-    height: 100vh;
     overflow: hidden;
   }
 
   #wrapper {
-    height: 100vh;
+    height: 100%;
     background-color: #232323;
     max-width: 450px;
     min-width: 250px;
     width: 100%;
     position: absolute;
-    z-index: -100;
+    display: inline-block;
+    overflow-y: scroll;
     overflow-x: hidden;
+    scroll-bar-width: none;
+  }
+
+  #wrapper::-webkit-scrollbar {
+    display: none;
+    background: transparent;
+    width: 0;
   }
 
   #app {
@@ -33,12 +40,11 @@
     min-width: 250px;
     width: 100%;
     background-color: #232323;
-    overflow-x: hidden;
   }
 
   @media (orientation: landscape) {
     #app {
-      transform: scale(0.6);
+      transform: scaleY(0.6);
       transform-origin: top;
     }
     #wrapper {
@@ -48,7 +54,7 @@
 
   @media (min-width: 560px), (min-height: 960px) {
     #app {
-      transform: scale(1.3);
+      transform: scaleY(1.3);
       transform-origin: top;
     }
     #wrapper {
@@ -58,7 +64,7 @@
 
   @media (min-width: 1900px), (min-height: 960px) {
     #app {
-      transform: scale(1.8);
+      transform: scaleY(1.8);
       transform-origin: top;
     }
     #wrapper {
@@ -119,7 +125,7 @@
     justify-content: center;
     overflow: hidden;
     height: 0px;
-    width: 100vw;
+    width: 100%;
   }
 
   h1,

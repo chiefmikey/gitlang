@@ -1,11 +1,12 @@
 <script>
   setTimeout(() => {
-    const button = document.getElementById('scroll-top');
+    const button = document.querySelector('#scroll-top');
     button.style = 'animation: fadeIn .5s ease-out 0s forwards;';
   }, 0);
 
   const scroll = () => {
-    window.scroll({ top: 0, behavior: 'smooth' });
+    const wrapper = document.querySelector('#wrapper');
+    wrapper.scroll({ top: 0, behavior: 'smooth' });
   };
 </script>
 
