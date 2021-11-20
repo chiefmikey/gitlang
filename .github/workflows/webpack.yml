@@ -34,7 +34,7 @@ jobs:
         add: 'docs --force'
         # author_name: Mikl Wolfe
         # author_email: wolfemikl@gmail.com
-        branch: client
+        branch: temp
         # committer_name: GitHub Actions
         # committer_email: actions@github.com
         # cwd: '.'
