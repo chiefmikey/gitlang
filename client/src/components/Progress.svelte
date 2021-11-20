@@ -104,6 +104,8 @@
     width: 100%;
     text-align: left;
     padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .name span {
@@ -119,12 +121,11 @@
   }
 
   .percent {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     height: 18px;
-    padding-right: 10px;
+    padding: 0 10px 0 10px;
   }
 
   .percent span {

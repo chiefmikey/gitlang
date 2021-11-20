@@ -11,6 +11,7 @@
     color: #e8e6e2;
     background-color: #292a2b;
     height: 100vh;
+    overflow: hidden;
   }
 
   #wrapper {
@@ -21,6 +22,7 @@
     width: 100%;
     position: absolute;
     z-index: -100;
+    overflow-x: hidden;
   }
 
   #app {
@@ -31,6 +33,7 @@
     min-width: 250px;
     width: 100%;
     background-color: #232323;
+    overflow-x: hidden;
   }
 
   @media (orientation: landscape) {
@@ -116,6 +119,7 @@
     justify-content: center;
     overflow: hidden;
     height: 0px;
+    width: 100vw;
   }
 
   h1,
