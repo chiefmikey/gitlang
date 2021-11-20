@@ -34,7 +34,7 @@ jobs:
         add: 'docs --force'
         # author_name: Mikl Wolfe
         # author_email: wolfemikl@gmail.com
-        branch: temp
+        # branch: client
         # committer_name: GitHub Actions
         # committer_email: actions@github.com
         # cwd: '.'
@@ -42,7 +42,7 @@ jobs:
         message: 'Update production bundle'
         pathspec_error_handling: exitImmediately
         pull: 'NO-PULL'
-        push: origin client --force
+        push: origin client --set-upstream --force
         remove: '-r webpack.config.js README.md package.json package-lock.json .gitignore .deepsource.toml client .github'
         signoff: false
         # tag: 'v1.0.0 --force'
