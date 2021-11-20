@@ -11,8 +11,8 @@
     "test": "nodemon client/app.js"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.41.0",
-    "@aws-sdk/credential-providers": "^3.41.0",
+    "@aws-sdk/client-secrets-manager": "^3.42.0",
+    "@aws-sdk/credential-providers": "^3.42.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "@octokit/core": "^3.5.1",
