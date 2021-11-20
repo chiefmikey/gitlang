@@ -30,7 +30,6 @@
     max-width: 450px;
     min-width: 250px;
     width: 100%;
-    overflow: hidden;
     background-color: #232323;
   }
 
