@@ -1,7 +1,7 @@
+import allNames from './helpers/names.js';
 import auth from './requests/token.js';
 import getLanguages from './requests/languages.js';
 import getRepos from './requests/repos.js';
-import allNames from './helpers/names.js';
 import getSize from './helpers/size.js';
 
 const langs = async (owner) => {
