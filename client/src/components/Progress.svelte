@@ -2,13 +2,13 @@
   import { cubicInOut } from 'svelte/easing';
   import { tweened } from 'svelte/motion';
 
-  export let d;
-  export let i;
+  export let dat;
+  export let index;
   export let langCount;
   export let isDone;
 
-  const finalPercent = Number((d.percent * 100).toFixed(2));
-  const speed = (i / 8) * 1000 + 222;
+  const finalPercent = Number((dat.percent * 100).toFixed(2));
+  const speed = (index / 8) * 1000 + 222;
 
   const progress = tweened(0, {
     duration: 1400,
@@ -27,44 +27,44 @@
     return perc;
   };
 
-  setTimeout(() => ($progress = setProgress(d.percent)), speed);
+  setTimeout(() => ($progress = setProgress(dat.percent)), speed);
   setTimeout(() => {
     $progress2 = finalPercent;
-    if (i === langCount - 1) {
+    if (index === langCount - 1) {
       isDone();
     }
   }, speed);
   setTimeout(() => {
-    const prog = document.getElementById(`bar${i}`);
-    const info = document.getElementsByClassName(`info${i}`);
+    const prog = document.querySelector(`#bar${index}`);
+    const info = document.querySelector(`.info${index}`);
     prog.style.setProperty(
       '--c',
-      `rgb(${255 - (255 / langCount) * i}, ${
-        160 - (160 / langCount) * i
+      `rgb(${255 - (255 / langCount) * index}, ${
+        160 - (160 / langCount) * index
       }, ${203})`,
     );
 
-    info[0].style.color = `rgb(${275 - (225 / langCount) * i}, ${
-      275 - (225 / langCount) * i
-    }, ${275 - (225 / langCount) * i})`;
+    info[0].style.color = `rgb(${275 - (225 / langCount) * index}, ${
+      275 - (225 / langCount) * index
+    }, ${275 - (225 / langCount) * index})`;
   }, 0);
 </script>
 
 <template>
   <tr
-    id="row{i}"
-    style="animation: fadeInHeight .5s ease-out {i / 8}s forwards;"
+    id="row{index}"
+    style="animation: fadeInHeight .5s ease-out {index / 8}s forwards;"
   >
-    <div class="info info{i}">
+    <div class="info info{index}">
       <td class="name">
-        <span>{d.name}</span>
+        <span>{dat.name}</span>
       </td>
       <td class="percent">
         <span>{$progress2.toFixed(2)}%</span>
       </td>
     </div>
     <td class="bar">
-      <progress id="bar{i}" value={$progress} />
+      <progress id="bar{index}" value={$progress} />
     </td>
   </tr>
 </template>

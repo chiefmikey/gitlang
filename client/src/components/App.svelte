@@ -1,10 +1,12 @@
 <script>
   import { onMount } from 'svelte';
-  import Styles from './Styles.svelte';
-  import Progress from './Progress.svelte';
-  import Card from './Card.svelte';
-  import ScrollTop from './ScrollTop.svelte';
+
   import langs from '../../routes/index.js';
+
+  import Card from './Card.svelte';
+  import Progress from './Progress.svelte';
+  import ScrollTop from './ScrollTop.svelte';
+  import Styles from './Styles.svelte';
 
   let owner = '';
   let currentOwner = '';
@@ -55,7 +57,7 @@
         if (allData.names) {
           repoCount = allData.names.length;
         }
-        // eslint-disable-next-line unicorn/explicit-length-check
+
         if (allData.space) {
           const keys = Object.keys(allData.space);
           langCount = keys.length;
@@ -112,8 +114,8 @@
       <table>
         <tbody id="tbody">
           {#if data.length > 0}
-            {#each data as d, i}
-              <Progress {d} {i} {langCount} {isDone} />
+            {#each data as dat, index}
+              <Progress {dat} {index} {langCount} {isDone} />
             {/each}
           {:else}
             <h4>User Not Found</h4>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import environment from '../../environment.js';
 
 let token;

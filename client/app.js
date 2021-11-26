@@ -1,6 +1,6 @@
 import Koa from 'koa';
-import path from 'node:path';
 import serve from 'koa-static';
+import path from 'node:path';
 
 const port = 3004;
 

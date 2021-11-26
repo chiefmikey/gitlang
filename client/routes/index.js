@@ -1,8 +1,8 @@
 import allNames from './helpers/names.js';
-import auth from './requests/token.js';
+import getSize from './helpers/size.js';
 import getLanguages from './requests/languages.js';
 import getRepos from './requests/repos.js';
-import getSize from './helpers/size.js';
+import auth from './requests/token.js';
 
 const langs = async (owner) => {
   try {

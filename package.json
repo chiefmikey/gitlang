@@ -30,7 +30,7 @@
     "svelte": "^3.44.2"
   },
   "devDependencies": {
-    "@mikey-pro/style-guide": "^2.5.2",
+    "@mikey-pro/style-guide": "^2.5.3",
     "css-loader": "^6.5.1",
     "eslint": "^8.3.0",
     "mini-css-extract-plugin": "^2.4.5",
