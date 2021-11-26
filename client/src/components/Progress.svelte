@@ -43,8 +43,9 @@
         160 - (160 / langCount) * index
       }, ${203})`,
     );
+    console.log(info);
 
-    info[0].style.color = `rgb(${275 - (225 / langCount) * index}, ${
+    info.style.color = `rgb(${275 - (225 / langCount) * index}, ${
       275 - (225 / langCount) * index
     }, ${275 - (225 / langCount) * index})`;
   }, 0);
