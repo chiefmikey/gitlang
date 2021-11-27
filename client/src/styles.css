@@ -1,0 +1,202 @@
+body {
+  display: flex;
+  min-width: 250px;
+  min-height: 450px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #e8e6e2;
+  flex-direction: column;
+  background-color: #292a2b;
+  align-items: center;
+}
+
+#wrapper {
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  min-width: 250px;
+  max-width: 450px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color: #232323;
+  scroll-bar-width: none;
+}
+
+#wrapper::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  background: transparent;
+}
+
+#app {
+  display: flex;
+  width: 100%;
+  min-width: 250px;
+  max-width: 450px;
+  flex-direction: column;
+  background-color: #232323;
+  align-items: center;
+}
+
+@media (orientation: landscape) {
+  #app {
+    transform: scaleY(0.6);
+    transform-origin: top;
+  }
+
+  #wrapper {
+    transform: scaleX(0.6);
+  }
+}
+
+@media (min-width: 560px), (min-height: 960px) {
+  #app {
+    transform: scaleY(1.3);
+    transform-origin: top;
+  }
+
+  #wrapper {
+    transform: scaleX(1.3);
+  }
+}
+
+@media (min-width: 1900px), (min-height: 960px) {
+  #app {
+    transform: scaleY(1.8);
+    transform-origin: top;
+  }
+
+  #wrapper {
+    transform: scaleX(1.8);
+  }
+}
+
+a {
+  color: #232323;
+  text-decoration: none;
+}
+
+input,
+button {
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+
+button {
+  width: 135px;
+  height: 35px;
+  color: #232323;
+  background-color: #e8e6e2;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+  min-width: 150px;
+  font-size: 18px;
+  color: #e8e6e2;
+  background: none;
+}
+
+input::placeholder {
+  font-size: 14px;
+  color: #e8e6e2;
+}
+
+table {
+  width: 100%;
+}
+
+span {
+  padding: 0 10px;
+}
+
+tr {
+  display: flex;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+}
+
+#logo {
+  width: 300px;
+  height: 75px;
+  margin: 50px 0 20px;
+  font-size: 44px;
+  line-height: 10px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  padding: 0 20px 20px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+h6 {
+  padding: 20px 20px 40px;
+  margin: 0;
+  font-size: 10px;
+  font-weight: 200;
+}
+
+h6 a {
+  color: #fe9fc9;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0%;
+  }
+
+  to {
+    opacity: 100%;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 100%;
+  }
+
+  to {
+    opacity: 0%;
+  }
+}
+
+@keyframes fadeInHeight {
+  from {
+    /* opacity: 0%; */
+    height: 0;
+  }
+
+  to {
+    /* opacity: 100%; */
+    height: 50px;
+  }
+}

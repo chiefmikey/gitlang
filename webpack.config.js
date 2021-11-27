@@ -1,5 +1,5 @@
-import path from 'node:path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'node:path';
 import sveltePreprocess from 'svelte-preprocess';
 
 const mode = process.env.NODE_ENV || 'development';
@@ -25,7 +25,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.svelte$/,
+        test: /\.(html|svelte)$/,
         use: {
           loader: 'svelte-loader',
           options: {
@@ -34,12 +34,20 @@ export default {
             },
             emitCss: production,
             hotReload: !production,
-            preprocess: sveltePreprocess(),
+            preprocess: sveltePreprocess({
+              postcss: true,
+            }),
           },
         },
       },
       {
         test: /\.css$/,
+        exclude: /svelte\.\d+\.css/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        test: /\.css$/,
+        include: /svelte\.\d+\.css/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
