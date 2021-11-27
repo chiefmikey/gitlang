@@ -94,9 +94,9 @@ progress::-webkit-progress-value {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  width: 100%;
   margin-bottom: -37px;
   z-index: 1;
-  width: 100%;
   height: 37px;
 }
 
