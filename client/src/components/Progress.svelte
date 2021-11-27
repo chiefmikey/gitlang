@@ -43,7 +43,6 @@ setTimeout(() => {
       160 - (160 / langCount) * index
     }, ${203})`,
   );
-  console.log(info);
 
   info.style.color = `rgb(${275 - (225 / langCount) * index}, ${
     275 - (225 / langCount) * index
