@@ -41,7 +41,10 @@ const getData = async (owner) => {
 
 const submit = async (event) => {
   try {
-    if (event === 'window' || !event.key || event.key === 'Enter') {
+    if (
+      (event === 'window' || !event.key || event.key === 'Enter') &&
+      owner.length > 0
+    ) {
       if (event !== 'window') {
         event.target.blur();
       }
