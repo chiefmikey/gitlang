@@ -17,6 +17,7 @@ let done = false;
 let url = false;
 
 onMount(async () => {
+  debugger;
   const windowOwner = `${window.location.pathname
     .split('/')
     .slice(1, 2)
