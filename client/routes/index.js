@@ -15,8 +15,8 @@ const langs = async (inputOwner) => {
     }
     if (owner.includes('/')) {
       const [user, repo] = owner.split('/');
-      owner = user;
-      names = [repo];
+      owner = user.replaceAll(' ', '');
+      names = [repo.replaceAll(' ', '')];
     } else {
       const repos = await getRepos(owner, token);
       names = allNames(repos);

@@ -55,7 +55,7 @@ const submit = async (event) => {
       data = undefined;
       langCount = undefined;
       repoCount = undefined;
-      currentOwner = owner;
+      currentOwner = owner.replaceAll(' ', '');
       owner = '';
       const collectData = [];
       const allData = await getData(currentOwner);
@@ -149,6 +149,7 @@ const submit = async (event) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 #results {
