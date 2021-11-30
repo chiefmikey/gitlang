@@ -59,7 +59,6 @@ const submit = async (event) => {
       if (allData.names) {
         repoCount = allData.names.length;
       }
-
       if (allData.space) {
         const keys = Object.keys(allData.space);
         langCount = keys.length;
@@ -84,7 +83,6 @@ const submit = async (event) => {
       View language usage across all<br />public repositories of a GitHub
       profile
     </h5>
-
     <div id="input-area">
       <input
         tabindex="0"
@@ -106,7 +104,6 @@ const submit = async (event) => {
       <button on:click="{submit}">Submit</button>
     </div>
   {/if}
-
   <div id="results">
     {#if currentOwner}
       <Card
