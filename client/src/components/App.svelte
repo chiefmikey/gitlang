@@ -80,8 +80,7 @@ const submit = async (event) => {
   <img id="logo" src="public/assets/img/gitlang.svg" alt="GITLANG" />
   {#if !url}
     <h5>
-      View language usage across all<br />public repositories of a GitHub
-      profile
+      View language usage in<br />public repositories on GitHub
     </h5>
     <div id="input-area">
       <input
@@ -94,13 +93,12 @@ const submit = async (event) => {
           placeholder = '';
         }}"
         on:blur="{() => {
-          placeholder = '[ GitHub Username ]';
+          placeholder = '[ username [ /repo ] ]';
         }}"
         on:keydown="{submit}"
         autocorrect="off"
         autocapitalize="none"
       />
-
       <button on:click="{submit}">Submit</button>
     </div>
   {/if}
