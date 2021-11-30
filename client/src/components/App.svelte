@@ -12,7 +12,7 @@ let currentOwner = '';
 let data;
 let langCount;
 let repoCount;
-let placeholder = '[ GitHub Username ]';
+let placeholder = '[ username [ /repo ] ]';
 let done = false;
 let url = false;
 
