@@ -2,8 +2,9 @@ import { Octokit } from 'octokit';
 
 let octokit;
 
-const getRepos = async (owner, token) => {
+const getRepos = async (inputOwner, token) => {
   try {
+    const owner = inputOwner;
     const allRepos = [];
     if (!octokit) {
       octokit = new Octokit({ auth: token });

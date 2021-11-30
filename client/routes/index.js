@@ -4,11 +4,23 @@ import getLanguages from './requests/languages.js';
 import getRepos from './requests/repos.js';
 import auth from './requests/token.js';
 
-const langs = async (owner) => {
+let token;
+
+const langs = async (inputOwner) => {
   try {
-    const token = await auth();
-    const repos = await getRepos(owner, token);
-    const names = allNames(repos);
+    let owner = inputOwner;
+    let names;
+    if (!token) {
+      token = await auth();
+    }
+    if (owner.includes('/')) {
+      const [user, repo] = owner.split('/');
+      owner = user;
+      names = [repo];
+    } else {
+      const repos = await getRepos(owner, token);
+      names = allNames(repos);
+    }
     const languages = await getLanguages(owner, names, token);
     const space = getSize(languages.flat());
     return { data: { names, space } };
