@@ -31,7 +31,7 @@ jobs:
     - name: Add and Commit
       uses: EndBug/add-and-commit@v7
       with:
-        add: 'docs/public/dist --force'
+        add: '. --force'
         # author_name: Mikl Wolfe
         # author_email: wolfemikl@gmail.com
         branch: client
