@@ -22,7 +22,6 @@ onMount(async () => {
     .slice(1, 2)
     .join('/')}`;
   if (windowOwner && windowOwner.length > 0) {
-    currentOwner = windowOwner;
     owner = windowOwner;
     url = true;
     await submit('window');
@@ -80,7 +79,7 @@ const submit = async (event) => {
 </script>
 
 <template>
-  <img id="logo" src="public/assets/img/gitlang.svg" alt="GITLANG" />
+  <img id="logo" src="/public/assets/img/gitlang.svg" alt="GITLANG" />
   {#if !url}
     <h5>
       View language usage in<br />public repositories on GitHub
