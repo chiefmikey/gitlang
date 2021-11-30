@@ -17,12 +17,12 @@ let done = false;
 let url = false;
 
 onMount(async () => {
-  debugger;
   const windowOwner = `${window.location.pathname
     .split('/')
     .slice(1, 2)
     .join('/')}`;
   if (windowOwner && windowOwner.length > 0) {
+    console.log(windowOwner);
     owner = windowOwner;
     url = true;
     await submit('window');
@@ -43,7 +43,6 @@ const getData = async (owner) => {
 };
 
 const submit = async (event) => {
-  debugger;
   try {
     if (
       (event === 'window' || !event.key || event.key === 'Enter') &&
