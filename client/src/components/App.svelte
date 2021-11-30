@@ -79,7 +79,6 @@ const submit = async (event) => {
 </script>
 
 <template>
-  <img id="logo" src="/public/assets/img/gitlang.svg" alt="GITLANG" />
   {#if !url}
     <h5>
       View language usage in<br />public repositories on GitHub
