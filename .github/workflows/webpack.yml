@@ -31,10 +31,10 @@ jobs:
     - name: Add and Commit
       uses: EndBug/add-and-commit@v7
       with:
-        add: 'docs --force'
+        add: 'docs/public/dist --force'
         # author_name: Mikl Wolfe
         # author_email: wolfemikl@gmail.com
-        branch: -b temp
+        # branch: client
         # committer_name: GitHub Actions
         # committer_email: actions@github.com
         cwd: '.'
