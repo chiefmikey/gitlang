@@ -17,7 +17,10 @@ let done = false;
 let url = false;
 
 onMount(async () => {
-  const windowOwner = `${window.location.pathname.split('/')[1]}`;
+  const windowOwner = `${window.location.pathname
+    .split('/')
+    .slice(1, 2)
+    .join('/')}`;
   if (windowOwner && windowOwner.length > 0) {
     currentOwner = windowOwner;
     owner = windowOwner;
