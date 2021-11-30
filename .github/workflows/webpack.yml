@@ -43,6 +43,6 @@ jobs:
         pathspec_error_handling: exitImmediately
         pull: 'NO-PULL'
         push: origin client --force
-        remove: '-r webpack.config.js README.md package.json package-lock.json .gitignore .deepsource.toml client .github'
+        remove: '-r webpack.config.js README.md package.json package-lock.json .gitignore .deepsource.toml client .github node_modules postcss.config.cjs'
         signoff: false
         # tag: 'v1.0.0 --force'
