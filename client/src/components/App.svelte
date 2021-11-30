@@ -43,6 +43,7 @@ const getData = async (owner) => {
 };
 
 const submit = async (event) => {
+  debugger;
   try {
     if (
       (event === 'window' || !event.key || event.key === 'Enter') &&
