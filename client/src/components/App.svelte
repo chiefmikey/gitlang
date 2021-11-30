@@ -12,7 +12,7 @@ let currentOwner = '';
 let data;
 let langCount;
 let repoCount;
-let placeholder = '[ username [ /repo ] ]';
+let placeholder = '[ username / repo ]';
 let done = false;
 let url = false;
 
@@ -96,7 +96,7 @@ const submit = async (event) => {
           placeholder = '';
         }}"
         on:blur="{() => {
-          placeholder = '[ username [ /repo ] ]';
+          placeholder = '[ username / repo ]';
         }}"
         on:keydown="{submit}"
         autocorrect="off"
