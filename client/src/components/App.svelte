@@ -22,10 +22,6 @@ onMount(async () => {
     .slice(1, 3)
     .join('/')}`;
   if (windowOwner && windowOwner.length > 0) {
-    console.log('windowOwner', windowOwner);
-    console.log('pathname', window.location.pathname);
-    console.log('split', window.location.pathname.split('/'));
-    console.log('splice', window.location.pathname.split('/').slice(1, 3));
     owner = windowOwner;
     url = true;
     await submit('window');
