@@ -11,8 +11,8 @@
     "test": "nodemon client/app.js"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.43.0",
-    "@aws-sdk/credential-providers": "^3.43.0",
+    "@aws-sdk/client-secrets-manager": "^3.45.0",
+    "@aws-sdk/credential-providers": "^3.45.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "@octokit/core": "^3.5.1",
@@ -27,24 +27,24 @@
     "koa-static": "^5.0.0",
     "octokit": "^1.7.1",
     "path": "^0.12.7",
-    "svelte": "^3.44.2",
-    "the-new-css-reset": "^1.4.2"
+    "svelte": "^3.44.3",
+    "the-new-css-reset": "^1.4.4"
   },
   "devDependencies": {
-    "@mikey-pro/style-guide": "^3.1.6",
+    "@mikey-pro/style-guide": "^3.1.9",
     "css-loader": "^6.5.1",
-    "eslint": "^8.4.1",
+    "eslint": "^8.5.0",
     "mini-css-extract-plugin": "^2.4.5",
     "nodemon": "^2.0.15",
-    "postcss": "^8.4.4",
+    "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",
     "postcss-load-config": "^3.1.0",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.5.1",
     "style-loader": "^3.3.1",
-    "stylelint": "^14.1.0",
+    "stylelint": "^14.2.0",
     "svelte-loader": "^3.1.2",
-    "svelte-preprocess": "^4.9.8",
+    "svelte-preprocess": "^4.10.1",
     "url-loader": "^4.1.1",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1"
