@@ -81,7 +81,7 @@ const submit = async (event) => {
 <template>
   {#if !url}
     <h5>
-      View language usage in<br />public repositories on GitHub
+      View language usage per repo<br />or total by username
     </h5>
     <div id="input-area">
       <input
