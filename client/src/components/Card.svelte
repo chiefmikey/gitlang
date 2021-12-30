@@ -15,11 +15,11 @@ const url = `https://github.com/${currentOwner}`;
     {#if data && data.length > 0}
       {#if repoCount || langCount}
         <div id="counts">
-          {#if repoCount}
-            <span id="repos">Repos: {repoCount}</span>
-          {/if}
           {#if langCount}
             <span id="lang">Langs: {langCount}</span>
+          {/if}
+          {#if repoCount}
+            <span id="repos">Repos: {repoCount}</span>
           {/if}
         </div>
       {/if}
