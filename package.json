@@ -31,14 +31,14 @@
     "the-new-css-reset": "^1.4.4"
   },
   "devDependencies": {
-    "@mikey-pro/style-guide": "^3.1.9",
+    "@mikey-pro/style-guide": "^3.2.6",
     "css-loader": "^6.5.1",
-    "eslint": "^8.5.0",
+    "eslint": "^8.6.0",
     "mini-css-extract-plugin": "^2.4.5",
     "nodemon": "^2.0.15",
     "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",
-    "postcss-load-config": "^3.1.0",
+    "postcss-load-config": "^3.1.1",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.5.1",
     "style-loader": "^3.3.1",
