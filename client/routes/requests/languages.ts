@@ -7,7 +7,7 @@ const languages = async (owner: string, repos: string[]) => {
       {
         params: {
           owner,
-          repos,
+          repos: JSON.stringify(repos),
         },
       },
     );
