@@ -1,29 +1,23 @@
-import allNames from './helpers/names.js';
-import getSize from './helpers/size.js';
-import getLanguages from './requests/languages.js';
-import getRepos from './requests/repos.js';
-import auth from './requests/token.js';
-
-let token;
+import names from './helpers/names';
+import getSize from './helpers/size';
+import languages from './requests/languages';
+import repos from './requests/repos';
 
 const langs = async (inputOwner) => {
   try {
     let owner = inputOwner;
-    let names;
-    if (!token) {
-      token = await auth();
-    }
+    let allNames;
     if (owner.includes('/')) {
       const [user, repo] = owner.split('/');
       owner = user.replaceAll(' ', '');
-      names = [repo.replaceAll(' ', '')];
+      allNames = [repo.replaceAll(' ', '')];
     } else {
-      const repos = await getRepos(owner, token);
-      names = allNames(repos);
+      const allRepos = await repos(owner);
+      allNames = names(allRepos);
     }
-    const languages = await getLanguages(owner, names, token);
-    const space = getSize(languages.flat());
-    return { data: { names, space } };
+    const allLanguages = await languages(owner, allNames);
+    const space = getSize(allLanguages.flat());
+    return { data: { allNames, space } };
   } catch (error) {
     console.error('Error getting langs', error);
     return error;

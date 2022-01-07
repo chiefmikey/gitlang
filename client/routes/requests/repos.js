@@ -1,32 +1,20 @@
-import { Octokit } from 'octokit';
+import axios from 'axios';
 
-let octokit;
-
-const getRepos = async (inputOwner, token) => {
+const repos = async (owner) => {
   try {
-    const owner = inputOwner;
-    const allRepos = [];
-    if (!octokit) {
-      octokit = new Octokit({ auth: token });
-    }
-    const response = await octokit.paginate.iterator(
-      'GET /users/{owner}/repos',
+    const allRepos = await axios.get(
+      'https://5105015032.com/auth/gitlang/repos',
       {
         owner,
-        type: 'public',
-        per_page: 100,
       },
     );
-    for await (const { data } of response) {
-      for (const repo of data) {
-        allRepos.push(repo);
-      }
-    }
-    return allRepos;
+    if (allRepos && allRepos.data && allRepos.data.length > 0)
+      return allRepos.data;
+    return [];
   } catch (error) {
-    console.log('Error getting repos', error);
+    console.log('Error getting token from auth api', error);
     return [];
   }
 };
 
-export default getRepos;
+export default repos;

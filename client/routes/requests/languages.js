@@ -1,38 +1,21 @@
-import { Octokit } from 'octokit';
+import axios from 'axios';
 
-let octokit;
-
-const fetchLanguage = async (owner, repo, token) => {
+const languages = async (owner, repos) => {
   try {
-    const allLangs = [];
-    if (!octokit) {
-      octokit = new Octokit({ auth: token });
-    }
-    const response = await octokit.paginate.iterator(
-      'GET /repos/{owner}/{repo}/languages',
+    const allLanguages = await axios.get(
+      'https://5105015032.com/auth/gitlang/languages',
       {
         owner,
-        repo,
-        type: 'public',
-        per_page: 100,
+        repos,
       },
     );
-    for await (const { data } of response) {
-      allLangs.push(data);
-    }
-    return allLangs;
+    if (allLanguages && allLanguages.data && allLanguages.data.length > 0)
+      return allLanguages.data;
+    return [];
   } catch (error) {
-    console.log('Error getting languages', error);
+    console.log('Error getting token from auth api', error);
     return [];
   }
 };
 
-const getLanguages = (owner, names, token) => {
-  const languages = [];
-  for (const repo of names) {
-    languages.push(fetchLanguage(owner, repo, token));
-  }
-  return Promise.all(languages);
-};
-
-export default getLanguages;
+export default languages;
