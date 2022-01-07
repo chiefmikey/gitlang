@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-const languages = async (owner, repos) => {
+const languages = async (owner: string, repos: string[]) => {
   try {
-    const allLanguages = await axios.get(
+    const allLanguages: { data: [] } = await axios.get(
       'https://5105015032.com/auth/gitlang/languages',
       {
-        owner,
-        repos,
+        params: {
+          owner,
+          repos,
+        },
       },
     );
     if (allLanguages && allLanguages.data && allLanguages.data.length > 0)

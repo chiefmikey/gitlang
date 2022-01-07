@@ -4,19 +4,17 @@
   "description": "View language usage across all public repositories of a GitHub profile",
   "main": "app.js",
   "scripts": {
-    "build": "webpack --mode development",
-    "dev": "webpack --mode development -w --stats-error-details",
-    "prod": "webpack --mode production",
-    "start": "node client/app.js",
-    "test": "nodemon client/app.js"
+    "build": "NODE_ENV=development NODE_OPTIONS=--loader=ts-node/esm webpack --mode development",
+    "dev": "NODE_ENV=development NODE_OPTIONS=--loader=ts-node/esm webpack --mode development -w",
+    "prod": "NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production",
+    "start": "node --loader ts-node/esm client/app.ts",
+    "test": "nodemon client/app.ts"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.45.0",
     "@aws-sdk/credential-providers": "^3.45.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
-    "@octokit/core": "^3.5.1",
-    "@octokit/request": "^5.6.2",
     "airbnb-browser-shims": "^3.3.0",
     "axios": "^0.24.0",
     "d3-interpolate": "^3.0.1",
@@ -25,13 +23,18 @@
     "koa-bodyparser": "^4.3.0",
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
-    "octokit": "^1.7.1",
     "path": "^0.12.7",
     "svelte": "^3.44.3",
     "the-new-css-reset": "^1.4.4"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
     "@mikey-pro/style-guide": "^3.2.6",
+    "@types/koa": "^2.13.4",
+    "@types/koa-static": "^4.0.2",
+    "@types/mini-css-extract-plugin": "^2.4.0",
+    "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "eslint": "^8.6.0",
     "mini-css-extract-plugin": "^2.4.5",
@@ -45,6 +48,8 @@
     "stylelint": "^14.2.0",
     "svelte-loader": "^3.1.2",
     "svelte-preprocess": "^4.10.1",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1"
@@ -76,7 +81,6 @@
   "contributors": [
     "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"
   ],
-  "type": "module",
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
     "extends": "@mikey-pro"

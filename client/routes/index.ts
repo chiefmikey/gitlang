@@ -3,10 +3,10 @@ import getSize from './helpers/size';
 import languages from './requests/languages';
 import repos from './requests/repos';
 
-const langs = async (inputOwner) => {
+const langs = async (inputOwner: string) => {
   try {
     let owner = inputOwner;
-    let allNames;
+    let allNames: string[];
     if (owner.includes('/')) {
       const [user, repo] = owner.split('/');
       owner = user.replaceAll(' ', '');
