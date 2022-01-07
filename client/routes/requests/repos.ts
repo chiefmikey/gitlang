@@ -3,7 +3,7 @@ import axios from 'axios';
 const repos = async (owner: string) => {
   try {
     const allRepos: { data: [] } = await axios.get(
-      'https://5105015032.com/auth/gitlang/repos',
+      'https://api.5105015032.com/auth/gitlang/repos',
       {
         params: { owner },
       },
