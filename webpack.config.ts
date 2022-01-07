@@ -3,7 +3,9 @@ import path from 'node:path';
 import sveltePreprocess from 'svelte-preprocess';
 import { Configuration } from 'webpack';
 
-const mode = process.env.NODE_ENV || 'development';
+const mode =
+  (process.env.NODE_ENV as 'development' | 'production' | 'none' | undefined) ||
+  'development';
 const production = mode === 'production';
 
 const SRC_DIR = path.join(path.resolve(), '/client/src');
@@ -55,7 +57,7 @@ const config: Configuration = {
             compilerOptions: {
               dev: !production,
             },
-            emitCss: production,
+            // emitCss: production,
             hotReload: !production,
             preprocess: sveltePreprocess({
               postcss: true,
@@ -81,6 +83,7 @@ const config: Configuration = {
       },
     ],
   },
+  mode,
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].css',
