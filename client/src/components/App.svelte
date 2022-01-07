@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 
-import langs from '../../routes/index.js';
+import langs from '../../routes/index';
 
 import Card from './Card.svelte';
 import Progress from './Progress.svelte';
