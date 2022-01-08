@@ -58,8 +58,8 @@ const submit = async (event) => {
       owner = '';
       const collectData = [];
       const allData = await getData(currentOwner);
-      if (allData.names) {
-        repoCount = allData.names.length;
+      if (allData.allNames) {
+        repoCount = allData.allNames.length;
       }
       if (allData.space) {
         const keys = Object.keys(allData.space);
