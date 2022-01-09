@@ -12,11 +12,11 @@ const langs = async (inputOwner: string) => {
       owner = user.replaceAll(' ', '');
       allNames = [repo.replaceAll(' ', '')];
     } else {
-      const allRepos = await repos(owner);
+      const allRepos: { name: string }[] = await repos(owner);
       allNames = names(allRepos);
     }
     const allLanguages = await languages(owner, allNames);
-    const space = getSize(allLanguages.flat());
+    const space = getSize(allLanguages.flat() as { [key: string]: number }[]);
     return { data: { allNames, space } };
   } catch (error) {
     console.error('Error getting langs', error);
