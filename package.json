@@ -84,7 +84,7 @@
   ],
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
-    "extends": "@mikey-pro"
+    "extends": "@mikey-pro/eslint-config"
   },
   "stylelint": {
     "extends": "@mikey-pro/stylelint-config"
