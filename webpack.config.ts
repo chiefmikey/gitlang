@@ -70,6 +70,10 @@ const config: Configuration = {
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
         test: /node_modules\/svelte\/.*\.mjs$/,
         resolve: {
           fullySpecified: false,
