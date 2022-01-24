@@ -1,3 +1,8 @@
+$body-font-size: 14px;
+$h4-size: 16px;
+$white-font: #e8e6e2;
+$black-font: #292a2b;
+
 body {
   display: flex;
   min-width: 250px;
@@ -146,7 +151,7 @@ h4 {
 h5 {
   padding: 0 20px 20px;
   margin: 0;
-  font-size: $font-size-small;
+  font-size: $body-font-size;
   font-weight: 200;
 }
 
