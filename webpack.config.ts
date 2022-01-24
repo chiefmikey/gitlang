@@ -1,4 +1,3 @@
-import MiniCssExtractPlugin, { loader } from 'mini-css-extract-plugin';
 import path from 'node:path';
 import sveltePreprocess from 'svelte-preprocess';
 import { Configuration } from 'webpack';
@@ -71,11 +70,6 @@ const config: Configuration = {
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
-        test: /\.css$/,
-        include: /svelte\.\d+\.css/,
-        use: [loader, 'css-loader'],
-      },
-      {
         test: /node_modules\/svelte\/.*\.mjs$/,
         resolve: {
           fullySpecified: false,
@@ -84,11 +78,6 @@ const config: Configuration = {
     ],
   },
   mode,
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
-  ],
   devtool: production ? false : 'source-map',
   experiments: {
     topLevelAwait: true,
