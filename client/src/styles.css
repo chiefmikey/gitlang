@@ -83,7 +83,7 @@ input,
 button {
   box-sizing: border-box;
   padding: 10px;
-  font-size: 14px;
+  font-size: $body-font-size;
   text-align: center;
   border: none;
   outline: none;
@@ -109,7 +109,7 @@ input {
 }
 
 input::placeholder {
-  font-size: 14px;
+  font-size: $body-font-size;
   color: #e8e6e2;
 }
 
@@ -140,13 +140,13 @@ h6 {
 }
 
 h4 {
-  font-size: 16px;
+  font-size: $h4-size;
 }
 
 h5 {
   padding: 0 20px 20px;
   margin: 0;
-  font-size: 12px;
+  font-size: $font-size-small;
   font-weight: 200;
 }
 
@@ -163,21 +163,21 @@ h6 a {
 
 @keyframes fadeIn {
   from {
-    opacity: 0%;
+    opacity: 0;
   }
 
   to {
-    opacity: 100%;
+    opacity: 1;
   }
 }
 
 @keyframes fadeOut {
   from {
-    opacity: 100%;
+    opacity: 1;
   }
 
   to {
-    opacity: 0%;
+    opacity: 0;
   }
 }
 
