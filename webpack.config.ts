@@ -13,9 +13,7 @@ const DIST_DIR = path.join(path.resolve(), '/docs/public/dist');
 const config: Configuration = {
   entry: `${SRC_DIR}/index.ts`,
   resolve: {
-    alias: {
-      svelte: path.resolve('node_modules', 'svelte'),
-    },
+    fullySpecified: false,
     extensions: ['.mjs', '.js', '.svelte', '.ts', '.tsx'],
     mainFields: ['svelte', 'browser', 'module', 'main', 'index'],
   },
@@ -72,12 +70,6 @@ const config: Configuration = {
       {
         test: /\.s[ac]ss$/i,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /node_modules\/svelte\/.*\.mjs$/,
-        resolve: {
-          fullySpecified: false,
-        },
       },
     ],
   },

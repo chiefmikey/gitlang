@@ -4,10 +4,10 @@
   "description": "View language usage per repo or total by username",
   "main": "app.js",
   "scripts": {
-    "build": "NODE_ENV=development NODE_OPTIONS=--loader=ts-node/esm webpack --mode development",
-    "dev": "NODE_ENV=development NODE_OPTIONS=--loader=ts-node/esm webpack --mode development -w",
-    "prod": "NODE_ENV=production NODE_OPTIONS='--require=./.pnp.cjs --loader=ts-node/esm' webpack --mode production",
-    "start": "node --loader ts-node/esm client/app.ts",
+    "build": "NODE_ENV=development webpack --mode development",
+    "dev": "NODE_ENV=development yarn webpack --mode development -w",
+    "prod": "NODE_ENV=production webpack --mode production",
+    "start": "ts-node client/app.ts",
     "test": "nodemon client/app.ts"
   },
   "dependencies": {
@@ -28,12 +28,14 @@
     "the-new-css-reset": "^1.4.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.2",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
     "@mikey-pro/style-guide": "^4.5.0",
     "@types/koa": "^2.13.4",
     "@types/koa-static": "^4.0.2",
     "@types/mini-css-extract-plugin": "^2.5.0",
+    "@types/node": "^17.0.16",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
     "eslint": "^8.8.0",
