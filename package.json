@@ -6,7 +6,7 @@
   "scripts": {
     "build": "NODE_ENV=development NODE_OPTIONS=--loader=ts-node/esm webpack --mode development",
     "dev": "NODE_ENV=development NODE_OPTIONS=--loader=ts-node/esm webpack --mode development -w",
-    "prod": "NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production",
+    "prod": "NODE_ENV=production NODE_OPTIONS='--require=./.pnp.cjs --loader=ts-node/esm' webpack --mode production",
     "start": "node --loader ts-node/esm client/app.ts",
     "test": "nodemon client/app.ts"
   },
@@ -47,11 +47,11 @@
     "sass": "^1.49.7",
     "sass-loader": "^12.4.0",
     "style-loader": "^3.3.1",
-    "stylelint": "^14.3.0",
+    "stylelint": "^14.4.0",
     "svelte-loader": "^3.1.2",
     "svelte-preprocess": "^4.10.2",
     "ts-loader": "^9.2.6",
-    "ts-node": "^10.4.0",
+    "ts-node": "^10.5.0",
     "typescript": "^4.5.5",
     "url-loader": "^4.1.1",
     "webpack": "^5.68.0",
