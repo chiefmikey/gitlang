@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "NODE_ENV=development webpack --mode development",
-    "dev": "NODE_ENV=development yarn webpack --mode development -w",
+    "dev": "NODE_ENV=development webpack --mode development -w",
     "prod": "NODE_ENV=production webpack --mode production",
     "start": "ts-node client/app.ts",
     "test": "nodemon client/app.ts"
