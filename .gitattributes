@@ -45,4 +45,6 @@
 *.so            binary
 *.war           binary
 
-docs/**         linguist-documentation=false
+docs/**             linguist-documentation=false
+.pnp.cjs            linguist-documentation=true
+.pnp.loader.mjs     linguist-documentation=true
