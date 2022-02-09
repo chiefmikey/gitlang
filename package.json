@@ -11,8 +11,8 @@
     "test": "nodemon client/app.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.49.0",
-    "@aws-sdk/credential-providers": "^3.49.0",
+    "@aws-sdk/client-secrets-manager": "^3.50.0",
+    "@aws-sdk/credential-providers": "^3.50.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "airbnb-browser-shims": "^3.3.0",
@@ -51,7 +51,7 @@
     "style-loader": "^3.3.1",
     "stylelint": "^14.4.0",
     "svelte-loader": "^3.1.2",
-    "svelte-preprocess": "^4.10.2",
+    "svelte-preprocess": "^4.10.3",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.5.0",
     "typescript": "^4.5.5",
