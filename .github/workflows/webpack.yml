@@ -43,6 +43,6 @@ jobs:
         pathspec_error_handling: exitImmediately
         pull: 'NO-PULL'
         push: origin HEAD:client --force
-        remove: '-r webpack.config.ts README.md package.json yarn.lock .pnp.cjs .pnp.loader.mjs .gitignore .gitattributes .deepsource.toml client .github postcss.config.cjs'
+        remove: '-r webpack.config.ts README.md package.json yarn.lock .pnp.cjs .pnp.loader.mjs .gitignore .deepsource.toml client .github postcss.config.cjs'
         signoff: false
         # tag: 'v1.0.0 --force'
