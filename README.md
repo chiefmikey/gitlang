@@ -5,13 +5,13 @@
 </a>
 
 ### [gitlang.net](https://gitlang.net)
-  
+
 View language usage per repo
-  
+
 `gitlang.net/chiefmikey/gitlang`
-  
+
 or total by username
-  
+
 `gitlang.net/chiefmikey`
-  
+
 </div>
