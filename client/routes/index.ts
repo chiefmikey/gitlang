@@ -5,6 +5,7 @@ import repos from './requests/repos';
 
 const langs = async (inputOwner: string) => {
   try {
+    window.history.pushState('', '', `/${inputOwner}`);
     let owner = inputOwner;
     let allNames: string[];
     if (owner.includes('/')) {
@@ -17,7 +18,6 @@ const langs = async (inputOwner: string) => {
     }
     const allLanguages = await languages(owner, allNames);
     const space = getSize(allLanguages.flat() as { [key: string]: number }[]);
-    window.history.pushState('', '', `/${inputOwner}`);
     return { data: { allNames, space } };
   } catch (error) {
     console.error('Error getting langs', error);

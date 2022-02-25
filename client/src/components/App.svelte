@@ -14,7 +14,6 @@ let langCount;
 let repoCount;
 let placeholder = '[ username / repo ]';
 let done = false;
-let url = false;
 
 onMount(async () => {
   const windowOwner = `${window.location.pathname
@@ -23,7 +22,6 @@ onMount(async () => {
     .join('/')}`;
   if (windowOwner && windowOwner.length > 0) {
     owner = windowOwner;
-    url = true;
     await submit('window');
   }
 });
@@ -79,30 +77,28 @@ const submit = async (event) => {
 </script>
 
 <template>
-  {#if !url}
-    <h5>
-      View language usage per repo<br />or total by username
-    </h5>
-    <div id="input-area">
-      <input
-        tabindex="0"
-        id="search"
-        type="text"
-        bind:value="{owner}"
-        placeholder="{placeholder}"
-        on:focus="{() => {
-          placeholder = '';
-        }}"
-        on:blur="{() => {
-          placeholder = '[ username / repo ]';
-        }}"
-        on:keydown="{submit}"
-        autocorrect="off"
-        autocapitalize="none"
-      />
-      <button on:click="{submit}">Submit</button>
-    </div>
-  {/if}
+  <h5>
+    View language usage per repo<br />or total by username
+  </h5>
+  <div id="input-area">
+    <input
+      tabindex="0"
+      id="search"
+      type="text"
+      bind:value="{owner}"
+      placeholder="{placeholder}"
+      on:focus="{() => {
+        placeholder = '';
+      }}"
+      on:blur="{() => {
+        placeholder = '[ username / repo ]';
+      }}"
+      on:keydown="{submit}"
+      autocorrect="off"
+      autocapitalize="none"
+    />
+    <button on:click="{submit}">Submit</button>
+  </div>
   <div id="results">
     {#if currentOwner}
       <Card
