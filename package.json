@@ -24,7 +24,7 @@
     "koa-send": "^5.0.1",
     "koa-static": "^5.0.0",
     "path": "^0.12.7",
-    "svelte": "^3.46.4",
+    "svelte": "^3.46.5",
     "the-new-css-reset": "^1.5.1"
   },
   "devDependencies": {
