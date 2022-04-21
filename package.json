@@ -11,8 +11,8 @@
     "test": "nodemon client/app.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.72.0",
-    "@aws-sdk/credential-providers": "^3.72.0",
+    "@aws-sdk/client-secrets-manager": "^3.75.0",
+    "@aws-sdk/credential-providers": "^3.75.0",
     "@koa/cors": "^3.3.0",
     "@koa/router": "^10.1.1",
     "airbnb-browser-shims": "^3.3.0",
