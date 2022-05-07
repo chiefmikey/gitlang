@@ -11,8 +11,8 @@
     "test": "nodemon client/app.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.82.0",
-    "@aws-sdk/credential-providers": "^3.82.0",
+    "@aws-sdk/client-secrets-manager": "^3.85.0",
+    "@aws-sdk/credential-providers": "^3.85.0",
     "@koa/cors": "^3.3.0",
     "@koa/router": "^10.1.1",
     "airbnb-browser-shims": "^3.3.0",
@@ -38,7 +38,7 @@
     "@types/node": "^17.0.31",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
-    "eslint": "^8.14.0",
+    "eslint": "^8.15.0",
     "mini-css-extract-plugin": "^2.6.0",
     "nodemon": "^2.0.16",
     "postcss": "^8.4.13",
