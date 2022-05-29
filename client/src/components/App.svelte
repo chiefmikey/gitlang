@@ -14,6 +14,7 @@ let langCount;
 let repoCount;
 let placeholder = '[ username / repo ]';
 let done = false;
+let active = false;
 
 onMount(async () => {
   const windowOwner = `${window.location.pathname
@@ -74,6 +75,28 @@ const submit = async (event) => {
     return error;
   }
 };
+
+const input = (event) => {
+  if (event.target.value) {
+    active = true;
+    placeholder = '';
+  }
+};
+
+const click = () => {
+  placeholder = '';
+  active = true;
+};
+
+const blur = () => {
+  placeholder = '[ username / repo ]';
+  active = false;
+};
+
+const focus = () => {
+  placeholder = '';
+  active = true;
+};
 </script>
 
 <template>
@@ -83,19 +106,19 @@ const submit = async (event) => {
   <div id="input-area">
     <input
       tabindex="0"
-      id="search"
+      class:active
       type="text"
       bind:value="{owner}"
       placeholder="{placeholder}"
-      on:focus="{() => {
-        placeholder = '';
-      }}"
-      on:blur="{() => {
-        placeholder = '[ username / repo ]';
-      }}"
+      on:focus="{focus}"
+      on:blur="{blur}"
       on:keydown="{submit}"
+      on:input="{input}"
       autocorrect="off"
       autocapitalize="none"
+      autocomplete="off"
+      autofocus="true"
+      on:click="{click}"
     />
     <button on:click="{submit}">Submit</button>
   </div>
