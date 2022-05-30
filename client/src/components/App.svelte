@@ -17,6 +17,8 @@ let done = false;
 let active = false;
 
 onMount(async () => {
+  const inputElement = document.querySelector('[name="input"]');
+  inputElement.focus();
   const windowOwner = `${window.location.pathname
     .split('/')
     .slice(1, 3)
@@ -94,8 +96,7 @@ const blur = () => {
 };
 
 const focus = () => {
-  placeholder = '';
-  active = true;
+  // active = true;
 };
 </script>
 
@@ -105,19 +106,19 @@ const focus = () => {
   </h5>
   <div id="input-area">
     <input
+      name="input"
       tabindex="0"
       class:active
       type="text"
-      bind:value="{owner}"
       placeholder="{placeholder}"
+      autocorrect="off"
+      autocapitalize="none"
+      autocomplete="off"
+      bind:value="{owner}"
       on:focus="{focus}"
       on:blur="{blur}"
       on:keydown="{submit}"
       on:input="{input}"
-      autocorrect="off"
-      autocapitalize="none"
-      autocomplete="off"
-      autofocus="true"
       on:click="{click}"
     />
     <button on:click="{submit}">Submit</button>
