@@ -1,5 +1,5 @@
 <script>
-import { onMount } from 'svelte';
+import { afterUpdate, onMount } from 'svelte';
 
 import langs from '../../routes/index';
 
@@ -17,8 +17,6 @@ let done = false;
 let active = false;
 
 onMount(async () => {
-  const inputElement = document.querySelector('[name="input"]');
-  inputElement.focus();
   const windowOwner = `${window.location.pathname
     .split('/')
     .slice(1, 3)
@@ -26,6 +24,13 @@ onMount(async () => {
   if (windowOwner && windowOwner.length > 0) {
     owner = windowOwner;
     await submit('window');
+  }
+});
+
+afterUpdate(() => {
+  const inputElement = document.querySelector('[name="input"]');
+  if (inputElement) {
+    inputElement.focus();
   }
 });
 
