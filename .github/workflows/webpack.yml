@@ -9,40 +9,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [17.x]
-
     steps:
     - uses: actions/checkout@v3
-
-    - name: Node
-      uses: actions/setup-node@v3
+    - uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
-
+        node-version: '16.x'
     - name: Build
-      run: |
+      run:
         npm install
-        NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
-        git config advice.addIgnoredFile false
+        && NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
+        && git config advice.addIgnoredFile false
+        && rm -r webpack.config.ts tsconfig.json README.md package.json package-lock.json .gitignore .gitattributes .deepsource.toml client .github postcss.config.cjs
+        && git config --global user.email "<>"
+        && git config --global user.name "GitHub Actions Bot"
+        && git commit -am 'Update production build'
+        && git push origin client
 
-    - name: Add and Commit
-      uses: EndBug/add-and-commit@v9
-      with:
-        add: './docs/public/dist --force'
+        # - name: Add and Commit
+        #   uses: EndBug/add-and-commit@v9
+        #   with:
+        #     add: './docs/public/dist --force'
         # author_name: Mikl Wolfe
         # author_email: wolfemikl@gmail.com
         # branch: client
         # committer_name: GitHub Actions
         # committer_email: actions@github.com
-        cwd: '.'
-        default_author: github_actions
-        message: 'Update production bundle'
-        pathspec_error_handling: exitImmediately
-        pull: 'NO-PULL'
-        push: origin HEAD:client --force
-        remove: '-r webpack.config.ts tsconfig.json README.md package.json package-lock.json .gitignore .gitattributes .deepsource.toml client .github postcss.config.cjs'
-        signoff: false
+        # cwd: '.'
+        # default_author: github_actions
+        # message: 'Update production bundle'
+        # pathspec_error_handling: exitImmediately
+        # pull: 'NO-PULL'
+        # push: origin HEAD:client --force
+        # remove: ''
+        # signoff: false
         # tag: 'v1.0.0 --force'
