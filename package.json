@@ -40,7 +40,7 @@
     "css-loader": "^6.7.1",
     "eslint": "^8.19.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "nodemon": "^2.0.18",
+    "nodemon": "^2.0.19",
     "postcss": "^8.4.14",
     "postcss-import": "^14.1.0",
     "postcss-load-config": "^4.0.1",
