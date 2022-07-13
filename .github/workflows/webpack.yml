@@ -25,4 +25,4 @@ jobs:
         && git config --global user.email "<>"
         && git config --global user.name "GitHub Actions Bot"
         && git commit -am 'Update production build'
-        && git push origin client
+        && git push origin client:HEAD
