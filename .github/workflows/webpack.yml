@@ -28,4 +28,6 @@ jobs:
         git config --global user.name "Mikl Wolfe"
         git add docs
         git commit -am 'Update production build'
+        test=$(git remote -v)
+        echo $test
         git push origin client
