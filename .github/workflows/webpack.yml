@@ -28,4 +28,4 @@ jobs:
         git config --global user.name "Mikl Wolfe"
         git add docs
         git commit -am 'Update production build'
-        git push origin main:client
+        git push -f origin main:client
