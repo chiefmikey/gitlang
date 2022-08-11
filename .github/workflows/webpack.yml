@@ -24,6 +24,6 @@ jobs:
         rm -r webpack.config.ts tsconfig.json README.md package.json package-lock.json .gitignore .gitattributes .deepsource.toml client .github postcss.config.cjs
         git config --global user.email "wolfemikl@gmail.com"
         git config --global user.name "Mikl Wolfe"
-        git add .
+        git add docs
         git commit -am 'Update production build'
         git push origin client:HEAD
