@@ -15,7 +15,7 @@ const languages = async (owner: string, repos: string[]) => {
       return allLanguages.data;
     return [];
   } catch (error) {
-    console.log('Error getting token from auth api', error);
+    console.error('Error getting token from auth api', error);
     return [];
   }
 };
