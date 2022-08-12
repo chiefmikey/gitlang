@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const repos = async (owner: string) => {
+const repos = async (username: string) => {
   try {
     const allRepos: { data: [] } = await axios.get(
       'https://api.5105015032.com/auth/gitlang/repos',
       {
-        params: { owner },
+        params: { username },
       },
     );
     if (allRepos && allRepos.data && allRepos.data.length > 0) {
@@ -13,7 +13,7 @@ const repos = async (owner: string) => {
     }
     return [];
   } catch (error) {
-    console.log('Error getting token from auth api', error);
+    console.error('Error getting token from auth api', error);
     return [];
   }
 };
