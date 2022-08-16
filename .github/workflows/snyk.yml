@@ -5,8 +5,7 @@ on:
       - main
   pull_request:
 
-permissions:
-  contents: write
+permissions: write-all
 
 jobs:
   snyk:
