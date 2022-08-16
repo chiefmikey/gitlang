@@ -1,5 +1,12 @@
 name: "Snyk: Node"
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: write
 
 jobs:
   snyk:
