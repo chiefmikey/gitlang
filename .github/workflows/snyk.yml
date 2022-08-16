@@ -19,16 +19,21 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
-          args: --sarif-file-output=snyk.sarif
+          args: --sarif-file-output=./snyk.sarif
       - name: test
         run: |
           echo "current dir"
+          pwd
+          ls -la
+          echo "one up"
+          cd ..
+          pwd
           ls -la
           echo "root: /"
-          ls -la /
-          echo "one up"
-          ls -la ../
+          cd /
+          pwd
+          ls -la
       - name: Upload Results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: snyk.sarif
+          sarif_file: ./snyk.sarif
