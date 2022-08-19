@@ -4,12 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "06:00"
+      time: "12:00"
       timezone: "America/Denver"
     commit-message:
       prefix: "npm"
     labels:
-      - "npm"
       - "dependencies"
     open-pull-requests-limit: 100
 
@@ -17,12 +16,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "06:00"
+      time: "12:00"
       timezone: "America/Denver"
     commit-message:
-      prefix: "github-actions"
+      prefix: "actions"
     labels:
-      - "github-actions"
       - "dependencies"
     open-pull-requests-limit: 100
 
@@ -30,11 +28,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "06:00"
+      time: "12:00"
       timezone: "America/Denver"
     commit-message:
       prefix: "docker"
     labels:
-      - "docker"
       - "dependencies"
     open-pull-requests-limit: 100
