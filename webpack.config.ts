@@ -1,4 +1,5 @@
 import path from 'node:path';
+
 import sveltePreprocess from 'svelte-preprocess';
 import { Configuration } from 'webpack';
 
