@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development webpack --mode development -w",
     "prod": "NODE_ENV=production webpack --mode production",
     "start": "ts-node client/app.ts",
-    "test": "nodemon client/app.ts"
+    "nodemon": "nodemon client/app.ts"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.152.0",
@@ -83,9 +83,7 @@
     "top",
     "total"
   ],
-  "contributors": [
-    "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"
-  ],
+  "contributors": ["Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"],
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
     "extends": "@mikey-pro/eslint-config"
