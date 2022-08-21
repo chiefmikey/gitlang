@@ -43,11 +43,11 @@ jobs:
         export -f prune
         find . -maxdepth 1 | while read file; do prune ${file}; done
 
-    - name: Subdomain
+    - name: Update CNAME
       run : |
         echo "beta.gitlang.net" > ./docs/CNAME
 
-    - name: Push
+    - name: Push to Beta
       run: |
         git config user.name "Mikl Wolfe"
         git config user.email "wolfemikl@gmail.com"
@@ -56,3 +56,5 @@ jobs:
         git add docs
         git commit -am 'Update test build'
         git push -fu beta main
+        echo "Pushed to https://github.com/chiefmikey/gitlang-beta"
+        echo "https://beta.gitlang.net"
