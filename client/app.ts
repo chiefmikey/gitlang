@@ -1,7 +1,10 @@
 import { createReadStream } from 'node:fs';
 
+import * as dotenv from 'dotenv';
 import Koa from 'koa';
 import serve from 'koa-static';
+
+dotenv.config();
 
 const app = new Koa();
 const port = 3000;
