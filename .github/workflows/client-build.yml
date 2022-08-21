@@ -2,7 +2,8 @@ name: Client Build
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -26,14 +27,25 @@ jobs:
 
     - name: Prune
       run : |
-        find . -type f -not -name '.git,docs,README.md,LICENCE' -delete
+        prune() {
+          echo "${1}";
+          if
+          [ "${1}" != "." ] &&
+          [ "${1}" != ".." ] &&
+          [ "${1}" != "./.git" ] &&
+          [ "${1}" != "./docs" ] &&
+          [ "${1}" != "./LICENSE" ] &&
+          [ "${1}" != "./README.md" ]; then
+            rm -rf ${1};
+          fi
+        }
+        export -f prune
+        find . -maxdepth 1 | while read file; do prune ${file}; done
 
     - name: Push
       run: |
-        git checkout -b client
-        git checkout client
         git config --global user.email "wolfemikl@gmail.com"
         git config --global user.name "Mikl Wolfe"
         git add docs
         git commit -am 'Update production build'
-        git push -f origin main:client
+        git push -fu origin main:client
