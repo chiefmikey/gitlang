@@ -32,6 +32,8 @@ jobs:
 
     - name: Push
       run: |
+        git checkout -b client
+        git checkout client
         git config --global user.email "wolfemikl@gmail.com"
         git config --global user.name "Mikl Wolfe"
         git add docs
