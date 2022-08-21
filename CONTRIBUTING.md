@@ -43,11 +43,13 @@ npm run prod
 ### Start Server
 
 ```sh
-npm run start
+npm run server
 ```
 
-##### + Watch
+### Start Client
 
 ```sh
-npm run nodemon
+npm run client
 ```
+
+Open [http://localhost:8080](http://localhost:8080)
