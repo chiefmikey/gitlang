@@ -55,6 +55,6 @@ jobs:
         echo "Origin: $(git remote -v)"
         git add docs
         git commit -am 'Update test build'
-        git push -fu origin main
+        git push -fu origin HEAD:main
         echo "Pushed to https://github.com/chiefmikey/gitlang-beta"
         echo "https://beta.gitlang.net"
