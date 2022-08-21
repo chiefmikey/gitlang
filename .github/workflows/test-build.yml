@@ -55,6 +55,7 @@ jobs:
         git checkout -b beta/main
         git add docs
         git commit -am 'Update test build'
+        git fetch beta main
         git push -fu beta main
         echo "Pushed to https://github.com/chiefmikey/gitlang-beta"
         echo "https://beta.gitlang.net"
