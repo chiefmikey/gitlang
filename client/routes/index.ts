@@ -1,18 +1,18 @@
 import getSize from './helpers/size';
 import languages from './requests/languages';
-import repos from './requests/repos';
+import repositories from './requests/repositories';
 
-const langs = async (inputOwner: string) => {
+const langs = async (username: string) => {
   try {
-    window.history.pushState('', '', `/${inputOwner}`);
-    let owner = inputOwner;
+    window.history.pushState('', '', `/${username}`);
+    let owner = username;
     let allNames: string[];
-    if (inputOwner.includes('/')) {
-      const [splitOwner, splitRepo] = inputOwner.split('/');
+    if (username.includes('/')) {
+      const [splitOwner, splitRepo] = username.split('/');
       owner = splitOwner;
       allNames = [splitRepo];
     } else {
-      allNames = await repos(inputOwner);
+      allNames = await repositories(username);
     }
     const allLanguages = await languages(owner, allNames);
     const space = getSize(allLanguages.flat());
