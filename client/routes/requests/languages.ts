@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const { protocol, hostname } = window.location;
-const isLocal = hostname !== 'gitlang.net';
+const isLocal = hostname !== 'gitlang.net' && hostname !== 'beta.gitlang.net';
 
 const localApi = async (owner: string, repos: string[]) => {
   try {
