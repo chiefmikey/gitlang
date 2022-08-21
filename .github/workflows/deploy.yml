@@ -20,11 +20,12 @@ jobs:
       - name: Create Deployment
         id: deploy
         env:
-          DESTINATION: auth-server
+          APP_NAME: auth-server
+          DEPLOY_GROUP: gitlang
         run: |
           aws deploy create-deployment --ignore-application-stop-failures \
-            --application-name ${{ env.DESTINATION }} \
-            --deployment-group-name ${{ env.DESTINATION }} \
+            --application-name ${{ env.APP_NAME }} \
+            --deployment-group-name ${{ env.DEPLOY_GROUP }} \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --file-exists-behavior RETAIN \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
