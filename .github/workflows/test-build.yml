@@ -43,6 +43,9 @@ jobs:
         }
         export -f prune
         find . -maxdepth 1 | while read file; do prune ${file}; done
+        rm docs/index.html docs/404.html
+        mv docs/beta/index.html docs/index.html
+        mv docs/beta/404.html docs/404.html
 
     - name: Update CNAME
       run : |
