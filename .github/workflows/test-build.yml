@@ -27,7 +27,7 @@ jobs:
 
     - name: Prune
       run : |
-        rm -v !('docs'|'README.md'|'LICENSE')
+        rm -rf !("docs"|"README.md"|"LICENSE")
 
     - name: Subdomain
       run : |
@@ -35,6 +35,8 @@ jobs:
 
     - name: Push
       run: |
+        git checkout -b test
+        git checkout test
         git config --global user.email "wolfemikl@gmail.com"
         git config --global user.name "Mikl Wolfe"
         git add docs
