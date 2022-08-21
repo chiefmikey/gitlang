@@ -29,6 +29,10 @@ jobs:
       run : |
         rm -v !('docs'|'README.md'|'LICENSE')
 
+    - name: Subdomain
+      run : |
+        echo "beta.gitlang.net" > docs/CNAME
+
     - name: Push
       run: |
         git config --global user.email "wolfemikl@gmail.com"
