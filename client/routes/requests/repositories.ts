@@ -1,14 +1,19 @@
 import axios from 'axios';
 
-import router from '../../../local';
-
-const localToken = process.env.GH_PAT;
+const { protocol, hostname } = window.location;
+const isLocal = hostname !== 'gitlang';
+console.log('hostname:', hostname);
 
 const localApi = async (username: string) => {
   try {
-    const allRepos = JSON.parse(await router.repos(username, localToken));
-    if (allRepos && allRepos.length > 0) {
-      return allRepos;
+    const allRepos: { data: [] } = await axios.get(
+      `${protocol}//${hostname}:3000/gitlang/github/repos`,
+      {
+        params: { username },
+      },
+    );
+    if (allRepos && allRepos.data && allRepos.data.length > 0) {
+      return allRepos.data;
     }
     return [];
   } catch (error) {
@@ -35,6 +40,6 @@ const serverApi = async (username: string) => {
   }
 };
 
-const repositories = localToken ? localApi : serverApi;
+const repositories = isLocal ? localApi : serverApi;
 
 export default repositories;
