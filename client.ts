@@ -1,13 +1,10 @@
 import { createReadStream } from 'node:fs';
 
-import * as dotenv from 'dotenv';
 import Koa from 'koa';
 import serve from 'koa-static';
 
-dotenv.config();
-
 const app = new Koa();
-const port = 3000;
+const port = 8080;
 const redirect = 'docs';
 const subdir = 'public';
 
@@ -33,6 +30,6 @@ app
       context.body = createReadStream(`${redirect}/404.html`);
     }
   })
-  .listen(port, () => console.log(`Koa is listening port: ${port}`));
+  .listen(port, () => console.log(`Client port: ${port}`));
 
 export default app;
