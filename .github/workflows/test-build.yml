@@ -53,9 +53,8 @@ jobs:
         git config user.name "Mikl Wolfe"
         git config user.email "wolfemikl@gmail.com"
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-        echo "Origin: $(git remote -v)"
         git add docs
         git commit -am 'Update test build'
-        git push -fu origin HEAD:main
+        git push -fu origin main
         echo "Pushed to https://github.com/chiefmikey/gitlang-beta"
         echo "https://beta.gitlang.net"
