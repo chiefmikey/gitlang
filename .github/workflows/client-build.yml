@@ -28,7 +28,7 @@ jobs:
 
     - name: Prune
       run : |
-        rm -v !('docs'|'README.md'|'LICENSE')
+        rm -v ! ("docs"|"README.md"|"LICENSE")
 
     - name: Push
       run: |
