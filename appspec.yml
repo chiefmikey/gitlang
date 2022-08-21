@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
- - source: ./gitlangRoutes
-   destination: /home/ec2-user/gitlangRoutes
+ - source: ./routes
+   destination: /home/ec2-user/gitlang
 hooks:
   ApplicationStop:
    - location: stop.sh
