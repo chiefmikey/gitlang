@@ -11,7 +11,7 @@ const production = mode === 'production';
 const SRC_DIR = path.join(path.resolve(), '/client/src');
 const DIST_DIR = path.join(path.resolve(), '/docs/public/dist');
 
-const config: Configuration = {
+const configuration: Configuration = {
   entry: `${SRC_DIR}/index.ts`,
   resolve: {
     fullySpecified: false,
@@ -81,4 +81,4 @@ const config: Configuration = {
   },
 };
 
-export default config;
+export default configuration;
