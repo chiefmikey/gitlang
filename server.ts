@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 
-import gitlang from './gitlangRoutes/gitlang';
+import gitlang from './routes/gitlang';
 
 config();
 
