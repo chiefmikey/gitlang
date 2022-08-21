@@ -10,15 +10,15 @@ jobs:
       contents: write
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: '0'
-
     - name: Setup Node
       uses: actions/setup-node@v3
       with:
         node-version: '16.x'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
 
     - name: Webpack
       run: |
@@ -27,7 +27,7 @@ jobs:
 
     - name: Prune
       run : |
-        rm -rf !("docs"|"README.md"|"LICENSE")
+        find . -type f -not -name 'docs,README.md,LICENCE' -delete
 
     - name: Subdomain
       run : |
