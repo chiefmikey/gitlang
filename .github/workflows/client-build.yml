@@ -28,7 +28,7 @@ jobs:
 
     - name: Prune
       run : |
-        rm -rf !("docs"|"README.md"|"LICENSE")
+        find . -type f -not -name 'docs,README.md,LICENCE' -delete
 
     - name: Push
       run: |
