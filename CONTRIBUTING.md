@@ -52,4 +52,4 @@ npm run server
 npm run client
 ```
 
-Open [http://localhost:8080](http://localhost:8080)
+The client will be available on local port `8080`.
