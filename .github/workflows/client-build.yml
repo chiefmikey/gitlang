@@ -51,4 +51,4 @@ jobs:
         git config user.email "wolfemikl@gmail.com"
         git add docs
         git commit -am 'Update production build'
-        git push -fu origin main:client
+        git push -fu origin HEAD:client
