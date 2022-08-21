@@ -1,27 +1,37 @@
-name: Webpack Build
+name: Client Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
       with:
         fetch-depth: '0'
-    - uses: actions/setup-node@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
       with:
         node-version: '16.x'
-    - name: Build
+
+    - name: Webpack
       run: |
         npm install
         NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
-        git config advice.addIgnoredFile false
+
+    - name: Prune
+      run : |
         rm -v !("docs"|"README.md"|"LICENSE")
+
+    - name: Push
+      run: |
         git config --global user.email "wolfemikl@gmail.com"
         git config --global user.name "Mikl Wolfe"
         git add docs
