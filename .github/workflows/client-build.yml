@@ -45,8 +45,8 @@ jobs:
 
     - name: Push
       run: |
-        git config --global user.email "wolfemikl@gmail.com"
-        git config --global user.name "Mikl Wolfe"
+        git config user.name "Mikl Wolfe"
+        git config user.email "wolfe@mikl.com"
         git add docs
         git commit -am 'Update production build'
         git push -fu origin main:client
