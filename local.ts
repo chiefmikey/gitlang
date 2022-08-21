@@ -1,4 +1,4 @@
-import gitlangLocal from './routes/requests/gitlangLocal';
+import gitlangLocal from './gitlangRoutes/requests/gitlangLocal';
 
 const router = gitlangLocal;
 
