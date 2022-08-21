@@ -1,3 +1,3 @@
 #!/bin/bash
 
-killall screen
+/home/ec2-user/server/stop.sh
