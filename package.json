@@ -4,11 +4,10 @@
   "description": "View language usage per repo or total by username",
   "main": "app.js",
   "scripts": {
-    "build": "NODE_ENV=development webpack --mode development",
     "dev": "NODE_ENV=development webpack --mode development -w",
     "prod": "NODE_ENV=production webpack --mode production",
-    "client": "nodemon client.ts",
-    "server": "nodemon server.ts"
+    "start:client": "nodemon client.ts",
+    "start:server": "nodemon server.ts"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.154.0",

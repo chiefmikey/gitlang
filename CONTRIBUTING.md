@@ -25,12 +25,6 @@ npm install
 #### Development
 
 ```sh
-npm run build
-```
-
-##### + Watch
-
-```sh
 npm run dev
 ```
 
@@ -43,13 +37,13 @@ npm run prod
 ### Start Server
 
 ```sh
-npm run server
+npm run start:server
 ```
 
 ### Start Client
 
 ```sh
-npm run client
+npm run start:client
 ```
 
 The client will be available on local port `8080`.
