@@ -2,7 +2,7 @@ import { Octokit } from '@octokit/rest';
 
 let octokit: Octokit;
 
-const repositories = async (username: string, token?: string) => {
+const repositories = async (username: string, token: string) => {
   try {
     if (!octokit) {
       if (!token) {

@@ -1,18 +1,22 @@
 import axios from 'axios';
 
-import router from '../../../local';
-
-const localToken = process.env.GH_PAT;
+const { protocol, hostname } = window.location;
+const isLocal = hostname !== 'gitlang';
+console.log('hostname:', hostname);
 
 const localApi = async (owner: string, repos: string[]) => {
   try {
-    const allLanguages = JSON.parse(
-      await router.langs(owner, repos, localToken),
+    const allLanguages: { data: { [key: string]: number }[] } = await axios.get(
+      `${protocol}//${hostname}:3000/gitlang/github/langs`,
+      {
+        params: {
+          owner,
+          repos: JSON.stringify(repos),
+        },
+      },
     );
-
-    if (allLanguages && allLanguages.length > 0) {
-      return allLanguages;
-    }
+    if (allLanguages && allLanguages.data && allLanguages.data.length > 0)
+      return allLanguages.data;
     return [];
   } catch (error) {
     console.error('Error getting token from auth api', error);
@@ -40,6 +44,6 @@ const serverApi = async (owner: string, repos: string[]) => {
   }
 };
 
-const languages = localToken ? localApi : serverApi;
+const languages = isLocal ? localApi : serverApi;
 
 export default languages;

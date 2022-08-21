@@ -4,6 +4,8 @@ import auth from '../helpers/github/auth';
 import languages from '../helpers/github/languages';
 import repositories from '../helpers/github/repositories';
 
+const environmentToken = process.env.GH_PAT;
+
 const router = new Router({ prefix: '/github' });
 
 router.get(
@@ -13,7 +15,7 @@ router.get(
     response: { status: number; body: string };
   }) => {
     try {
-      const token = await auth();
+      const token = environmentToken || (await auth());
       const { owner } = context.request.query;
       const { repos } = context.request.query;
       const repoList = JSON.parse(repos) as string[];
@@ -39,7 +41,7 @@ router.get(
     response: { status: number; body: string };
   }) => {
     try {
-      const token = await auth();
+      const token = environmentToken || (await auth());
       const { username } = context.request.query;
       const response = await repositories(username, token);
       if (response && response.length > 0) {
