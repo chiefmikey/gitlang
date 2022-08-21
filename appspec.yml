@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
  - source: ./gitlangRoutes
-   destination: /home/ec2-user/auth-server
+   destination: /home/ec2-user/gitlangRoutes
 hooks:
   ApplicationStop:
    - location: stop.sh
