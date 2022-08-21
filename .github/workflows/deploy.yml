@@ -1,30 +1,30 @@
-name: Deploy to AWS
+name: Deploy to Auth-Server
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   aws-deployment:
     name: Deploy
-    environment:
-      name: auth-server
-      url: https://github.com
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
-      - name: Configure AWS Credentials
+      - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - name: Create CodeDeploy Deployment
+
+      - name: Create Deployment
         id: deploy
+        env:
+          DESTINATION: auth-server
         run: |
           aws deploy create-deployment --ignore-application-stop-failures \
-            --application-name auth-server \
-            --deployment-group-name auth-server \
+            --application-name ${{ env.DESTINATION }} \
+            --deployment-group-name ${{ env.DESTINATION }} \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --file-exists-behavior OVERWRITE \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
