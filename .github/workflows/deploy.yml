@@ -26,5 +26,5 @@ jobs:
             --application-name ${{ env.DESTINATION }} \
             --deployment-group-name ${{ env.DESTINATION }} \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --file-exists-behavior OVERWRITE \
+            --file-exists-behavior RETAIN \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
