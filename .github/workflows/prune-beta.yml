@@ -27,9 +27,11 @@ jobs:
     - name: List Merged
       run: |
         FORMAT="%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)"
-        MERGED_BRANCHES=$(git branch --list --format ${FORMAT})
+        echo "::set-output name=merged_branches::$(git branch --list --format ${FORMAT})"
+        echo ${MERGED_BRANCHES}
 
     - name: Checkout Beta
+      id: checkout-beta
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.DISPATCH_REPO }}
@@ -37,9 +39,11 @@ jobs:
         fetch-depth: 0
 
     - name: Delete Merged
+      env:
+        MERGED_BRANCHES: ${{ steps.checkout-beta.outputs.merged_branches }}
       run: |
         BRANCH=${{ github.head_ref }}
-        BRANCHES=$(git branch --list)
+        BRANCHES=$(git branch)
         echo test merged: ${MERGED_BRANCHES}
         echo test branch: ${BRANCH}
         echo test branches: ${BRANCHES}
