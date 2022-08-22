@@ -27,7 +27,8 @@ jobs:
     - name: List Merged
       run: |
         FORMAT="%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)"
-        echo "::set-output name=merged_branches::$(git branch --list --format ${FORMAT})"
+        MERGED_BRANCHES=$(git branch --list --format ${FORMAT})
+        echo "::set-output name=merged_branches::${MERGED_BRANCHES}"
         echo ${MERGED_BRANCHES}
 
     - name: Checkout Beta
