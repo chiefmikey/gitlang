@@ -25,5 +25,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
+          git config user.name "Mikl Wolfe"
+          git config user.email "wolfemikl@gmail.com"
           git pull --rebase=false --autostash --no-edit --allow-unrelated-histories origin main
           gh pr create --title '${GITHUB_REF##*/}' --body 'Beta branch'
