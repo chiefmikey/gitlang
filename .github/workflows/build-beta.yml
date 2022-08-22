@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    if: contains(github.event.pull_request.labels.*.name, "beta")
+    if: contains(github.event.pull_request.labels.*.name, 'beta')
     name: Build
     runs-on: ubuntu-latest
     permissions:
@@ -20,7 +20,7 @@ jobs:
     - name: Setup Node
       uses: actions/setup-node@v3
       with:
-        node-version: "16.x"
+        node-version: '16.x'
 
     - name: Checkout
       uses: actions/checkout@v3
