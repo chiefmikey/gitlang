@@ -32,6 +32,6 @@ jobs:
           git merge --allow-unrelated-histories origin/main || true
           git checkout --ours .
           git add .
-          git commit -am 'Merge ${BRANCH} with main'
+          git commit -am "Merge ${BRANCH} with Main"
           git push -fu origin ${BRANCH}
-          gh pr create --title ${BRANCH} --body 'Beta branch' --base main --head ${BRANCH}
+          gh pr create --title "${BRANCH}" --body "https://github.com/chiefmikey/gitlang/tree/${BRANCH}" --base main --head ${BRANCH}
