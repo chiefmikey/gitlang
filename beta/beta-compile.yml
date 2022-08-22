@@ -38,11 +38,12 @@ jobs:
         run: |
           echo test: $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName')
           for branch in $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName'); do
-            git merge --allow-unrelated-histories origin/${branch} || true
+            git fetch origin ${branch}
+            git merge --allow-unrelated-histories ${branch} || true
           done
 
       - name: Push to Main
         run: |
           git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"
-          git push -u origin HEAD:main
+          git push -fu origin main
