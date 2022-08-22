@@ -22,27 +22,42 @@ jobs:
           token: ${{ secrets.DISPATCH_REPO }}
           fetch-depth: 0
 
-      - name: Create Pull Request
+      - name: Merge Prod
         env:
           GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
-          BRANCH=${GITHUB_REF##*/}
           git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"
+          BRANCH=${GITHUB_REF##*/}
           git merge --allow-unrelated-histories origin/main || true
           git checkout --ours .
           git add .
-          git commit -am "Merge ${BRANCH} with Main"
-          git push -fu origin ${BRANCH}
-          gh pr create --title "${BRANCH}" --body "https://github.com/chiefmikey/gitlang/tree/${BRANCH}" --base main --head ${BRANCH}
+          git commit -am "Beta Merge"
+
+      - name: Beta Files
+        run : |
+          rm -rf docs/index.html docs/404.html docs/CNAME .github
+          mkdir .github .github/workflows
+          mv beta/beta-compile.yml beta/beta-pr.yml .github/workflows/
+          mv beta/index.html beta/404.html beta/CNAME docs/
+          git add .
+          git commit -am "Beta Files"
 
       - name: Delete Branches
         run: |
+          echo test-branch-name: ${BRANCH}
           BRANCH=${GITHUB_REF##*/}
-          git remote update origin --prune
-          for branch in $(git branch --list); do
+          echo test_branch_grep: $(git branch -a | grep -v "remotes")
+          for branch in $(git branch -a | grep -v "remotes"); do
             if [ "${branch}" != "${BRANCH}" ]; then
               echo "Delete ${branch}"
               git push origin --delete ${branch}
             fi
           done
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
+        run: |
+          git push -fu origin ${BRANCH}
+          gh pr create --title "${BRANCH}" --body "https://github.com/chiefmikey/gitlang/tree/${BRANCH}" --base main --head ${BRANCH}
