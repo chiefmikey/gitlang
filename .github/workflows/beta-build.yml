@@ -58,5 +58,5 @@ jobs:
         git add docs
         git checkout -b beta-build
         git commit -am 'Update beta branch'
-        git push -u origin HEAD:refs/heads/${{ github.head_ref }}
+        git push -fu origin HEAD:refs/heads/${{ github.head_ref }}
         echo "https://beta.gitlang.net"
