@@ -48,7 +48,7 @@ jobs:
         rm docs/index.html docs/404.html docs/CNAME
         mv beta/index.html beta/404.html beta/CNAME docs/
         mkdir .github .github/workflows
-        mv beta/beta-compile.yml .github/workflows/beta-compile.yml
+        mv beta/beta-compile.yml beta/beta-branch.yml .github/workflows/
 
     - name: Push to Beta
       run: |
