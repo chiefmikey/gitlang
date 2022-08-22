@@ -1,11 +1,11 @@
-name: Beta Branch
+name: ${GITHUB_REF##*/}
 
 on:
   create
 
 jobs:
-  build:
-    name: Branch
+  beta-pr:
+    name: Beta Branch PR
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -22,7 +22,7 @@ jobs:
           token: ${{ secrets.DISPATCH_REPO }}
           fetch-depth: 0
 
-      - name: Open PR
+      - name: Create Pull Request
         env:
           GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |

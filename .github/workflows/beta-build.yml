@@ -32,38 +32,21 @@ jobs:
         npm install
         NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
 
-    - name: Prune
+    - name: Beta Files
       run : |
-        prune() {
-          echo "${1}";
-          if
-          [ "${1}" != "." ] &&
-          [ "${1}" != ".." ] &&
-          [ "${1}" != "./.git" ] &&
-          [ "${1}" != "./docs" ] &&
-          [ "${1}" != "./beta" ] &&
-          [ "${1}" != "./LICENSE" ] &&
-          [ "${1}" != "./README.md" ]; then
-            rm -rf ${1};
-          fi
-        }
-        export -f prune
-        find . -maxdepth 1 | while read file; do prune ${file}; done
-        rm docs/index.html docs/404.html docs/CNAME
-        mv beta/index.html beta/404.html beta/CNAME docs/
+        rm -rf docs/index.html docs/404.html docs/CNAME .github
         mkdir .github .github/workflows
         mv beta/beta-compile.yml beta/beta-branch.yml .github/workflows/
+        mv beta/index.html beta/404.html beta/CNAME docs/
 
     - name: Push to Beta
       run: |
         BRANCH=${{ github.head_ref }}
-        echo test: ${BRANCH}
-        echo test: $(git status)
         git config user.name "chiefmikey"
         git config user.email "wolfemikl@gmail.com"
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
+        echo remote-test: $(git remote -v)
         git add .
-        git commit -am 'Build beta branch'
-        git reset $(git commit-tree HEAD^{tree} -m 'Update beta branch')
-        git push -fu origin HEAD:refs/heads/${{ github.head_ref }}
+        git reset $(git commit-tree HEAD^{tree} -m 'Beta Branch')
+        git push -fu origin HEAD:refs/heads/${BRANCH}
         echo "https://beta.gitlang.net"
