@@ -4,8 +4,8 @@ on:
   create
 
 jobs:
-  beta-pr:
-    name: Beta Branch PR
+  pull-request:
+    name: Pull Request
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -35,3 +35,14 @@ jobs:
           git commit -am "Merge ${BRANCH} with Main"
           git push -fu origin ${BRANCH}
           gh pr create --title "${BRANCH}" --body "https://github.com/chiefmikey/gitlang/tree/${BRANCH}" --base main --head ${BRANCH}
+
+      - name: Delete Branches
+        run: |
+          BRANCH=${GITHUB_REF##*/}
+          git remote update origin --prune
+          for branch in $(git branch --list); do
+            if [ "${branch}" != "${BRANCH}" ]; then
+              echo "Delete ${branch}"
+              git push origin --delete ${branch}
+            fi
+          done
