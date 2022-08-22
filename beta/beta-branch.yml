@@ -29,5 +29,11 @@ jobs:
           BRANCH=${GITHUB_REF##*/}
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
-          git pull --rebase=false --autostash --no-edit origin main
-          gh pr create --title ${BRANCH} --body 'Beta branch' --base main --head ${BRANCH}
+          git checkout main
+          git pull --rebase=false --autostash --no-edit --allow-unrelated-histories origin main
+          git reset --soft ${BRANCH}
+          git add .
+          git commit -am 'Beta branch'
+          git checkout -b beta-branch
+          git push -fu origin beta-branch
+          gh pr create --title ${BRANCH} --body 'Beta branch' --base main --head beta-branch
