@@ -36,3 +36,4 @@ jobs:
           git checkout -b beta-branch
           git push -fu origin beta-branch
           gh pr create --title ${BRANCH} --body 'Beta branch' --base main --head beta-branch
+
