@@ -30,7 +30,8 @@ jobs:
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
           git checkout main
+          git checkout -b beta-branch
           git reset --soft ${BRANCH}
           git add .
           git commit -am 'Beta branch'
-          gh pr create -R chiefmikey/gitlang-beta --title ${BRANCH} --body 'Beta branch' --head main
+          gh pr create -R chiefmikey/gitlang-beta --title ${BRANCH} --body 'Beta branch' --head beta-branch
