@@ -1,4 +1,4 @@
-name: Production Build
+name: Build Production
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         npm install
         NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
 
-    - name: Prune
+    - name: Prune Files
       run : |
         prune() {
           echo "${1}";
@@ -45,7 +45,7 @@ jobs:
         export -f prune
         find . -maxdepth 1 | while read file; do prune ${file}; done
 
-    - name: Push
+    - name: Push Client
       run: |
         git config user.name "chiefmikey"
         git config user.email "wolfemikl@gmail.com"

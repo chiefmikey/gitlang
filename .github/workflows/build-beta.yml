@@ -1,4 +1,4 @@
-name: Beta Build
+name: Build Beta
 
 on:
   pull_request:
@@ -39,7 +39,7 @@ jobs:
         mv beta/beta-compile.yml beta/beta-branch.yml .github/workflows/
         mv beta/index.html beta/404.html beta/CNAME docs/
 
-    - name: Push to Beta
+    - name: Push Beta
       run: |
         BRANCH=${{ github.head_ref }}
         git config user.name "chiefmikey"
