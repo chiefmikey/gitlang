@@ -30,13 +30,18 @@ jobs:
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
           echo test first: $(git status)
+          echo test first: $(git hist)
           git checkout main
           echo test main: $(git status)
+          echo test main: $(git hist)
           git checkout -b beta-branch
           echo test beta-branch: $(git status)
+          echo test beta-branch: $(git hist)
           git reset --soft ${BRANCH}
           echo test reset: $(git status)
+          echo test reset: $(git hist)
           git add .
           git commit -am 'Beta branch'
           echo test commit: $(git status)
-          gh pr create -R chiefmikey/gitlang-beta --title ${BRANCH} --body 'Beta branch' --head beta-branch
+          echo test commit: $(git hist)
+          gh pr create -R chiefmikey/gitlang-beta --title ${BRANCH} --body 'Beta branch' --base main --head beta-branch
