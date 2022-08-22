@@ -30,7 +30,7 @@ jobs:
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
           git checkout main
-          git merge ${BRANCH}
+          git merge --allow-unrelated-histories ${BRANCH}
           git checkout -b beta-branch
           git push -fu origin beta-branch
           gh pr create --title ${BRANCH} --body 'Beta branch' --base main --head beta-branch
