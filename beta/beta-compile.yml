@@ -37,10 +37,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
-          echo test: $(gh pr list -s open --json baseRefName)
-          echo test: $(gh pr list -s open --json headRefName)
-          echo test: $(gh pr list -s open --json title)
-          for branch in $(gh pr list -s open --json headRefName); do
+          echo test: $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName')
+          for branch in $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName'); do
             git merge --allow-unrelated-histories origin/${branch} || true
           done
 
