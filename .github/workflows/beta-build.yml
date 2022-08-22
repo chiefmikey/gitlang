@@ -2,6 +2,7 @@ name: Beta Build
 
 on:
   pull_request:
+    - label: beta
 
 jobs:
   build:
