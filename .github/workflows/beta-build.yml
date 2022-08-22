@@ -61,5 +61,5 @@ jobs:
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
         git add docs
         git commit -am 'Update beta build'
-        git push -fu origin HEAD:main
+        git push -u origin HEAD:${GITHUB_REF##*/}
         echo "https://beta.gitlang.net"
