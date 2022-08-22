@@ -45,10 +45,13 @@ jobs:
       run: |
         echo test-ref: $(git status)
         BRANCH=${{ github.head_ref }}
-        BRANCHES=$(git branch -a)
+        BRANCHER=$(git branch -r)
+        git fetch
+        BRANCHES=$(git branch --list)
         echo test merged: ${MERGED_BRANCHES}
         echo test branch: ${BRANCH}
         echo test branches: ${BRANCHES}
+        echo test brancher: ${BRANCHER}
         for branch in $(echo ${BRANCHES}); do
           if [ -z "${MERGED_BRANCHES##*${branch}*}" ] || [ -z "${BRANCH##*${branch}*}" ]; then
             echo "Delete ${branch}"
