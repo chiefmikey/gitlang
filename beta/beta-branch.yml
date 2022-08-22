@@ -34,4 +34,4 @@ jobs:
           git add .
           git commit -am 'Beta branch'
           BRANCH=${GITHUB_REF##*/}
-          gh pr create --title '${BRANCH}' --body 'Beta branch' --base 'main' --head '${BRANCH}'
+          gh pr create --title ${BRANCH} --body 'Beta branch' --base 'main' --head origin/${BRANCH}
