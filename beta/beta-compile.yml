@@ -27,7 +27,7 @@ jobs:
           git checkout -b temp
           ls -A1 | xargs rm -rf
           git init
-          git config user.name "Mikl Wolfe"
+          git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"
           git remote add origin https://github.com/chiefmikey/gitlang-beta
           git remote add upstream https://github.com/chiefmikey/gitlang
@@ -46,6 +46,6 @@ jobs:
 
       - name: Push to Main
         run: |
-          git config user.name "Mikl Wolfe"
+          git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"
           git push -u origin HEAD:main

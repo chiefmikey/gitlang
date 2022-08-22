@@ -47,7 +47,7 @@ jobs:
 
     - name: Push
       run: |
-        git config user.name "Mikl Wolfe"
+        git config user.name "chiefmikey"
         git config user.email "wolfemikl@gmail.com"
         git add .
         git commit -am 'Update production build'
