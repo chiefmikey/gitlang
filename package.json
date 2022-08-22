@@ -2,12 +2,12 @@
   "name": "gitlang",
   "version": "3.1.0",
   "description": "View language usage per repo or total by username",
-  "main": "app.js",
+  "main": "client/src/index.ts",
   "scripts": {
     "dev": "NODE_ENV=development webpack --mode development -w",
     "prod": "NODE_ENV=production webpack --mode production",
-    "start:client": "nodemon client.ts",
-    "start:server": "nodemon server.ts"
+    "start:client": "nodemon client/client.ts",
+    "start:server": "nodemon client/server.ts"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.154.0",
@@ -83,9 +83,7 @@
     "top",
     "total"
   ],
-  "contributors": [
-    "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"
-  ],
+  "contributors": ["Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)"],
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
     "extends": "@mikey-pro/eslint-config"
