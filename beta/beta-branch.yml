@@ -29,7 +29,7 @@ jobs:
           BRANCH=${GITHUB_REF##*/}
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
-          git merge --allow-unrelated-histories main || true
+          git merge --allow-unrelated-histories origin/main || true
           git checkout --ours .
           git add .
           git commit -am 'Merge ${BRANCH} with main'
