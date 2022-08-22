@@ -20,30 +20,21 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.DISPATCH_REPO }}
-          fetch-depth: 0
-
-      - name: Pull GitLang Main
-        run: |
-          ls -A1 | xargs rm -rf
-          git init -b main
-          git config user.name "chiefmikey"
-          git config user.email "wolfemikl@gmail.com"
-          git remote add origin https://github.com/chiefmikey/gitlang-beta.git
-          git remote add upstream https://github.com/chiefmikey/gitlang.git
-          git pull upstream main
+          repository: chiefmikey/gitlang
 
       - name: Merge Branches
         env:
           GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
-          echo test: $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName')
+          git config user.name "chiefmikey"
+          git config user.email "wolfemikl@gmail.com"
+          git remote add upstream https://github.com/chiefmikey/gitlang-beta.git
+          echo test: $(gh pr list -R chiefmikey/gitlang-beta -s open --json headRefName | jq -r '.[] | .headRefName')
           for branch in $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName'); do
-            git fetch origin ${branch}
-            git merge --allow-unrelated-histories ${branch} || true
+            # git fetch upstream ${branch}
+            git merge --allow-unrelated-histories upstream/${branch} || true
           done
 
       - name: Push to Main
         run: |
-          git config user.name "chiefmikey"
-          git config user.email "wolfemikl@gmail.com"
-          git push -fu origin main
+          git push -fu upstream main
