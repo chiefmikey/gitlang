@@ -57,6 +57,7 @@ jobs:
         git remote add origin https://github.com/chiefmikey/gitlang-beta.git
         git add docs
         git checkout -b beta-build
-        git commit -am 'Update beta branch'
+        git commit -am 'Build beta branch'
+        git reset $(git commit-tree HEAD^{tree} -m "Update beta branch")
         git push -fu origin HEAD:refs/heads/${{ github.head_ref }}
         echo "https://beta.gitlang.net"
