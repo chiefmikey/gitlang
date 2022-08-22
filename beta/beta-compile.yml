@@ -26,10 +26,10 @@ jobs:
         run: |
           git checkout -b beta-compile
           echo $(gh pr list -s open --json)
-          for pull_request in $(gh pr list -s open --json branch); do
-            echo "Merge ${pull_request}"
-            git merge origin/${pull_request}
-          done
+          # for pull_request in $(gh pr list -s open --json branch); do
+          #   echo "Merge ${pull_request}"
+          #   git merge ${pull_request}
+          # done
 
       - name: Push to Main
         run: |
