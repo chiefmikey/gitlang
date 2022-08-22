@@ -62,7 +62,6 @@ jobs:
         git config user.name "Mikl Wolfe"
         git config user.email "wolfemikl@gmail.com"
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-
         git add .
         git commit -am 'Build beta branch'
         git reset $(git commit-tree HEAD^{tree} -m 'Update beta branch')
