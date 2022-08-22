@@ -46,9 +46,9 @@ jobs:
 
     - name: Push Main
       run: |
-        BRANCH=${{ github.head_ref }}
+        PR_TITLE=${{ github.event.pull_request.title }}
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-        git reset $(git commit-tree HEAD^{tree} -m "${BRANCH}")
+        git reset $(git commit-tree HEAD^{tree} -m "${PR_TITLE}")
         git push -fu origin HEAD:main
         echo "https://beta.gitlang.net"
 
