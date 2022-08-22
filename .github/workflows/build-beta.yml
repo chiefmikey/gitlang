@@ -35,18 +35,23 @@ jobs:
     - name: Beta Files
       run : |
         rm -rf docs/index.html docs/404.html docs/CNAME .github
-        mkdir .github .github/workflows
-        mv beta/beta-compile.yml beta/beta-pr.yml .github/workflows/
         mv beta/index.html beta/404.html beta/CNAME docs/
         git add .
         git commit -am "Beta Files"
 
-    - name: Push Beta
+    - name: Push Main
       run: |
         git config user.name "chiefmikey"
         git config user.email "wolfemikl@gmail.com"
-        BRANCH=${{ github.head_ref }}
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-        git reset $(git commit-tree HEAD^{tree} -m 'Beta Branch')
-        git push -fu origin HEAD:refs/heads/${BRANCH}
+        git reset $(git commit-tree HEAD^{tree} -m 'Beta Build')
+        git push -fu origin HEAD:main
         echo "https://beta.gitlang.net"
+
+    # - name: Push Branch
+    #   run: |
+    #     BRANCH=${{ github.head_ref }}
+    #     git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
+    #     git reset $(git commit-tree HEAD^{tree} -m 'Beta Branch')
+    #     git push -fu origin HEAD:refs/heads/${BRANCH}
+    #     echo "https://beta.gitlang.net"
