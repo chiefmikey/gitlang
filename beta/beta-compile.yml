@@ -22,14 +22,15 @@ jobs:
           token: ${{ secrets.DISPATCH_REPO }}
           fetch-depth: 0
 
-      - name: Merge branches
+      - name: Merge Branches
+        env:
+          GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
-          git checkout -b beta-compile
-          echo $(gh pr list -s open --json id)
-          # for pull_request in $(gh pr list -s open --json branch); do
-          #   echo "Merge ${pull_request}"
-          #   git merge ${pull_request}
-          # done
+          echo test: $(gh pr list -s open --json id)
+          for pull_request in $(gh pr list -s open --json branch); do
+            echo "Merge ${pull_request}"
+            git merge ${pull_request}
+          done
 
       - name: Push to Main
         run: |
