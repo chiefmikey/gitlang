@@ -58,5 +58,5 @@ jobs:
         git commit -am 'Update beta branch'
         BRANCH=${{ github.head_ref }}
         echo test ${BRANCH}
-        git push -u origin HEAD:${BRANCH}
+        git push -u origin HEAD:refs/heads/${BRANCH}
         echo "https://beta.gitlang.net"
