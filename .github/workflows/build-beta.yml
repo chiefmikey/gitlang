@@ -41,4 +41,3 @@ jobs:
         git reset $(git commit-tree HEAD^{tree} -m 'Beta Branch')
         git push -fu origin HEAD:refs/heads/${BRANCH}
         echo "https://beta.gitlang.net"
-
