@@ -1,4 +1,4 @@
-name: '${GITHUB_REF##*/}'
+name: 'Beta Pull Request'
 
 on:
   create
