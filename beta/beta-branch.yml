@@ -33,4 +33,6 @@ jobs:
           git reset --soft ${BRANCH}
           git add .
           git commit -am 'Beta branch'
+          git checkout ${BRANCH}
+          git reset --hard main
           gh pr create --title ${BRANCH} --body 'Beta branch' --base 'main' --head ${BRANCH}
