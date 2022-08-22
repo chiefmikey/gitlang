@@ -30,7 +30,7 @@ jobs:
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
           git checkout main
-          git pull --rebase=false --autostash --no-edit origin main
+          git pull --rebase=false --autostash --no-edit --allow-unrelated-histories origin main
           git reset --soft ${BRANCH}
           git add .
           git commit -am 'Beta branch'
