@@ -26,12 +26,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
+          BRANCH=${GITHUB_REF##*/}
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
-          git checkout -b beta-branch
           git checkout main
-          git reset --soft beta-branch
+          git reset --soft ${BRANCH}
           git add .
           git commit -am 'Beta branch'
-          BRANCH=${GITHUB_REF##*/}
-          gh pr create --title ${BRANCH} --body 'Beta branch' --base 'main' --head origin/${BRANCH}
+          gh pr create --title ${BRANCH} --body 'Beta branch' --base 'main' --head ${BRANCH}
