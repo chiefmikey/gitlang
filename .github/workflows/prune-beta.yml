@@ -43,8 +43,9 @@ jobs:
       env:
         MERGED_BRANCHES: ${{ steps.checkout-beta.outputs.merged_branches }}
       run: |
+        echo test-ref: $(git status)
         BRANCH=${{ github.head_ref }}
-        BRANCHES=$(git branch)
+        BRANCHES=$(git branch -a)
         echo test merged: ${MERGED_BRANCHES}
         echo test branch: ${BRANCH}
         echo test branches: ${BRANCHES}
