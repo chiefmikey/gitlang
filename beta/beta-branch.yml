@@ -22,6 +22,8 @@ jobs:
           token: ${{ secrets.DISPATCH_REPO }}
 
       - name: Open PR
+        env:
+          GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
           echo test: ${{ github.head_ref }}
           gh pr create
