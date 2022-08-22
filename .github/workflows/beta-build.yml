@@ -45,8 +45,8 @@ jobs:
         git config user.name "chiefmikey"
         git config user.email "wolfemikl@gmail.com"
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-        echo remote-test: $(git remote -v)
         git add .
+        git commit -am 'Beta Files'
         git reset $(git commit-tree HEAD^{tree} -m 'Beta Branch')
         git push -fu origin HEAD:refs/heads/${BRANCH}
         echo "https://beta.gitlang.net"
