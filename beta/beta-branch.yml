@@ -33,7 +33,7 @@ jobs:
           git merge --allow-unrelated-histories ${BRANCH} || true
           git checkout --theirs .
           git add .
-          git commit
+          git commit -am 'Merge ${BRANCH}'
           git checkout -b beta-branch
           git push -fu origin beta-branch
           gh pr create --title ${BRANCH} --body 'Beta branch' --base main --head beta-branch
