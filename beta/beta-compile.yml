@@ -22,20 +22,30 @@ jobs:
           token: ${{ secrets.DISPATCH_REPO }}
           fetch-depth: 0
 
+      - name: Pull GitLang Main
+        run: |
+          git checkout -b temp
+          ls -A1 | xargs rm -rf
+          git init
+          git config user.name "Mikl Wolfe"
+          git config user.email "wolfemikl@gmail.com"
+          git remote add origin https://github.com/chiefmikey/gitlang-beta
+          git remote add upstream https://github.com/chiefmikey/gitlang
+          git pull upstream main
+
       - name: Merge Branches
         env:
           GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
         run: |
-          echo test: $(gh pr list -s open --json id)
-          for pull_request in $(gh pr list -s open --json branch); do
-            echo "Merge ${pull_request}"
-            git merge ${pull_request}
+          echo test: $(gh pr list -s open --json baseRefName)
+          echo test: $(gh pr list -s open --json headRefName)
+          echo test: $(gh pr list -s open --json title)
+          for branch in $(gh pr list -s open --json headRefName); do
+            git merge --allow-unrelated-histories origin/${branch} || true
           done
 
       - name: Push to Main
         run: |
           git config user.name "Mikl Wolfe"
           git config user.email "wolfemikl@gmail.com"
-          git add .
-          git commit -am 'Beta compile'
           git push -u origin HEAD:main
