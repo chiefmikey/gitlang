@@ -24,9 +24,8 @@ jobs:
 
       - name: Pull GitLang Main
         run: |
-          git checkout -b temp
           ls -A1 | xargs rm -rf
-          git init
+          git init -b main
           git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"
           git remote add origin https://github.com/chiefmikey/gitlang-beta
