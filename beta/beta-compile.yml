@@ -21,6 +21,7 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH_REPO }}
           repository: chiefmikey/gitlang
+          fetch-depth: 0
 
       - name: Merge Branches
         env:
@@ -31,8 +32,8 @@ jobs:
           git remote add upstream https://github.com/chiefmikey/gitlang-beta.git
           echo test: $(gh pr list -R chiefmikey/gitlang-beta -s open --json headRefName | jq -r '.[] | .headRefName')
           for branch in $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName'); do
-            # git fetch upstream ${branch}
-            git merge --allow-unrelated-histories upstream/${branch} || true
+            git fetch upstream ${branch}
+            git merge --allow-unrelated-histories ${branch} || true
           done
 
       - name: Push to Main
