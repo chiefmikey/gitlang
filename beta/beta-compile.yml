@@ -34,6 +34,7 @@ jobs:
           for branch in $(gh pr list -s open --json headRefName | jq -r '.[] | .headRefName'); do
             git fetch upstream ${branch}
             git merge --allow-unrelated-histories upstream/${branch} || true
+            git add .
           done
 
       - name: Push to Main
