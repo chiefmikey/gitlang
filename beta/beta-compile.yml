@@ -28,8 +28,8 @@ jobs:
           git init -b main
           git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"
-          git remote add origin https://github.com/chiefmikey/gitlang-beta
-          git remote add upstream https://github.com/chiefmikey/gitlang
+          git remote add origin https://github.com/chiefmikey/gitlang-beta.git
+          git remote add upstream https://github.com/chiefmikey/gitlang.git
           git pull upstream main
 
       - name: Merge Branches
