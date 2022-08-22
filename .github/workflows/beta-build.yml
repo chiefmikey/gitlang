@@ -1,12 +1,11 @@
-name: Client Build
+name: Beta Build
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
 
 jobs:
   build:
+    if: contains(github.event.pull_request.labels.*.name, 'beta')
     name: Build
     runs-on: ubuntu-latest
     permissions:
@@ -37,6 +36,7 @@ jobs:
           [ "${1}" != ".." ] &&
           [ "${1}" != "./.git" ] &&
           [ "${1}" != "./docs" ] &&
+          [ "${1}" != "./beta" ] &&
           [ "${1}" != "./LICENSE" ] &&
           [ "${1}" != "./README.md" ]; then
             rm -rf ${1};
@@ -44,11 +44,18 @@ jobs:
         }
         export -f prune
         find . -maxdepth 1 | while read file; do prune ${file}; done
+        rm docs/index.html docs/404.html docs/CNAME
+        mv beta/index.html beta/404.html beta/CNAME docs/
+        mkdir .github .github/workflows
+        mv beta/beta-compile.yml beta/beta-branch.yml .github/workflows/
 
-    - name: Push
+    - name: Push to Beta
       run: |
         git config user.name "Mikl Wolfe"
         git config user.email "wolfemikl@gmail.com"
-        git add docs
-        git commit -am 'Update production build'
-        git push -fu origin HEAD:client
+        git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
+        git add .
+        git commit -am 'Build beta branch'
+        git reset $(git commit-tree HEAD^{tree} -m 'Update beta branch')
+        git push -fu origin HEAD:refs/heads/${{ github.head_ref }}
+        echo "https://beta.gitlang.net"

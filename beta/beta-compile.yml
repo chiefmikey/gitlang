@@ -1,0 +1,40 @@
+name: Beta Compile
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Compile
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.DISPATCH_REPO }}
+          fetch-depth: 0
+
+      - name: Merge branches
+        run: |
+          git checkout -b beta-compile
+          echo $(gh pr list -s open --json)
+          for pull_request in $(gh pr list -s open --json branch); do
+            echo "Merge ${pull_request}"
+            git merge origin/${pull_request}
+          done
+
+      - name: Push to Main
+        run: |
+          git config user.name "Mikl Wolfe"
+          git config user.email "wolfemikl@gmail.com"
+          git add .
+          git commit -am 'Beta compile'
+          git push -u origin HEAD:main

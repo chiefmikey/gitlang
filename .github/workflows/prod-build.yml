@@ -1,7 +1,9 @@
-name: Test Build
+name: Production Build
 
 on:
-  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -20,7 +22,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.DISPATCH_REPO }}
-        fetch-depth: 0
 
     - name: Webpack
       run: |
@@ -43,21 +44,11 @@ jobs:
         }
         export -f prune
         find . -maxdepth 1 | while read file; do prune ${file}; done
-        rm docs/index.html docs/404.html
-        mv docs/beta/index.html docs/index.html
-        mv docs/beta/404.html docs/404.html
 
-    - name: Update CNAME
-      run : |
-        echo "beta.gitlang.net" > ./docs/CNAME
-
-    - name: Push to Beta
+    - name: Push
       run: |
         git config user.name "Mikl Wolfe"
         git config user.email "wolfemikl@gmail.com"
-        git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
         git add docs
-        git commit -am 'Update test build'
-        git push -fu origin HEAD:main
-        echo "Pushed to https://github.com/chiefmikey/gitlang-beta"
-        echo "https://beta.gitlang.net"
+        git commit -am 'Update production build'
+        git push -fu origin HEAD:client
