@@ -61,7 +61,7 @@ jobs:
         echo test: $(git status)
         git config user.name "Mikl Wolfe"
         git config user.email "wolfemikl@gmail.com"
-        git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
+        git remote set-url --add --push --allow-unrelated-histories origin https://github.com/chiefmikey/gitlang-beta.git
 
         git add .
         git commit -am 'Build beta branch'
