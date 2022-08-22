@@ -25,7 +25,7 @@ jobs:
       - name: Merge branches
         run: |
           git checkout -b beta-compile
-          echo $(gh pr list -s open --json)
+          echo $(gh pr list -s open --json id)
           # for pull_request in $(gh pr list -s open --json branch); do
           #   echo "Merge ${pull_request}"
           #   git merge ${pull_request}
