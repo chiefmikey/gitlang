@@ -69,7 +69,7 @@ jobs:
         git reset $(git commit-tree HEAD^{tree} -m "${PR_TITLE}: ${CURRENT_DATE##_*}/${CURRENT_DATE##*_}")
         git push -fu origin HEAD:main
         echo "${PR_TITLE}"
-        echo "Date: ${CURRENT_DATE##_*}"
+        echo "Date: ${CURRENT_DATE%%_*}"
         echo "Time: ${CURRENT_DATE##*_}"
         echo "https://beta.gitlang.net"
 
