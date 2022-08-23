@@ -19,7 +19,6 @@ jobs:
       BRANCH: "${{ github.head_ref }}"
       PR_NUMBER: "${{ github.event.pull_request.number }}"
       PR_TITLE: "${{ github.event.pull_request.title }}"
-      CURRENT_DATE: '${{ $(TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S) }}'
 
     steps:
     - name: Setup Node
@@ -37,8 +36,14 @@ jobs:
         npm install
         NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
 
+    - name: Date
+      id: date
+      run: |
+        echo "::set-output name=date::$(TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S)"
+
     - name: Beta Files
       run : |
+        CURRENT_DATE=${{ steps.date.outputs.date }}
         rm -rf docs/index.html docs/404.html docs/CNAME .github README.md
         # mkdir .github .github/workflows
         # mv beta/workflows/beta-compile.yml beta/workflows/beta-pr.yml .github/workflows/
@@ -79,6 +84,7 @@ jobs:
 
     - name: Push Main
       run: |
+        CURRENT_DATE=${{ steps.date.outputs.date }}
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
         git reset $(git commit-tree HEAD^{tree} -m "PR: ${PR_TITLE} | Branch: ${BRANCH} | Date: ${CURRENT_DATE%%_*} | Time: ${CURRENT_DATE##*_}")
         git push -fu origin HEAD:main
