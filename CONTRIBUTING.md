@@ -60,4 +60,4 @@ npm run start:server
 npm run start:client
 ```
 
-The client will be available on local port `8080`.
+Client will be available in the browser on local port `8080`.
