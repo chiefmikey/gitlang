@@ -77,6 +77,8 @@ jobs:
         git commit -am 'Beta README.md'
 
     - name: Push Main
+      env:
+          GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
       run: |
         BRANCH=${{ github.head_ref }}
         PR_TITLE="${{ github.event.pull_request.title }}"
