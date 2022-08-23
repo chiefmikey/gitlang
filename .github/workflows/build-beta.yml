@@ -19,7 +19,7 @@ jobs:
       BRANCH: ${{ github.head_ref }}
       PR_NUMBER: "${{ github.event.pull_request.number }}"
       PR_TITLE: "${{ github.event.pull_request.title }}"
-      CURRENT_DATE: 'TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S'
+      CURRENT_DATE: '$(TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S)'
 
     steps:
     - name: Setup Node
@@ -49,9 +49,9 @@ jobs:
         echo -e "#### Branch:\n" >> README.md
         echo -e "### ${BRANCH}\n" >> README.md
         echo -e "#### Date:\n" >> README.md
-        echo -e "### ${$(CURRENT_DATE)%%_*}\n" >> README.md
+        echo -e "### ${CURRENT_DATE%%_*}\n" >> README.md
         echo -e "#### Time (MT):\n" >> README.md
-        echo -e "### ${$(CURRENT_DATE)##*_}\n" >> README.md
+        echo -e "### ${CURRENT_DATE##*_}\n" >> README.md
         echo -e "</div>\n" >> README.md
         git config user.name "chiefmikey"
         git config user.email "wolfemikl@gmail.com"
@@ -84,8 +84,8 @@ jobs:
         git push -fu origin HEAD:main
         echo "PR: ${PR_TITLE}"
         echo "Branch: ${BRANCH}"
-        echo "Date: ${$(CURRENT_DATE)%%_*}"
-        echo "Time: ${$(CURRENT_DATE)##*_}"
+        echo "Date: ${CURRENT_DATE%%_*}"
+        echo "Time: ${CURRENT_DATE##*_}"
         echo "https://beta.gitlang.net"
 
     # - name: Push Branch
