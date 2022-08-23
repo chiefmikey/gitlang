@@ -34,22 +34,45 @@ jobs:
 
     - name: Beta Files
       run : |
-        BRANCH=${{ github.head_ref }}
-        git config user.name "chiefmikey"
-        git config user.email "wolfemikl@gmail.com"
         rm -rf docs/index.html docs/404.html docs/CNAME .github
         # mkdir .github .github/workflows
         # mv beta/workflows/beta-compile.yml beta/workflows/beta-pr.yml .github/workflows/
         mv beta/index.html beta/404.html beta/CNAME docs/
+
+    - name: Prune Files
+      run : |
+        prune() {
+          echo "${1}";
+          if
+          [ "${1}" != "." ] &&
+          [ "${1}" != ".." ] &&
+          [ "${1}" != "./.git" ] &&
+          [ "${1}" != "./docs" ] &&
+          [ "${1}" != "./LICENSE" ] &&
+          [ "${1}" != "./README.md" ]; then
+            rm -rf ${1};
+          fi
+        }
+        export -f prune
+        find . -maxdepth 1 | while read file; do prune ${file}; done
+        git config user.name "chiefmikey"
+        git config user.email "wolfemikl@gmail.com"
         git add .
+        BRANCH=${{ github.head_ref }}
         git commit -am "${BRANCH}"
 
     - name: Push Main
       run: |
-        PR_TITLE=${{ github.event.pull_request.title }}
+        BRANCH=${{ github.head_ref }}
+        PR_TITLE="${{ github.event.pull_request.title }}"
+        CURRENT_DATE=$(TZ=":US/Mountain" date +%y-%m-%d_%H-%M-%S)
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-        git reset $(git commit-tree HEAD^{tree} -m "${PR_TITLE}")
+        git reset $(git commit-tree HEAD^{tree} -m "PR: ${PR_TITLE} | Branch: ${BRANCH} | Date: ${CURRENT_DATE%%_*} | Time: ${CURRENT_DATE##*_}")
         git push -fu origin HEAD:main
+        echo "PR: ${PR_TITLE}"
+        echo "Branch: ${BRANCH}"
+        echo "Date: ${CURRENT_DATE%%_*}"
+        echo "Time: ${CURRENT_DATE##*_}"
         echo "https://beta.gitlang.net"
 
     # - name: Push Branch
