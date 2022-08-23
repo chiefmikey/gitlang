@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      BRANCH: "${{ github.head_ref }}"
+      PR_NUMBER: "${{ github.event.pull_request.number }}"
+      PR_TITLE: "${{ github.event.pull_request.title }}"
 
     steps:
     - name: Setup Node
@@ -32,13 +36,32 @@ jobs:
         npm install
         NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
 
+    - name: Date
+      id: date
+      run: |
+        echo "::set-output name=date::$(TZ=":US/Mountain" date +%m/%d/%y_%H:%M:%S)"
+
     - name: Beta Files
       run : |
+        CURRENT_DATE=${{ steps.date.outputs.date }}
         rm -rf docs/index.html docs/404.html docs/CNAME .github README.md
         # mkdir .github .github/workflows
         # mv beta/workflows/beta-compile.yml beta/workflows/beta-pr.yml .github/workflows/
         mv beta/index.html beta/404.html beta/CNAME docs/
         mv beta/README.md .
+        echo -e "#### Pull Request:\n" >> README.md
+        echo -e "### [${PR_TITLE}](https://github.com/chiefmikey/gitlang/pull/${PR_NUMBER})\n" >> README.md
+        echo -e "#### Branch:\n" >> README.md
+        echo -e "### [${BRANCH}](https://github.com/chiefmikey/gitlang/tree/${BRANCH})\n" >> README.md
+        echo -e "#### Date:\n" >> README.md
+        echo -e "### ${CURRENT_DATE%%_*}\n" >> README.md
+        echo -e "#### Time (MT):\n" >> README.md
+        echo -e "### ${CURRENT_DATE##*_}\n" >> README.md
+        echo -e "</div>\n" >> README.md
+        git config user.name "chiefmikey"
+        git config user.email "wolfemikl@gmail.com"
+        git add .
+        git commit -am "Beta README.md"
 
     - name: Prune Files
       run : |
@@ -56,35 +79,12 @@ jobs:
         }
         export -f prune
         find . -maxdepth 1 | while read file; do prune ${file}; done
-        git config user.name "chiefmikey"
-        git config user.email "wolfemikl@gmail.com"
         git add .
-        BRANCH=${{ github.head_ref }}
         git commit -am "${BRANCH}"
-
-    - name: Update README.md
-      run : |
-        BRANCH=${{ github.head_ref }}
-        PR_NUMBER="${{ github.event.pull_request.number }}"
-        PR_TITLE="${{ github.event.pull_request.title }}"
-        CURRENT_DATE=$(TZ=":US/Mountain" date +%y/%m/%d_%H:%M:%S)
-        echo -e "#### Pull Request:\n" >> README.md
-        echo -e "### [${PR_TITLE}](https://github.com/chiefmikey/gitlang/pull/${PR_NUMBER})\n" >> README.md
-        echo -e "#### Branch:\n" >> README.md
-        echo -e "### ${BRANCH}\n" >> README.md
-        echo -e "#### Date:\n" >> README.md
-        echo -e "### ${CURRENT_DATE%%_*}\n" >> README.md
-        echo -e "#### Time (MT):\n" >> README.md
-        echo -e "### ${CURRENT_DATE##*_}\n" >> README.md
-        echo -e "</div>\n" >> README.md
-        git add .
-        git commit -am "Beta README.md"
 
     - name: Push Main
       run: |
-        BRANCH=${{ github.head_ref }}
-        PR_TITLE="${{ github.event.pull_request.title }}"
-        CURRENT_DATE=$(TZ=":US/Mountain" date +%y-%m-%d_%H-%M-%S)
+        CURRENT_DATE=${{ steps.date.outputs.date }}
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
         git reset $(git commit-tree HEAD^{tree} -m "PR: ${PR_TITLE} | Branch: ${BRANCH} | Date: ${CURRENT_DATE%%_*} | Time: ${CURRENT_DATE##*_}")
         git push -fu origin HEAD:main
