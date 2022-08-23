@@ -52,7 +52,7 @@ jobs:
         echo -e "#### Pull Request:\n" >> README.md
         echo -e "### [${PR_TITLE}](https://github.com/chiefmikey/gitlang/pull/${PR_NUMBER})\n" >> README.md
         echo -e "#### Branch:\n" >> README.md
-        echo -e "### ${BRANCH}\n" >> README.md
+        echo -e "### [${BRANCH}](https://github.com/chiefmikey/gitlang/tree/${BRANCH})\n" >> README.md
         echo -e "#### Date:\n" >> README.md
         echo -e "### ${CURRENT_DATE%%_*}\n" >> README.md
         echo -e "#### Time (MT):\n" >> README.md
