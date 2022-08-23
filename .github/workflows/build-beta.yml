@@ -66,9 +66,11 @@ jobs:
         PR_TITLE="${{ github.event.pull_request.title }}"
         CURRENT_DATE=$(TZ=":US/Mountain" date +%y-%m-%d_%H-%M-%S)
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-        git reset $(git commit-tree HEAD^{tree} -m "${PR_TITLE}: ${CURRENT_DATE}")
+        git reset $(git commit-tree HEAD^{tree} -m "${PR_TITLE}: ${CURRENT_DATE##_*}/${CURRENT_DATE##*_}")
         git push -fu origin HEAD:main
-        echo "${PR_TITLE}: ${CURRENT_DATE}"
+        echo "${PR_TITLE}"
+        echo "Date: ${CURRENT_DATE##_*}"
+        echo "Time: ${CURRENT_DATE##*_}"
         echo "https://beta.gitlang.net"
 
     # - name: Push Branch
