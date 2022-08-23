@@ -41,6 +41,7 @@ jobs:
         # mkdir .github .github/workflows
         # mv beta/workflows/beta-compile.yml beta/workflows/beta-pr.yml .github/workflows/
         mv beta/index.html beta/404.html beta/CNAME docs/
+        rm -rf beta
         git add .
         git commit -am "${BRANCH}"
 
