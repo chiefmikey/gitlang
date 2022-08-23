@@ -39,7 +39,7 @@ jobs:
     - name: Date
       id: date
       run: |
-        echo "::set-output name=date::$(TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S)"
+        echo "::set-output name=date::$(TZ=":US/Mountain" date +%m/%d/%y_%H:%M:%S)"
 
     - name: Beta Files
       run : |
