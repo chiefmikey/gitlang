@@ -16,10 +16,10 @@ jobs:
     permissions:
       contents: write
     env:
-      BRANCH: ${{ github.head_ref }}
+      BRANCH: "${{ github.head_ref }}"
       PR_NUMBER: "${{ github.event.pull_request.number }}"
       PR_TITLE: "${{ github.event.pull_request.title }}"
-      CURRENT_DATE: '$(TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S)'
+      CURRENT_DATE: '${{ $(TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S) }}'
 
     steps:
     - name: Setup Node
