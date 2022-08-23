@@ -65,7 +65,7 @@ jobs:
     - name: Update README.md
       run : |
         BRANCH=${{ github.head_ref }}
-        PR_ID="${{ github.event.pull_request.id }}"
+        PR_NUMBER="${{ github.event.pull_request.number }}"
         PR_TITLE="${{ github.event.pull_request.title }}"
         CURRENT_DATE=$(TZ=":US/Mountain" date +%y-%m-%d_%H-%M-%S)
         echo -e "### [${PR_TITLE}](https://github.com/chiefmikey/gitlang/pull/${PR_ID})\n" >> README.md
