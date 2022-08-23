@@ -5,6 +5,4 @@
 
 ### [beta.gitlang.net](https://beta.gitlang.net)
 
-#### GitLang Beta
-
-### Current Deployment
+## Current Deployment
