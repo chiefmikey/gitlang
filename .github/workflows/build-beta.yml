@@ -69,7 +69,7 @@ jobs:
         PR_TITLE="${{ github.event.pull_request.title }}"
         CURRENT_DATE=$(TZ=":US/Mountain" date +%y/%m/%d_%H:%M:%S)
         echo -e "#### Pull Request:\n" >> README.md
-        echo -e "### [${PR_TITLE}](https://github.com/chiefmikey/gitlang/pull/${PR_ID})\n" >> README.md
+        echo -e "### [${PR_TITLE}](https://github.com/chiefmikey/gitlang/pull/${PR_NUMBER})\n" >> README.md
         echo -e "#### Branch:\n" >> README.md
         echo -e "### ${BRANCH}\n" >> README.md
         echo -e "#### Date:\n" >> README.md
