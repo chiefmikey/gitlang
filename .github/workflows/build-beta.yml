@@ -34,10 +34,11 @@ jobs:
 
     - name: Beta Files
       run : |
-        rm -rf docs/index.html docs/404.html docs/CNAME .github
+        rm -rf docs/index.html docs/404.html docs/CNAME .github README.md
         # mkdir .github .github/workflows
         # mv beta/workflows/beta-compile.yml beta/workflows/beta-pr.yml .github/workflows/
         mv beta/index.html beta/404.html beta/CNAME docs/
+        mv beta/README.md .
 
     - name: Prune Files
       run : |
@@ -60,6 +61,20 @@ jobs:
         git add .
         BRANCH=${{ github.head_ref }}
         git commit -am "${BRANCH}"
+
+    - name: Update README.md
+      run : |
+        BRANCH=${{ github.head_ref }}
+        PR_ID="${{ github.event.pull_request.id }}"
+        PR_TITLE="${{ github.event.pull_request.title }}"
+        CURRENT_DATE=$(TZ=":US/Mountain" date +%y-%m-%d_%H-%M-%S)
+        echo -e '#### [${PR_TITLE}](https://github.com/chiefmikey/gitlang/pull/${PR_ID})\n' >> README.md
+        echo -e '#### Branch: ${BRANCH}\n' >> README.md
+        echo -e '#### Date: ${CURRENT_DATE%%_*}\n' >> README.md
+        echo -e '#### Time: ${CURRENT_DATE##*_}\n' >> README.md
+        echo -e '</div>\n' >> README.md
+        git add .
+        git commit -am 'Beta README.md'
 
     - name: Push Main
       run: |
