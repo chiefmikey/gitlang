@@ -84,7 +84,7 @@ jobs:
       run: |
         BRANCH=${{ github.head_ref }}
         PR_TITLE="${{ github.event.pull_request.title }}"
-        CURRENT_DATE=$(TZ=":US/Mountain" date +%y-%m-%d_%H-%M-%S)
+        CURRENT_DATE=$(TZ=":US/Mountain" date +%d-%m-%y_%H-%M-%S)
         git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
         git reset $(git commit-tree HEAD^{tree} -m "PR: ${PR_TITLE} | Branch: ${BRANCH} | Date: ${CURRENT_DATE%%_*} | Time: ${CURRENT_DATE##*_}")
         git push -fu origin HEAD:main
