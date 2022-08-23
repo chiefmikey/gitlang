@@ -74,7 +74,7 @@ jobs:
         echo -e "### ${BRANCH}\n" >> README.md
         echo -e "#### Date:\n" >> README.md
         echo -e "### ${CURRENT_DATE%%_*}\n" >> README.md
-        echo -e "#### Time:\n" >> README.md
+        echo -e "#### Time (MT):\n" >> README.md
         echo -e "### ${CURRENT_DATE##*_}\n" >> README.md
         echo -e "</div>\n" >> README.md
         git add .
