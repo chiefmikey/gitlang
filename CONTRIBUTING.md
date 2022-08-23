@@ -61,3 +61,8 @@ npm run start:client
 ```
 
 Client will be available in the browser on local port `8080`.
+
+## Beta
+
+If your PR is labeled with `beta`, it will be live for testing at
+[beta.gitlang.net](https://beta.gitlang.net).
