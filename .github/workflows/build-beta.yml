@@ -19,7 +19,6 @@ jobs:
       BRANCH: ${{ github.head_ref }}
       PR_NUMBER: "${{ github.event.pull_request.number }}"
       PR_TITLE: "${{ github.event.pull_request.title }}"
-      CURRENT_DATE: $(TZ=":US/Mountain" date +%d/%m/%y_%H:%M:%S)
 
     steps:
     - name: Setup Node
@@ -39,6 +38,7 @@ jobs:
 
     - name: Beta Files
       run : |
+        echo "CURRENT_DATE=$(TZ=\":US/Mountain\" date +%d/%m/%y_%H:%M:%S)" >> $GITHUB_ENV
         rm -rf docs/index.html docs/404.html docs/CNAME .github README.md
         # mkdir .github .github/workflows
         # mv beta/workflows/beta-compile.yml beta/workflows/beta-pr.yml .github/workflows/
