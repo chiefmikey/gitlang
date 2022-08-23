@@ -53,6 +53,8 @@ jobs:
         echo -e "#### Time (MT):\n" >> README.md
         echo -e "### ${CURRENT_DATE##*_}\n" >> README.md
         echo -e "</div>\n" >> README.md
+        git config user.name "chiefmikey"
+        git config user.email "wolfemikl@gmail.com"
         git add .
         git commit -am "Beta README.md"
 
@@ -72,10 +74,7 @@ jobs:
         }
         export -f prune
         find . -maxdepth 1 | while read file; do prune ${file}; done
-        git config user.name "chiefmikey"
-        git config user.email "wolfemikl@gmail.com"
         git add .
-        BRANCH=${{ github.head_ref }}
         git commit -am "${BRANCH}"
 
     - name: Push Main
