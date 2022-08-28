@@ -31,11 +31,6 @@ jobs:
       with:
         token: ${{ secrets.DISPATCH_REPO }}
 
-    - name: Webpack
-      run: |
-        npm install
-        NODE_ENV=production NODE_OPTIONS=--loader=ts-node/esm webpack --mode production
-
     - name: Date
       id: date
       run: |
@@ -45,8 +40,8 @@ jobs:
       run : |
         CURRENT_DATE=${{ steps.date.outputs.date }}
         rm -rf docs/index.html docs/404.html docs/CNAME .github README.md
-        # mkdir .github .github/workflows
-        # mv beta/workflows/beta-compile.yml beta/workflows/beta-pr.yml .github/workflows/
+        mkdir .github .github/workflows
+        mv beta/workflows/beta-prod.yml beta/workflows/beta-deploy.yml .github/workflows/
         mv beta/index.html beta/404.html beta/CNAME docs/
         mv beta/README.md .
         echo -e "#### Pull Request:\n" >> README.md
@@ -63,25 +58,6 @@ jobs:
         git add .
         git commit -am "Beta README.md"
 
-    - name: Prune Files
-      run : |
-        prune() {
-          echo "${1}";
-          if
-          [ "${1}" != "." ] &&
-          [ "${1}" != ".." ] &&
-          [ "${1}" != "./.git" ] &&
-          [ "${1}" != "./docs" ] &&
-          [ "${1}" != "./LICENSE" ] &&
-          [ "${1}" != "./README.md" ]; then
-            rm -rf ${1};
-          fi
-        }
-        export -f prune
-        find . -maxdepth 1 | while read file; do prune ${file}; done
-        git add .
-        git commit -am "${BRANCH}"
-
     - name: Push Main
       run: |
         CURRENT_DATE=${{ steps.date.outputs.date }}
@@ -93,11 +69,3 @@ jobs:
         echo "Date: ${CURRENT_DATE%%_*}"
         echo "Time: ${CURRENT_DATE##*_}"
         echo "https://beta.gitlang.net"
-
-    # - name: Push Branch
-    #   run: |
-    #     BRANCH=${{ github.head_ref }}
-    #     git remote set-url --add --push origin https://github.com/chiefmikey/gitlang-beta.git
-    #     git reset $(git commit-tree HEAD^{tree} -m 'Beta Branch')
-    #     git push -fu origin HEAD:refs/heads/${BRANCH}
-    #     echo "https://beta.gitlang.net"

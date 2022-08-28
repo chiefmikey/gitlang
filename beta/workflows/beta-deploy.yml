@@ -1,0 +1,31 @@
+name: Deploy to Auth-Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Create Deployment
+        id: deploy
+        env:
+          APP_NAME: auth-server
+          DEPLOY_GROUP: gitlang-beta
+        run: |
+          aws deploy create-deployment --ignore-application-stop-failures \
+            --application-name ${{ env.APP_NAME }} \
+            --deployment-group-name ${{ env.DEPLOY_GROUP }} \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --file-exists-behavior OVERWRITE \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}

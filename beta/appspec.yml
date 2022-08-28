@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+ - source: ./server
+   destination: /home/ec2-user/server/gitlang-beta
+hooks:
+  ApplicationStop:
+   - location: stop.sh
+     timeout: 300
+     runas: root
+  ApplicationStart:
+   - location: init.sh
+     timeout: 300
+     runas: root
