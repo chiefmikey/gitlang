@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["es2021", "dom", "dom.iterable"],
-    "moduleResolution": "node",
-    "module": "esnext",
-    "target": "es2017",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "target": "ES2017",
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -22,16 +22,11 @@
     "preserveConstEnums": true,
 
     "outDir": "./client/public/dist",
-    "paths": {
-      "./*.ts": ["./*"]
-    },
   },
-
   "ts-node": {
     "compilerOptions": {
-      "module": "commonjs",
-    },
+      "module": "CommonJS",
+    }
   },
-
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
