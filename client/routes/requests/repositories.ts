@@ -1,12 +1,14 @@
 import axios from 'axios';
 
+import { ROUTES } from '../../constants';
+
 const { protocol, hostname } = window.location;
 const isLocal = hostname !== 'gitlang.net' && hostname !== 'beta.gitlang.net';
 
 const localApi = async (username: string) => {
   try {
     const allRepos: { data: [] } = await axios.get(
-      `${protocol}//${hostname}:3000/gitlang/github/repos`,
+      `${protocol}//${hostname}${ROUTES.REPOS_LOCAL}`,
       {
         params: { username },
       },
@@ -23,12 +25,9 @@ const localApi = async (username: string) => {
 
 const serverApi = async (username: string) => {
   try {
-    const allRepos: { data: [] } = await axios.get(
-      'https://api.5105015032.com/gitlang/github/repos',
-      {
-        params: { username },
-      },
-    );
+    const allRepos: { data: [] } = await axios.get(ROUTES.REPOS, {
+      params: { username },
+    });
     if (allRepos && allRepos.data && allRepos.data.length > 0) {
       return allRepos.data;
     }

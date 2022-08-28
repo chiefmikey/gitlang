@@ -1,12 +1,14 @@
 import axios from 'axios';
 
+import { ROUTES } from '../../constants';
+
 const { protocol, hostname } = window.location;
 const isLocal = hostname !== 'gitlang.net' && hostname !== 'beta.gitlang.net';
 
 const localApi = async (owner: string, repos: string[]) => {
   try {
     const allLanguages: { data: { [key: string]: number }[] } = await axios.get(
-      `${protocol}//${hostname}:3000/gitlang/github/langs`,
+      `${protocol}//${hostname}${ROUTES.LANGS_LOCAL}`,
       {
         params: {
           owner,
@@ -26,7 +28,7 @@ const localApi = async (owner: string, repos: string[]) => {
 const serverApi = async (owner: string, repos: string[]) => {
   try {
     const allLanguages: { data: { [key: string]: number }[] } = await axios.get(
-      'https://api.5105015032.com/gitlang/github/langs',
+      ROUTES.LANGS,
       {
         params: {
           owner,
