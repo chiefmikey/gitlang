@@ -19,13 +19,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.DISPATCH_REPO }}
+          token: ${{ secrets.GITLANG_AUTH }}
           repository: chiefmikey/gitlang
           fetch-depth: 0
 
       - name: Merge Branches
         env:
-          GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
+          GH_TOKEN: ${{ secrets.GITLANG_AUTH }}
         run: |
           git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"

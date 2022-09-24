@@ -19,12 +19,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.DISPATCH_REPO }}
+          token: ${{ secrets.GITLANG_AUTH }}
           fetch-depth: 0
 
       - name: Merge Prod
         env:
-          GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
+          GH_TOKEN: ${{ secrets.GITLANG_AUTH }}
         run: |
           git config user.name "chiefmikey"
           git config user.email "wolfemikl@gmail.com"
@@ -57,7 +57,7 @@ jobs:
 
       - name: Create Pull Request
         env:
-          GH_TOKEN: ${{ secrets.DISPATCH_REPO }}
+          GH_TOKEN: ${{ secrets.GITLANG_AUTH }}
         run: |
           git push -fu origin ${BRANCH}
           gh pr create --title "${BRANCH}" --body "https://github.com/chiefmikey/gitlang/tree/${BRANCH}" --base main --head ${BRANCH}
