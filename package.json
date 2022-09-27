@@ -41,7 +41,7 @@
     "@types/node": "^18.7.19",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
-    "eslint": "^8.23.1",
+    "eslint": "^8.24.0",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss": "^8.4.16",
     "postcss-import": "^15.0.0",
