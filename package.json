@@ -13,7 +13,7 @@
     "@aws-sdk/client-secrets-manager": "^3.188.0",
     "@koa/cors": "^4.0.0",
     "@koa/router": "^12.0.0",
-    "@octokit/rest": "^19.0.4",
+    "@octokit/rest": "^19.0.5",
     "airbnb-browser-shims": "^3.3.0",
     "axios": "^1.1.2",
     "d3-interpolate": "^3.0.1",
