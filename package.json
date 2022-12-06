@@ -18,7 +18,7 @@
     "axios": "^1.2.0",
     "d3-interpolate": "^3.0.1",
     "dotenv": "^16.0.3",
-    "koa": "^2.13.4",
+    "koa": "^2.14.0",
     "koa-bodyparser": "^4.3.0",
     "koa-static": "^5.0.0",
     "nodemon": "^2.0.20",
