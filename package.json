@@ -40,7 +40,7 @@
     "@types/node": "^18.11.15",
     "babel-loader": "^9.1.0",
     "css-loader": "^6.7.3",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "mikey-pro": "^5.0.7",
     "mini-css-extract-plugin": "^2.7.2",
     "postcss": "^8.4.20",
