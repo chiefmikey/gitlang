@@ -41,7 +41,7 @@
     "babel-loader": "^9.1.0",
     "css-loader": "^6.7.3",
     "eslint": "^8.30.0",
-    "mikey-pro": "^6.0.5",
+    "mikey-pro": "^6.0.11",
     "mini-css-extract-plugin": "^2.7.2",
     "postcss": "^8.4.20",
     "postcss-import": "^15.1.0",
@@ -59,16 +59,15 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
   },
-  "license": "MIT",
+  "homepage": "https://github.com/chiefmikey/gitlang#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chiefmikey/gitlang.git"
   },
-  "homepage": "https://github.com/chiefmikey/gitlang#readme",
-  "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
   "bugs": {
     "url": "https://github.com/chiefmikey/gitlang/issues"
   },
+  "license": "MIT",
   "keywords": [
     "gitlang",
     "git",
@@ -83,6 +82,7 @@
     "top",
     "total"
   ],
+  "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
     "extends": "@mikey-pro/eslint-config"
