@@ -5,6 +5,7 @@
   "main": "client/src/index.ts",
   "scripts": {
     "dev": "NODE_ENV=development webpack --mode development -w",
+    "fix": "eslint --fix '**/*'",
     "prod": "NODE_ENV=production webpack --mode production",
     "start:client": "NODE_ENV=development ts-node-esm --experimental-specifier-resolution=node local/client.ts",
     "start:server": "NODE_ENV=development ts-node-esm --experimental-specifier-resolution=node local/server.ts"
