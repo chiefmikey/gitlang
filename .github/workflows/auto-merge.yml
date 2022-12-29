@@ -1,4 +1,4 @@
-name: Dependabot Auto-Merge
+name: Auto-Merge
 
 on: pull_request
 
@@ -9,7 +9,7 @@ jobs:
   auto-merge:
     name: Auto-Merge
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.actor == 'dependabot[bot]' }} || ${{ github.actor == 'codesee-maps[bot]' }}
     steps:
       - name: Enable auto-merge for Dependabot PRs
         run: gh pr merge "$PR_URL" --auto --squash --subject "$COMMIT_MESSAGE"
