@@ -16,7 +16,7 @@ permissions: read-all
 jobs:
   test_map_action:
     runs-on: ubuntu-latest
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.actor != 'dependabot[bot]' }} && ${{ github.actor != 'codesee-maps[bot]' }}
     continue-on-error: true
     name: Run CodeSee Map Analysis
     steps:
