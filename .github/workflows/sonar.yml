@@ -28,5 +28,5 @@ jobs:
           SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         with:
           args:
-            -Dsonar.projectKey=chiefmikey_the-myspace
+            -Dsonar.projectKey=chiefmikey_gitlang
             -Dsonar.organization=chiefmikey
