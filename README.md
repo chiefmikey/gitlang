@@ -8,10 +8,10 @@
 
 View language usage per repo
 
-`gitlang.net/chiefmikey/gitlang`
+<a href="https://gitlang.net/chiefmikey/gitlang">`gitlang.net/chiefmikey/gitlang`</a>
 
 or total by username
 
-`gitlang.net/chiefmikey`
+<a href="https://gitlang.net/chiefmikey">`gitlang.net/chiefmikey`</a>
 
 </div>
