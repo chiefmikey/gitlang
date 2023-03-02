@@ -22,7 +22,7 @@
     "koa": "^2.14.1",
     "koa-bodyparser": "^4.3.0",
     "koa-static": "^5.0.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.21",
     "path": "^0.12.7",
     "svelte": "^3.55.1",
     "the-new-css-reset": "^1.8.3"
