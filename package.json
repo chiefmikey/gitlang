@@ -41,7 +41,7 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "mikey-pro": "^6.4.14",
-    "mini-css-extract-plugin": "^2.7.2",
+    "mini-css-extract-plugin": "^2.7.3",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
     "postcss-load-config": "^4.0.1",
