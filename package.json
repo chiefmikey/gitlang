@@ -20,7 +20,7 @@
     "d3-interpolate": "^3.0.1",
     "dotenv": "^16.0.3",
     "koa": "^2.14.1",
-    "koa-bodyparser": "^4.3.0",
+    "koa-bodyparser": "^4.4.0",
     "koa-static": "^5.0.0",
     "nodemon": "^2.0.21",
     "path": "^0.12.7",
