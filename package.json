@@ -42,7 +42,7 @@
     "css-loader": "^6.7.3",
     "mikey-pro": "^6.4.17",
     "mini-css-extract-plugin": "^2.7.5",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.22",
     "postcss-import": "^15.1.0",
     "postcss-load-config": "^4.0.1",
     "postcss-loader": "^7.2.4",
