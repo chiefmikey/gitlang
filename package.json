@@ -45,7 +45,7 @@
     "postcss": "^8.4.23",
     "postcss-import": "^15.1.0",
     "postcss-load-config": "^4.0.1",
-    "postcss-loader": "^7.2.4",
+    "postcss-loader": "^7.3.0",
     "sass": "^1.62.0",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
