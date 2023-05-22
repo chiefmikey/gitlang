@@ -47,7 +47,7 @@
     "postcss-load-config": "^4.0.1",
     "postcss-loader": "^7.3.0",
     "sass": "^1.62.1",
-    "sass-loader": "^13.2.2",
+    "sass-loader": "^13.3.0",
     "style-loader": "^3.3.3",
     "svelte-loader": "^3.1.7",
     "svelte-preprocess": "^5.0.3",
