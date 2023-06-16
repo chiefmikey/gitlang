@@ -18,7 +18,7 @@
     "airbnb-browser-shims": "^3.3.0",
     "axios": "^1.4.0",
     "d3-interpolate": "^3.0.1",
-    "dotenv": "^16.1.4",
+    "dotenv": "^16.3.0",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.4.0",
     "koa-static": "^5.0.0",
