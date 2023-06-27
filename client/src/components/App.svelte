@@ -161,7 +161,7 @@ const focus = () => {
   {/if}
   <h6 id="footer">
     <a href="https://github.com/chiefmikey" target="_blank"
-      >made by chiefmikey</a
+      >made by chief mikey</a
     >
   </h6>
 </template>
