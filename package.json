@@ -24,7 +24,7 @@
     "koa-static": "^5.0.0",
     "nodemon": "^3.0.1",
     "path": "^0.12.7",
-    "svelte": "^4.1.0",
+    "svelte": "^4.2.1",
     "the-new-css-reset": "^1.9.0"
   },
   "devDependencies": {
