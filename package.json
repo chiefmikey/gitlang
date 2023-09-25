@@ -40,7 +40,7 @@
     "@types/node": "^20.4.2",
     "babel-loader": "^9.1.3",
     "css-loader": "^6.8.1",
-    "mikey-pro": "^6.4.23",
+    "mikey-pro": "^6.5.9",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss": "^8.4.26",
     "postcss-import": "^15.1.0",
