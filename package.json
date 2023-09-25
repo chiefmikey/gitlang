@@ -31,7 +31,7 @@
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-typescript": "^7.22.5",
-    "@types/dotenv-webpack": "^7.0.4",
+    "@types/dotenv-webpack": "^7.0.5",
     "@types/koa": "^2.13.6",
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-static": "^4.0.2",
