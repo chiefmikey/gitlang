@@ -15,7 +15,7 @@ router.get(
     response: { status: number; body: string };
   }) => {
     try {
-      const token = environmentToken || (await auth());
+      const token = environmentToken ?? (await auth());
       const { owner } = context.request.query;
       const { repos } = context.request.query;
       const repoList = JSON.parse(repos) as string[];
@@ -41,7 +41,7 @@ router.get(
     response: { status: number; body: string };
   }) => {
     try {
-      const token = environmentToken || (await auth());
+      const token = environmentToken ?? (await auth());
       const { username } = context.request.query;
       const response = await repositories(username, token);
       if (response && response.length > 0) {

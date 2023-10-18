@@ -4,7 +4,7 @@ import sveltePreprocess from 'svelte-preprocess';
 import { Configuration } from 'webpack';
 
 const mode =
-  (process.env.NODE_ENV as 'development' | 'production' | 'none' | undefined) ||
+  (process.env.NODE_ENV as 'development' | 'production' | 'none' | undefined) ??
   'development';
 const production = mode === 'production';
 

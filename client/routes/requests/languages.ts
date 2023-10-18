@@ -16,7 +16,7 @@ const localApi = async (owner: string, repos: string[]) => {
         },
       },
     );
-    if (allLanguages && allLanguages.data && allLanguages.data.length > 0)
+    if (allLanguages?.data?.length > 0)
       return allLanguages.data;
     return [];
   } catch (error) {
@@ -36,7 +36,7 @@ const serverApi = async (owner: string, repos: string[]) => {
         },
       },
     );
-    if (allLanguages && allLanguages.data && allLanguages.data.length > 0)
+    if (allLanguages?.data?.length > 0)
       return allLanguages.data;
     return [];
   } catch (error) {

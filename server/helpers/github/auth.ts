@@ -18,7 +18,7 @@ const auth: () => Promise<string> = async () => {
       new GetSecretValueCommand({ SecretId: secretName }),
     );
 
-    if (data && data.SecretString) {
+    if (data?.SecretString) {
       secret = data.SecretString;
     }
 
