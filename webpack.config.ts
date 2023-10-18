@@ -3,9 +3,11 @@ import path from 'node:path';
 import sveltePreprocess from 'svelte-preprocess';
 import { Configuration } from 'webpack';
 
-const mode =
-  (process.env.NODE_ENV as 'development' | 'production' | 'none' | undefined) ??
-  'development';
+const mode = process.env.NODE_ENV as
+  | 'development'
+  | 'production'
+  | 'none'
+  | undefined;
 const production = mode === 'production';
 
 const SRC_DIR = path.join(path.resolve(), '/client/src');
@@ -74,7 +76,7 @@ const configuration: Configuration = {
       },
     ],
   },
-  mode,
+  mode: production ? 'production' : 'development',
   devtool: production ? false : 'source-map',
   experiments: {
     topLevelAwait: true,
