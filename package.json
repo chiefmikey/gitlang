@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-env": "^7.23.5",
     "@babel/preset-typescript": "^7.23.2",
     "@types/dotenv-webpack": "^7.0.7",
     "@types/koa": "^2.13.10",
