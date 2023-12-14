@@ -1,108 +1,108 @@
 <script>
-import { afterUpdate, onMount } from 'svelte';
+  import { afterUpdate, onMount } from 'svelte';
 
-import langs from '../../routes/index';
+  import langs from '../../routes/index';
 
-import Card from './Card.svelte';
-import Progress from './Progress.svelte';
-import ScrollTop from './ScrollTop.svelte';
+  import Card from './Card.svelte';
+  import Progress from './Progress.svelte';
+  import ScrollTop from './ScrollTop.svelte';
 
-let owner = '';
-let currentOwner = '';
-let data;
-let langCount;
-let repoCount;
-let placeholder = '[ username / repo ]';
-let done = false;
-let active = false;
+  let owner = '';
+  let currentOwner = '';
+  let data;
+  let langCount;
+  let repoCount;
+  let placeholder = '[ username / repo ]';
+  let done = false;
+  let active = false;
 
-onMount(async () => {
-  const windowOwner = `${window.location.pathname
-    .split('/')
-    .slice(1, 3)
-    .join('/')}`;
-  if (windowOwner && windowOwner.length > 0) {
-    owner = windowOwner;
-    await submit('window');
-  }
-});
-
-afterUpdate(() => {
-  const inputElement = document.querySelector('[name="input"]');
-  if (inputElement) {
-    inputElement.focus();
-  }
-});
-
-const isDone = () => {
-  done = true;
-};
-
-const getData = async (owner) => {
-  try {
-    const response = await langs(owner);
-    return response.data;
-  } catch (error) {
-    return error;
-  }
-};
-
-const submit = async (event) => {
-  try {
-    if (
-      (event === 'window' || !event.key || event.key === 'Enter') &&
-      owner.length > 0
-    ) {
-      if (event !== 'window') {
-        event.target.blur();
-      }
-      done = false;
-      data = undefined;
-      langCount = undefined;
-      repoCount = undefined;
-      currentOwner = owner.replaceAll(' ', '');
-      owner = '';
-      const collectData = [];
-      const allData = await getData(currentOwner);
-      if (allData.allNames) {
-        repoCount = allData.allNames.length;
-      }
-      if (allData.space) {
-        const keys = Object.keys(allData.space);
-        langCount = keys.length;
-        for (const key of keys) {
-          collectData.push({ name: key, percent: allData.space[key] });
-        }
-        collectData.sort((a, b) => b.percent - a.percent);
-        data = collectData;
-      }
+  onMount(async () => {
+    const windowOwner = `${window.location.pathname
+      .split('/')
+      .slice(1, 3)
+      .join('/')}`;
+    if (windowOwner && windowOwner.length > 0) {
+      owner = windowOwner;
+      await submit('window');
     }
-    return true;
-  } catch (error) {
-    return error;
-  }
-};
+  });
 
-const input = (event) => {
-  if (event.target.value) {
-    active = true;
+  afterUpdate(() => {
+    const inputElement = document.querySelector('[name="input"]');
+    if (inputElement) {
+      inputElement.focus();
+    }
+  });
+
+  const isDone = () => {
+    done = true;
+  };
+
+  const getData = async (owner) => {
+    try {
+      const response = await langs(owner);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const submit = async (event) => {
+    try {
+      if (
+        (event === 'window' || !event.key || event.key === 'Enter') &&
+          owner.length > 0
+      ) {
+        if (event !== 'window') {
+          event.target.blur();
+        }
+        done = false;
+        data = undefined;
+        langCount = undefined;
+        repoCount = undefined;
+        currentOwner = owner.replaceAll(' ', '');
+        owner = '';
+        const collectData = [];
+        const allData = await getData(currentOwner);
+        if (allData.allNames) {
+          repoCount = allData.allNames.length;
+        }
+        if (allData.space) {
+          const keys = Object.keys(allData.space);
+          langCount = keys.length;
+          for (const key of keys) {
+            collectData.push({ name: key, percent: allData.space[key] });
+          }
+          collectData.sort((a, b) => b.percent - a.percent);
+          data = collectData;
+        }
+      }
+      return true;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const input = (event) => {
+    if (event.target.value) {
+      active = true;
+      placeholder = '';
+    }
+  };
+
+  const click = () => {
     placeholder = '';
-  }
-};
+    active = true;
+  };
 
-const click = () => {
-  placeholder = '';
-  active = true;
-};
+  const blur = () => {
+    placeholder = '[ username / repo ]';
+    active = false;
+  };
 
-const blur = () => {
-  placeholder = '[ username / repo ]';
-  active = false;
-};
-
-const focus = () => {
+  const focus = () => {
   // active = true;
-};
+  };
 </script>
 
 <template>
@@ -112,29 +112,32 @@ const focus = () => {
   <div id="input-area">
     <input
       name="input"
-      tabindex="0"
       class:active
-      type="text"
-      placeholder="{placeholder}"
-      autocorrect="off"
       autocapitalize="none"
       autocomplete="off"
-      bind:value="{owner}"
-      on:focus="{focus}"
-      on:blur="{blur}"
-      on:keydown="{submit}"
-      on:input="{input}"
-      on:click="{click}"
+      autocorrect="off"
+      {placeholder}
+      tabindex="0"
+      type="text"
+      bind:value={owner}
+      on:focus={focus}
+      on:blur={blur}
+      on:keydown={submit}
+      on:input={input}
+      on:click={click}
     />
-    <button on:click="{submit}">Submit</button>
+    <button
+      {submit}
+      type="button">Submit
+    </button>
   </div>
   <div id="results">
     {#if currentOwner}
       <Card
-        langCount="{langCount}"
-        repoCount="{repoCount}"
-        currentOwner="{currentOwner}"
-        data="{data}"
+        {currentOwner}
+        {data}
+        {langCount}
+        {repoCount}
       />
     {/if}
     {#if data}
@@ -143,10 +146,10 @@ const focus = () => {
           {#if data.length > 0}
             {#each data as dat, index}
               <Progress
-                dat="{dat}"
-                index="{index}"
-                langCount="{langCount}"
-                isDone="{isDone}"
+                {dat}
+                {index}
+                {isDone}
+                {langCount}
               />
             {/each}
           {:else}
@@ -160,7 +163,10 @@ const focus = () => {
     <ScrollTop />
   {/if}
   <h6 id="footer">
-    <a href="https://github.com/chiefmikey" target="_blank"
+    <a
+      href="https://github.com/chiefmikey"
+      rel="noopener noreferrer"
+      target="_blank"
       >made by chief mikey</a
     >
   </h6>
