@@ -28,7 +28,7 @@
     "the-new-css-reset": "^1.11.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.6",
+    "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-typescript": "^7.23.3",
     "@types/dotenv-webpack": "^7.0.7",
