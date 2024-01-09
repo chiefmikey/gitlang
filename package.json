@@ -39,7 +39,7 @@
     "@types/koa__router": "^12.0.4",
     "@types/node": "^20.10.6",
     "babel-loader": "^9.1.3",
-    "css-loader": "^6.8.1",
+    "css-loader": "^6.9.0",
     "mikey-pro": "^6.6.8",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss": "^8.4.33",
