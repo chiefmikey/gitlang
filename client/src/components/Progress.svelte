@@ -1,59 +1,59 @@
 <script>
-import { cubicInOut } from 'svelte/easing';
-import { tweened } from 'svelte/motion';
+  import { cubicInOut } from 'svelte/easing';
+  import { tweened } from 'svelte/motion';
 
-export let dat;
-export let index;
-export let langCount;
-export let isDone;
+  export let dat;
+  export let index;
+  export let langCount;
+  export let isDone;
 
-const finalPercent = Number((dat.percent * 100).toFixed(2));
-const speed = (index / 8) * 1000 + 222;
+  const finalPercent = Number((dat.percent * 100).toFixed(2));
+  const speed = (index / 8) * 1000 + 222;
 
-const progress = tweened(0, {
-  duration: 1400,
-  easing: cubicInOut,
-});
+  const progress = tweened(0, {
+    duration: 1400,
+    easing: cubicInOut,
+  });
 
-const progress2 = tweened(0, {
-  duration: 1400,
-  easing: cubicInOut,
-});
+  const progress2 = tweened(0, {
+    duration: 1400,
+    easing: cubicInOut,
+  });
 
-const setProgress = (perc) => {
-  if (perc < 0.003) {
-    return 0.003;
-  }
-  return perc;
-};
+  const setProgress = (perc) => {
+    if (perc < 0.003) {
+      return 0.003;
+    }
+    return perc;
+  };
 
-setTimeout(() => ($progress = setProgress(dat.percent)), speed);
-setTimeout(() => {
-  $progress2 = finalPercent;
-  if (index === langCount - 1) {
-    isDone();
-  }
-}, speed);
-setTimeout(() => {
-  const prog = document.querySelector(`#bar${index}`);
-  const info = document.querySelector(`.info${index}`);
-  prog.style.setProperty(
-    '--c',
-    `rgb(${255 - (255 / langCount) * index}, ${
-      160 - (160 / langCount) * index
-    }, ${203})`,
-  );
+  setTimeout(() => ($progress = setProgress(dat.percent)), speed);
+  setTimeout(() => {
+    $progress2 = finalPercent;
+    if (index === langCount - 1) {
+      isDone();
+    }
+  }, speed);
+  setTimeout(() => {
+    const prog = document.querySelector(`#bar${index}`);
+    const info = document.querySelector(`.info${index}`);
+    prog.style.setProperty(
+      '--c',
+      `rgb(${255 - (255 / langCount) * index}, ${
+        160 - (160 / langCount) * index
+      }, ${203})`,
+    );
 
-  info.style.color = `rgb(${275 - (225 / langCount) * index}, ${
-    275 - (225 / langCount) * index
-  }, ${275 - (225 / langCount) * index})`;
-}, 0);
+    info.style.color = `rgb(${275 - (225 / langCount) * index}, ${
+      275 - (225 / langCount) * index
+    }, ${275 - (225 / langCount) * index})`;
+  }, 0);
 </script>
 
 <template>
   <tr
     id="row{index}"
-    style="animation: fadeInHeight .5s ease-out {index / 8}s forwards;"
+    style:animation="fadeInHeight .5s ease-out {index / 8}s forwards"
   >
     <div class="info info{index}">
       <td class="name">
@@ -64,7 +64,10 @@ setTimeout(() => {
       </td>
     </div>
     <td class="bar">
-      <progress id="bar{index}" value="{$progress}"></progress>
+      <progress
+        id="bar{index}"
+        value={$progress}
+      />
     </td>
   </tr>
 </template>

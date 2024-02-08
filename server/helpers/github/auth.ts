@@ -4,7 +4,7 @@ import {
 } from '@aws-sdk/client-secrets-manager';
 
 const region = 'us-east-2';
-const secretName = 'auth-gitlang';
+const secretName = 'AUTH_GITLANG';
 
 const auth: () => Promise<string> = async () => {
   try {
@@ -18,7 +18,7 @@ const auth: () => Promise<string> = async () => {
       new GetSecretValueCommand({ SecretId: secretName }),
     );
 
-    if (data && data.SecretString) {
+    if (data?.SecretString) {
       secret = data.SecretString;
     }
 

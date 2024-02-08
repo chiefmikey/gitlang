@@ -1,17 +1,24 @@
 <script>
-setTimeout(() => {
-  const button = document.querySelector('#scroll-top');
-  button.style = 'animation: fadeIn .5s ease-out 0s forwards;';
-}, 0);
+  setTimeout(() => {
+    const button = document.querySelector('#scroll-top');
+    button.style = 'animation: fadeIn .5s ease-out 0s forwards;';
+  }, 0);
 
-const scroll = () => {
-  const wrapper = document.querySelector('#wrapper');
-  wrapper.scroll({ top: 0, behavior: 'smooth' });
-};
+  const scroll = () => {
+    const wrapper = document.querySelector('#wrapper');
+    wrapper.scroll({ top: 0, behavior: 'smooth' });
+  };
 </script>
 
 <template>
-  <div id="scroll-top" on:click="{scroll}"><h6>[ top ]</h6></div>
+  <div
+    id="scroll-top"
+    on:click={scroll}
+  >
+    <h6>
+      [ top ]
+    </h6>
+  </div>
 </template>
 
 <style>

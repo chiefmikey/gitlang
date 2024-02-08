@@ -1,16 +1,19 @@
 <script>
-export let langCount;
-export let repoCount;
-export let currentOwner;
-export let data;
+  export let langCount;
+  export let repoCount;
+  export let currentOwner;
+  export let data;
 
-const url = `https://github.com/${currentOwner}`;
+  const url = `https://github.com/${currentOwner}`;
 </script>
 
 <template>
   <div id="card">
     {#if currentOwner}
-      <a id="owner" href="{url}">{currentOwner}</a>
+      <a
+        id="owner"
+        href={url}>{currentOwner}
+      </a>
     {/if}
     {#if data && data.length > 0}
       {#if repoCount || langCount}
