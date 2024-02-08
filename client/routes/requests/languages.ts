@@ -16,8 +16,9 @@ const localApi = async (owner: string, repos: string[]) => {
         },
       },
     );
-    if (allLanguages?.data?.length > 0)
+    if (allLanguages?.data?.length > 0) {
       return allLanguages.data;
+    }
     return [];
   } catch (error) {
     console.error('Error getting token from auth api', error);
@@ -36,8 +37,9 @@ const serverApi = async (owner: string, repos: string[]) => {
         },
       },
     );
-    if (allLanguages?.data?.length > 0)
+    if (allLanguages?.data?.length > 0) {
       return allLanguages.data;
+    }
     return [];
   } catch (error) {
     console.error('Error getting token from auth api', error);
