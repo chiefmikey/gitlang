@@ -1,25 +1,13 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
-      time: "12:00"
-      timezone: "America/Denver"
+      interval: daily
+      time: 12:00
+      timezone: America/Denver
     commit-message:
-      prefix: "actions"
+      prefix: actions
     labels:
-      - "dependencies"
-    open-pull-requests-limit: 100
-
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "12:00"
-      timezone: "America/Denver"
-    commit-message:
-      prefix: "docker"
-    labels:
-      - "dependencies"
+      - dependencies
     open-pull-requests-limit: 100
