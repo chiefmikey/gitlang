@@ -4,9 +4,9 @@
   "description": "View language usage per repo or total by username",
   "main": "client/src/index.ts",
   "scripts": {
-    "dev": "NODE_ENV=development webpack --mode development -w",
+    "build:dev": "NODE_ENV=development webpack --mode development -w",
+    "build:prod": "NODE_ENV=production webpack --mode production",
     "fix": "eslint --fix '**/*'",
-    "prod": "NODE_ENV=production webpack --mode production",
     "start:client": "ts-node local/client.ts",
     "start:server": "ts-node local/server.ts"
   },

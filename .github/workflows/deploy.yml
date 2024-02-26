@@ -1,31 +1,79 @@
-name: Deploy to Auth-Server
+name: Deploy
 
 on:
   push:
     branches:
       - main
 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Deploy Environment'
+        options:
+        - dev
+        - prod
+      invalidate:
+        description: 'Invalidate CloudFront Cache'
+        type: boolean
+        default: true
+
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    steps:
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-2
+    env:
+      DIST_NAME: 'gitlang'
+      S3_BUCKET: 'gitlang'
+      DEPLOY_DIR: 'public'
 
-      - name: Create Deployment
-        id: deploy
-        env:
-          APP_NAME: auth-server
-          DEPLOY_GROUP: gitlang
-        run: |
-          aws deploy create-deployment --ignore-application-stop-failures \
-            --application-name ${{ env.APP_NAME }} \
-            --deployment-group-name ${{ env.DEPLOY_GROUP }} \
-            --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --file-exists-behavior OVERWRITE \
-            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+        set -x
+        npm i
+        sed -i "1i console.log('Updated:', '$(TZ=PST8PDT date)')" client/src/index.ts
+        npm run build:prod
+
+    - name: Configure AWS
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
+
+    - name: Sync to S3
+      id: sync
+      run: |
+        aws s3 sync ${DEPLOY_DIR} s3://${S3_BUCKET} --delete
+
+    - name: Invalidate CloudFront
+      id: invalidate
+      if: ${{ inputs.invalidate == true }}
+      run: |
+        dist_id="$(aws cloudfront list-distributions \
+          --query "DistributionList.Items[?Comment=='${DIST_NAME}'].Id" \
+          --output text)"
+
+        if [ -z "$dist_id" ]; then
+          echo "No distribution found with comment: ${DIST_NAME}"
+          exit 1
+        fi
+
+        echo "Invalidating ${dist_id} for ${DIST_NAME}"
+          invalidation_id="$(aws cloudfront create-invalidation \
+            --distribution-id "$dist_id" \
+            --paths "/*" \
+            --query "Invalidation.Id" \
+            --output text)"
+
+        echo "Invalidation started: ${invalidation_id}"
+
+        aws cloudfront wait invalidation-completed \
+          --distribution-id "$dist_id" \
+          --id "$invalidation_id"
+
+        echo "Invalidation completed"
