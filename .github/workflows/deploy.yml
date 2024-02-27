@@ -46,7 +46,7 @@ jobs:
 
     - name: Invalidate CloudFront
       id: invalidate
-      if: ${{ inputs.invalidate == true }}
+      if: ${{ github.event_name == 'push' || inputs.invalidate == true }}
       run: |
         dist_id="$(aws cloudfront list-distributions \
           --query "DistributionList.Items[?Comment=='${DIST_NAME}'].Id" \
