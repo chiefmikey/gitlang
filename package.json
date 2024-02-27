@@ -31,6 +31,7 @@
     "@babel/core": "^7.23.9",
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-typescript": "^7.23.3",
+    "@mikey-pro/eslint-config-svelte": "^7.1.0",
     "@types/dotenv-webpack": "^7.0.7",
     "@types/koa": "^2.15.0",
     "@types/koa-bodyparser": "^4.3.12",
@@ -83,7 +84,7 @@
   "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
   "prettier": "@mikey-pro/prettier-config",
   "eslintConfig": {
-    "extends": "@mikey-pro/eslint-config"
+    "extends": "@mikey-pro/eslint-config-svelte"
   },
   "stylelint": {
     "extends": "@mikey-pro/stylelint-config"

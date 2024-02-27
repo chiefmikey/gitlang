@@ -22,7 +22,7 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "outDir": "./client/public/dist"
+    "outDir": "./public/dist"
   },
   "ts-node": {
     "compilerOptions": {
