@@ -19,7 +19,6 @@
     duration: 1400,
     easing: cubicInOut,
   });
-  const { toFixed } = progress2;
 
   const setProgress = (perc) => {
     if (perc < 0.003) {
@@ -61,7 +60,7 @@
         <span>{dat.name}</span>
       </td>
       <td class="percent">
-        <span>{toFixed(2)}%</span>
+        <span>{$progress2.toFixed(2)}%</span>
       </td>
     </div>
     <td class="bar">

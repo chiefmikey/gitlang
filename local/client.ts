@@ -1,35 +1,18 @@
-import { createReadStream } from 'node:fs';
+import path from 'node:path';
 
 import Koa from 'koa';
+import send from 'koa-send';
 import serve from 'koa-static';
 
 const app = new Koa();
 const port = 8080;
-const redirect = 'docs';
-const subdir = 'public';
 
-app
-  .use(serve(redirect))
-  .use(async (context, next) => {
-    try {
-      if (context.status === 404) {
-        const url = context.url.split(subdir)[1];
-        if (url) {
-          const path = `${redirect}/${subdir}${url}`;
-          context.type = 'html';
-          context.body = createReadStream(path);
-        } else {
-          context.type = 'html';
-          context.body = createReadStream(`${redirect}/404.html`);
-        }
-      } else {
-        await next();
-      }
-    } catch {
-      context.type = 'html';
-      context.body = createReadStream(`${redirect}/404.html`);
-    }
-  })
-  .listen(port, () => console.log(`Client port: ${port}`));
+app.use(serve('public'));
 
-export default app;
+app.use(async (context) => {
+  if (context.status === 404) {
+    await send(context, 'index.html', { root: path.resolve('./public') });
+  }
+});
+
+app.listen(port, () => console.log(`Client port: ${port}`));
