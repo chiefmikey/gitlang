@@ -1,14 +1,14 @@
 version: 0.0
 os: linux
 files:
- - source: ./server
-   destination: /home/ec2-user/server/gitlang
+  - source: ./server
+    destination: /home/ec2-user/server/gitlang
 hooks:
   ApplicationStop:
-   - location: stop.sh
-     timeout: 300
-     runas: root
+    - location: stop.sh
+      timeout: 300
+      runas: root
   ApplicationStart:
-   - location: init.sh
-     timeout: 300
-     runas: root
+    - location: init.sh
+      timeout: 300
+      runas: root
