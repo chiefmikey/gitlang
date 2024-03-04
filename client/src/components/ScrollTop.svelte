@@ -1,24 +1,32 @@
 <script>
   setTimeout(() => {
     const button = document.querySelector('#scroll-top');
-    button.style = 'animation: fadeIn .5s ease-out 0s forwards;';
+    button.style = 'animation: fade-in .5s ease-out 0s forwards;';
   }, 0);
 
   const scroll = () => {
     const wrapper = document.querySelector('#wrapper');
     wrapper.scroll({ top: 0, behavior: 'smooth' });
   };
+
+  const handleKeydown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      scroll();
+    }
+  };
 </script>
 
 <template>
-  <div
+  <button
     id="scroll-top"
+    type="button"
     on:click={scroll}
+    on:keydown={handleKeydown}
   >
     <h6>
       [ top ]
     </h6>
-  </div>
+    </button>
 </template>
 
 <style>
@@ -29,5 +37,7 @@
   width: 100px;
   height: 30px;
   opacity: 0%;
+  background-color: transparent;
+  color: #e8e6e2;
 }
 </style>

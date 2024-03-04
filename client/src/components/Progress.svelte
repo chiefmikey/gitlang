@@ -53,7 +53,7 @@
 <template>
   <tr
     id="row{index}"
-    style:animation="fadeInHeight .5s ease-out {index / 8}s forwards"
+    style:animation="fade-in-height .5s ease-out {index / 8}s forwards"
   >
     <div class="info info{index}">
       <td class="name">
