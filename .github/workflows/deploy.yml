@@ -20,6 +20,7 @@ jobs:
       DIST_NAME: ${{ vars.DIST_NAME }}
       S3_BUCKET: ${{ vars.S3_BUCKET }}
       DEPLOY_DIR: 'public'
+      ENTRY: 'client/src/index.ts'
 
     steps:
     - name: Checkout Repository
@@ -29,7 +30,7 @@ jobs:
       run: |
         set -x
         npm i
-        sed -i "1i console.log('Updated:', '$(TZ=PST8PDT date)')" client/src/index.ts
+        sed -i "1i console.log('Updated:', '$(TZ=PST8PDT date)')" ${ENTRY}
         npm run build:prod
 
     - name: Configure AWS
