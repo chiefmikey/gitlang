@@ -9,3 +9,7 @@ export const ROUTES = {
 export const INPUT = {
   PLACEHOLDER: '[ username / repo ]',
 };
+
+export const ERROR = {
+  NOT_FOUND: 'Not Found',
+};
