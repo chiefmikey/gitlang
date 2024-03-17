@@ -32,6 +32,9 @@
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       submit(event);
+      input = '';
+      placeholder = PLACEHOLDER;
+      isInputActive = false;
     } else if (event.key === 'Escape') {
       input = '';
       placeholder = PLACEHOLDER;
@@ -40,7 +43,7 @@
   };
 
   const handleGlobalKeyDown = (event) => {
-    if (!isInputActive && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
+    if (!isInputActive && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey && event.key !== 'Escape' && event.key !== 'Enter') {
       inputElement.focus();
       isInputActive = true;
     }
