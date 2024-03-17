@@ -1,0 +1,79 @@
+<script>
+  import { afterUpdate } from 'svelte';
+
+  import { inputPlaceholder } from '../../constants';
+
+  export let input;
+  export let submit;
+
+  let inputElement;
+  let placeholder = inputPlaceholder;
+  let isInputActive = false;
+
+  const handleInput = (event) => {
+    if (event.target.value) {
+      input = event.target.value;
+    }
+  };
+
+  const handleClick = () => {
+    placeholder = '';
+    isInputActive = true;
+  };
+
+  const handleBlur = () => {
+    placeholder = inputPlaceholder;
+    isInputActive = false;
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      submit();
+    } else {
+      placeholder = '';
+      isInputActive = true;
+    }
+  };
+
+  afterUpdate(() => {
+    const inputElement = document.querySelector('[name="input"]');
+    if (inputElement) {
+      inputElement.focus();
+    }
+  });
+</script>
+
+<template>
+  <div class="input-area">
+    <input
+      bind:this={inputElement}
+      name="input"
+      style={`caret-color: ${isInputActive ? '#e8e6e2' : 'transparent'}`}
+      autocapitalize="none"
+      autocomplete="off"
+      autocorrect="off"
+      {placeholder}
+      tabindex="0"
+      type="text"
+      value={input}
+      on:keydown={handleKeyDown}
+      on:blur={handleBlur}
+      on:input={handleInput}
+      on:click={handleClick}
+    />
+  </div>
+  <button
+    {submit}
+    type="button">Submit
+  </button>
+</template>
+
+<style>
+  .input-area {
+    padding-top: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+</style>
