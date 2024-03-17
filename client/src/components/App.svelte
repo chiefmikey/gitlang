@@ -36,7 +36,23 @@
       const response = await handler(input);
       return response.data;
     } catch (error) {
-      return error;
+      console.error(error);
+    }
+  };
+
+  const processData = (allData) => {
+    const collectData = [];
+    if (allData.allNames) {
+      count2 = allData.allNames.length;
+    }
+    if (allData.space) {
+      const keys = Object.keys(allData.space);
+      count1 = keys.length;
+      for (const key of keys) {
+        collectData.push({ name: key, percent: allData.space[key] });
+      }
+      collectData.sort((a, b) => b.percent - a.percent);
+      data = collectData;
     }
   };
 
@@ -55,24 +71,15 @@
         count2 = undefined;
         current = input.replaceAll(' ', '');
         input = '';
-        const collectData = [];
         const allData = await getData(current);
-        if (allData.allNames) {
-          count2 = allData.allNames.length;
-        }
-        if (allData.space) {
-          const keys = Object.keys(allData.space);
-          count1 = keys.length;
-          for (const key of keys) {
-            collectData.push({ name: key, percent: allData.space[key] });
-          }
-          collectData.sort((a, b) => b.percent - a.percent);
-          data = collectData;
+        if (allData) {
+          processData(allData);
         }
       }
       return true;
     } catch (error) {
-      return error;
+      console.error(error);
+      return false;
     }
   };
 </script>
