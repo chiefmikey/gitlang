@@ -39,13 +39,13 @@ npm install
 #### Development
 
 ```sh
-npm run dev
+npm run build:dev
 ```
 
 #### Production
 
 ```sh
-npm run prod
+npm run build:prod
 ```
 
 ### Start Server
