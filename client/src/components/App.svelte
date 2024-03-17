@@ -3,9 +3,10 @@
 
   import handler from '../../lib/index';
 
-  import Card from './Card.svelte';
+  import Footer from './Footer.svelte';
+  import Header from './Header.svelte';
   import Input from './Input.svelte';
-  import Progress from './Progress.svelte';
+  import Results from './Results.svelte';
   import ScrollTop from './ScrollTop.svelte';
 
   let input = '';
@@ -77,82 +78,20 @@
 </script>
 
 <template>
-  <img
-    class="logo"
-    alt="GITLANG LOGO"
-    src="./assets/img/gitlang.svg"
-  />
-  <h5>
-    View language usage per repo<br />or total by username
-  </h5>
+  <Header />
   <Input
     {submit}
     bind:input
   />
-  <div class="results">
-    {#if current}
-      <Card
-        {count1}
-        {count2}
-        {current}
-        {data}
-      />
-    {/if}
-    {#if data}
-      <table>
-        <tbody id="tbody">
-          {#if data.length > 0}
-            {#each data as dat, index}
-              <Progress
-                {count1}
-                {dat}
-                {index}
-                {isDone}
-              />
-            {/each}
-          {:else}
-            <h4 class="error">User Not Found</h4>
-          {/if}
-        </tbody>
-      </table>
-    {/if}
-  </div>
+  <Results
+    {count1}
+    {count2}
+    {current}
+    {data}
+    {isDone}
+  />
   {#if done}
     <ScrollTop />
   {/if}
-  <h6 class="footer">
-    <a
-      href="https://github.com/chiefmikey"
-      rel="noopener noreferrer"
-      target="_blank"
-      >made by Chief Mikey</a
-    >
-  </h6>
+  <Footer />
 </template>
-
-<style>
-  .results {
-    width: 100%;
-    padding: 0 0 10px 0;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .logo {
-    pointer-events: none;
-    user-select: none;
-    width: 75%;
-    padding: 12% 5% 5%;
-  }
-
-  .footer {
-    padding-bottom: 2rem;
-    color: #fe9fc9;
-  }
-
-  .error {
-    padding: 2rem;
-  }
-</style>
