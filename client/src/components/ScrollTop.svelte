@@ -1,6 +1,6 @@
 <script>
   setTimeout(() => {
-    const button = document.querySelector('#scroll-top');
+    const button = document.querySelector('.scroll-top');
     button.style = 'animation: fade-in .5s ease-out 0s forwards;';
   }, 0);
 
@@ -36,7 +36,6 @@
     z-index: 2;
     width: 100px;
     height: 30px;
-    opacity: 0;
     background-color: transparent;
     color: #e8e6e2;
   }
