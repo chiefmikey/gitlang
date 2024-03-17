@@ -9,3 +9,5 @@ export const BETA = {
   REPOS: 'https://api.5105015032.com/gitlang-beta/github/repos',
   LANGS: 'https://api.5105015032.com/gitlang-beta/github/langs',
 };
+
+export const placeholder = '[ username / repo ]';
