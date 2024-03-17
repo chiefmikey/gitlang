@@ -16,7 +16,7 @@ const localApi = async (owner: string, repos: string[]) => {
         },
       },
     );
-    if (allLanguages?.data?.length > 0) {
+    if (allLanguages.data.length > 0) {
       return allLanguages.data;
     }
     return [];
@@ -37,7 +37,7 @@ const serverApi = async (owner: string, repos: string[]) => {
         },
       },
     );
-    if (allLanguages?.data?.length > 0) {
+    if (allLanguages.data.length > 0) {
       return allLanguages.data;
     }
     return [];

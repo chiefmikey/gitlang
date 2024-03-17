@@ -8,4 +8,3 @@ export const ROUTES = {
 export const INPUT = {
   PLACEHOLDER: '[ username / repo ]',
 };
-
