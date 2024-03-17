@@ -1,8 +1,9 @@
+const { hostname } = window.location;
+const isLocal = hostname === 'localhost';
+
 export const ROUTES = {
-  REPOS: 'https://api.5105015032.com/gitlang/github/repos',
-  LANGS: 'https://api.5105015032.com/gitlang/github/langs',
-  REPOS_LOCAL: ':3000/gitlang/github/repos',
-  LANGS_LOCAL: ':3000/gitlang/github/langs',
+  REPOS: isLocal ? 'http://localhost:3000/gitlang/github/repos' : 'https://api.5105015032.com/gitlang/github/repos',
+  LANGS: isLocal ? 'http://localhost:3000/gitlang/github/langs' : 'https://api.5105015032.com/gitlang/github/langs',
 };
 
 export const INPUT = {
