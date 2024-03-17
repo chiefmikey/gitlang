@@ -61,6 +61,9 @@ const configuration: Configuration = {
             hotReload: !production,
             preprocess: sveltePreprocess({
               postcss: true,
+              scss: {
+                includePaths: ['src'],
+              },
             }),
           },
         },

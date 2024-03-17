@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ROUTES } from '../../constants';
+import { ROUTES } from '../../../constants';
 
 const { protocol, hostname } = window.location;
 const isLocal = hostname === 'localhost';

@@ -4,7 +4,7 @@
 
   export let dat;
   export let index;
-  export let langCount;
+  export let count1;
   export let isDone;
 
   const finalPercent = Number((dat.percent * 100).toFixed(2));
@@ -30,7 +30,7 @@
   setTimeout(() => ($progress = setProgress(dat.percent)), speed);
   setTimeout(() => {
     $progress2 = finalPercent;
-    if (index === langCount - 1) {
+    if (index === count1 - 1) {
       isDone();
     }
   }, speed);
@@ -39,14 +39,14 @@
     const info = document.querySelector(`.info${index}`);
     prog.style.setProperty(
       '--c',
-      `rgb(${255 - (255 / langCount) * index}, ${
-        160 - (160 / langCount) * index
+      `rgb(${255 - (255 / count1) * index}, ${
+        160 - (160 / count1) * index
       }, ${203})`,
     );
 
-    info.style.color = `rgb(${275 - (225 / langCount) * index}, ${
-      275 - (225 / langCount) * index
-    }, ${275 - (225 / langCount) * index})`;
+    info.style.color = `rgb(${275 - (225 / count1) * index}, ${
+      275 - (225 / count1) * index
+    }, ${275 - (225 / count1) * index})`;
   }, 0);
 </script>
 

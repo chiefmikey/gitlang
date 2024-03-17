@@ -1,39 +1,39 @@
 <script>
-  export let langCount;
-  export let repoCount;
-  export let currentOwner;
+  export let count1;
+  export let count2;
+  export let current;
   export let data;
 
-  const url = `https://github.com/${currentOwner}`;
+  const url = `https://github.com/${current}`;
 </script>
 
 <template>
-  <div id="card">
-    {#if currentOwner}
+  <div class="card">
+    {#if current}
       <a
-        id="owner"
-        href={url}>{currentOwner}
+        class="owner"
+        href={url}>{current}
       </a>
     {/if}
     {#if data && data.length > 0}
-      {#if repoCount || langCount}
-        <div id="counts">
-          {#if langCount}
-            <span id="lang">Langs: {langCount}</span>
+      {#if count2 || count1}
+        <div class="counts">
+          {#if count1}
+            <span class="lang">Langs: {count1}</span>
           {/if}
-          {#if repoCount}
-            <span id="repos">Repos: {repoCount}</span>
+          {#if count2}
+            <span class="repos">Repos: {count2}</span>
           {/if}
         </div>
       {/if}
     {:else}
-      <h5 id="loading">Loading...</h5>
+      <h5>Loading...</h5>
     {/if}
   </div>
 </template>
 
 <style>
-#card {
+.card {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,15 +41,16 @@
   color: #e8e6e2;
 }
 
-#owner {
-  font-size: 20px;
-  padding: 10px 10px 10px 10px;
+.owner {
+  font-size: 1.2rem;
+  padding: 2rem 0 .6rem 0;
   margin-bottom: 12px;
   animation: fade-in 0.1s ease 0s forwards;
   border-bottom: 1px solid #e8e6e2;
   color: #e8e6e2;
 }
-#counts {
+
+.counts {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -57,8 +58,8 @@
   padding-bottom: 15px;
 }
 
-#repos,
-#lang {
+.repos,
+.lang {
   font-size: 15px;
   animation: fade-in 0.1s ease 0s forwards;
 }

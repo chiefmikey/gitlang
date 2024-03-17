@@ -5,7 +5,7 @@ import './styles.scss';
 import App from './components/App.svelte';
 
 const app = new App({
-  target: document.querySelector('#app') as Element | ShadowRoot,
+  target: document.querySelector('.app') as Element | ShadowRoot,
 });
 
 export default app;
