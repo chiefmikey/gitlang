@@ -1,13 +1,14 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
 
-  import { inputPlaceholder } from '../../constants';
+  import { INPUT } from '../../constants';
 
   export let input;
   export let submit;
 
+  const { PLACEHOLDER } = INPUT;
   let inputElement;
-  let placeholder = inputPlaceholder;
+  let placeholder = PLACEHOLDER;
   let isInputActive = false;
 
   const handleInput = (event) => {
@@ -22,7 +23,7 @@
   };
 
   const handleBlur = () => {
-    placeholder = inputPlaceholder;
+    placeholder = PLACEHOLDER;
     isInputActive = false;
   };
 
@@ -31,7 +32,7 @@
       submit(event);
     } else if (event.key === 'Escape') {
       input = '';
-      placeholder = inputPlaceholder;
+      placeholder = PLACEHOLDER;
       isInputActive = false;
     } else {
       placeholder = '';
