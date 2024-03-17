@@ -5,9 +5,7 @@ export const ROUTES = {
   LANGS_LOCAL: ':3000/gitlang/github/langs',
 };
 
-export const BETA = {
-  REPOS: 'https://api.5105015032.com/gitlang-beta/github/repos',
-  LANGS: 'https://api.5105015032.com/gitlang-beta/github/langs',
+export const INPUT = {
+  PLACEHOLDER: '[ username / repo ]',
 };
 
-export const inputPlaceholder = '[ username / repo ]';
