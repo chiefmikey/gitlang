@@ -14,6 +14,8 @@
   const handleInput = (event) => {
     if (event.target.value) {
       input = event.target.value;
+    } else {
+      placeholder = '';
     }
   };
 
@@ -34,15 +36,13 @@
       input = '';
       placeholder = PLACEHOLDER;
       isInputActive = false;
-    } else {
-      placeholder = '';
-      isInputActive = true;
     }
   };
 
-  const handleGlobalKeyDown = () => {
-    if (!isInputActive) {
+  const handleGlobalKeyDown = (event) => {
+    if (!isInputActive && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
       inputElement.focus();
+      isInputActive = true;
     }
   };
 
