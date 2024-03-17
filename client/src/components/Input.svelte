@@ -29,6 +29,10 @@
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       submit();
+    } else if (event.key === 'Escape') {
+      input = '';
+      placeholder = inputPlaceholder;
+      isInputActive = false;
     } else {
       placeholder = '';
       isInputActive = true;
