@@ -10,4 +10,4 @@ export const BETA = {
   LANGS: 'https://api.5105015032.com/gitlang-beta/github/langs',
 };
 
-export const placeholder = '[ username / repo ]';
+export const inputPlaceholder = '[ username / repo ]';
