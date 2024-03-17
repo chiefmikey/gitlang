@@ -1,5 +1,5 @@
 <script>
-  import { afterUpdate } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   import { inputPlaceholder } from '../../constants';
 
@@ -28,7 +28,7 @@
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      submit();
+      submit(event);
     } else if (event.key === 'Escape') {
       input = '';
       placeholder = inputPlaceholder;
@@ -39,11 +39,18 @@
     }
   };
 
-  afterUpdate(() => {
-    const inputElement = document.querySelector('[name="input"]');
-    if (inputElement) {
+  const handleGlobalKeyDown = () => {
+    if (!isInputActive) {
       inputElement.focus();
     }
+  };
+
+  onMount(() => {
+    window.addEventListener('keydown', handleGlobalKeyDown);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener('keydown', handleGlobalKeyDown);
   });
 </script>
 
@@ -67,8 +74,8 @@
     />
   </div>
   <button
-    {submit}
-    type="button">Submit
+    type="button"
+    on:click={submit}>Submit
   </button>
 </template>
 
@@ -78,6 +85,5 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
   }
 </style>
