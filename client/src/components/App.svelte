@@ -111,7 +111,7 @@
               />
             {/each}
           {:else}
-            <h4>User Not Found</h4>
+            <h4 class="error">User Not Found</h4>
           {/if}
         </tbody>
       </table>
@@ -148,7 +148,11 @@
   }
 
   .footer {
-    padding: 2rem 0;
+    padding-bottom: 2rem;
     color: #fe9fc9;
+  }
+
+  .error {
+    padding: 2rem;
   }
 </style>
