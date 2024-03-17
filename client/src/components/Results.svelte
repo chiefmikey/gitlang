@@ -1,5 +1,5 @@
 <script>
-  import { ERROR } from '../../constants';
+  import { ERROR } from '../../lib/constants';
 
   import Card from './Card.svelte';
   import Progress from './Progress.svelte';

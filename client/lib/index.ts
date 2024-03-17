@@ -1,7 +1,7 @@
-import langs from './gitlang';
+import data from './data';
 
 const handler = (input: string) => {
-  return langs(input);
+  return data(input);
 };
 
 export default handler;

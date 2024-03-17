@@ -2,7 +2,7 @@ import getSize from './helpers/size';
 import languages from './requests/languages';
 import repositories from './requests/repositories';
 
-const langs = async (username: string) => {
+const data = async (username: string) => {
   try {
     window.history.pushState('', '', `/${username}`);
     let owner = username;
@@ -23,4 +23,4 @@ const langs = async (username: string) => {
   }
 };
 
-export default langs;
+export default data;
