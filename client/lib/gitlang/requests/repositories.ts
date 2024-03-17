@@ -13,7 +13,7 @@ const localApi = async (username: string) => {
         params: { username },
       },
     );
-    if (allRepos?.data?.length > 0) {
+    if (allRepos.data.length > 0) {
       return allRepos.data;
     }
     return [];
@@ -28,7 +28,7 @@ const serverApi = async (username: string) => {
     const allRepos: { data: [] } = await axios.get(ROUTES.REPOS, {
       params: { username },
     });
-    if (allRepos?.data?.length > 0) {
+    if (allRepos.data.length > 0) {
       return allRepos.data;
     }
     return [];
