@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
 
-  import { INPUT } from '../../constants';
+  import { INPUT } from '../../lib/constants';
 
   export let input;
   export let submit;

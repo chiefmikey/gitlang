@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ROUTES } from '../../../constants';
+import { ROUTES } from '../../constants';
 
 const repositories = async (username: string) => {
   try {
