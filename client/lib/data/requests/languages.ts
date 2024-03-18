@@ -1,10 +1,17 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import { ROUTES } from '../constants';
 
-const languages = async (owner: string, repos: string[]) => {
+interface LanguageData {
+  [key: string]: number;
+}
+
+const languages = async (
+  owner: string,
+  repos: string[],
+): Promise<LanguageData[]> => {
   try {
-    const allLanguages: { data: { [key: string]: number }[] } = await axios.get(
+    const response: AxiosResponse<LanguageData[]> = await axios.get(
       ROUTES.LANGS,
       {
         params: {
@@ -13,13 +20,10 @@ const languages = async (owner: string, repos: string[]) => {
         },
       },
     );
-    if (allLanguages.data.length > 0) {
-      return allLanguages.data;
-    }
-    return [];
+    return response.data.length > 0 ? response.data : [];
   } catch (error) {
     console.error('Error getting token from auth api', error);
-    return [];
+    throw error;
   }
 };
 
