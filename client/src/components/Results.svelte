@@ -1,9 +1,11 @@
-<script>
+<script context="module">
   import { ERROR } from '../../lib/data/constants';
 
   import Card from './Card.svelte';
   import Progress from './Progress.svelte';
+</script>
 
+<script>
   export let current;
   export let data;
   export let count1;
