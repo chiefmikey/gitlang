@@ -4,7 +4,6 @@
   import handler from '../../lib/index';
 
   import Footer from './Footer.svelte';
-  import Header from './Header.svelte';
   import Input from './Input.svelte';
   import Results from './Results.svelte';
   import ScrollTop from './ScrollTop.svelte';
@@ -85,7 +84,9 @@
 </script>
 
 <template>
-  <Header />
+  <h5>
+    View language usage per repo<br />or total by username
+  </h5>
   <Input
     {submit}
     bind:input
