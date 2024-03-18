@@ -1,22 +1,14 @@
 const percentage = (size: number, allSizes: { [key: string]: number }) => {
-  const allResults: { [key: string]: number } = {};
-  const keys = Object.keys(allSizes);
-  for (const key of keys) {
-    allResults[key] = allSizes[key] / size;
-  }
-  return allResults;
+  return Object.fromEntries(
+    Object.entries(allSizes).map(([key, value]) => [key, value / size]),
+  );
 };
 
 const eachSize = (languages: { [key: string]: number }[]) => {
   const allSizes: { [key: string]: number } = {};
   for (const language of languages) {
-    const keys = Object.keys(language);
-    for (const key of keys) {
-      if (allSizes[key]) {
-        allSizes[key] += language[key];
-      } else {
-        allSizes[key] = language[key];
-      }
+    for (const [key, value] of Object.entries(language)) {
+      allSizes[key] = (allSizes[key] || 0) + value;
     }
   }
   return allSizes;
@@ -25,9 +17,8 @@ const eachSize = (languages: { [key: string]: number }[]) => {
 const totalSize = (languages: { [key: string]: number }[]) => {
   let size = 0;
   for (const language of languages) {
-    const keys = Object.keys(language);
-    for (const key of keys) {
-      size += language[key];
+    for (const value of Object.values(language)) {
+      size += value;
     }
   }
   return size;

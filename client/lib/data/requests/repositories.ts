@@ -1,19 +1,16 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import { ROUTES } from '../constants';
 
-const repositories = async (username: string) => {
+const repositories = async (username: string): Promise<string[]> => {
   try {
-    const allRepos: { data: [] } = await axios.get(ROUTES.REPOS, {
+    const response: AxiosResponse<string[]> = await axios.get(ROUTES.REPOS, {
       params: { username },
     });
-    if (allRepos.data.length > 0) {
-      return allRepos.data;
-    }
-    return [];
+    return response.data.length > 0 ? response.data : [];
   } catch (error) {
     console.error('Error getting token from auth api', error);
-    return [];
+    throw error;
   }
 };
 

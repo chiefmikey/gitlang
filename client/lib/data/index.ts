@@ -8,9 +8,7 @@ const data = async (username: string) => {
     let owner = username;
     let allNames: string[];
     if (username.includes('/')) {
-      const [splitOwner, splitRepo] = username.split('/');
-      owner = splitOwner;
-      allNames = [splitRepo];
+      [owner, ...allNames] = username.split('/');
     } else {
       allNames = await repositories(username);
     }
@@ -19,7 +17,7 @@ const data = async (username: string) => {
     return { data: { allNames, space } };
   } catch (error) {
     console.error('Error getting langs', error);
-    return error;
+    throw error;
   }
 };
 
