@@ -8,8 +8,6 @@ const secretName = 'AUTH_GITLANG';
 
 const auth: () => Promise<string> = async () => {
   try {
-    let secret = '';
-
     const client = new SecretsManagerClient({
       region,
     });
@@ -19,14 +17,11 @@ const auth: () => Promise<string> = async () => {
     );
 
     if (data.SecretString) {
-      secret = data.SecretString;
+      const secret = JSON.parse(data.SecretString) as { [key: string]: string };
+      return secret[secretName];
     }
 
-    const parser: { parse: (argument: string) => { [secretName]: string } } =
-      JSON;
-
-    const parseSecret = parser.parse(secret);
-    return parseSecret[secretName];
+    return '';
   } catch (error) {
     console.error(error);
     return '';

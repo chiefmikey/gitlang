@@ -4,13 +4,11 @@ let octokit: Octokit;
 
 const repositories = async (username: string, token: string) => {
   try {
-    if (!octokit) {
-      if (!token) {
-        console.error('No token');
-        return [];
-      }
-      octokit = new Octokit({ auth: token });
+    if (!token) {
+      console.error('No token');
+      return [];
     }
+    octokit = new Octokit({ auth: token });
     return await octokit.paginate(
       octokit.rest.repos.listForUser,
       {
@@ -19,10 +17,11 @@ const repositories = async (username: string, token: string) => {
       },
       (response) =>
         response.data
-          .filter((repo: { fork: boolean }) => repo.fork === false)
-          .map((repo: { name: string }) => repo.name),
+          .filter(({ fork }) => fork === false)
+          .map(({ name }) => name),
     );
-  } catch {
+  } catch (error) {
+    console.error('Error fetching repositories:', error);
     return [];
   }
 };
