@@ -1,8 +1,12 @@
 <script>
-  setTimeout(() => {
-    const button = document.querySelector('.scroll-top');
-    button.style = 'animation: fade-in .5s ease-out 0s forwards;';
-  }, 0);
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+    setTimeout(() => {
+      const button = document.querySelector('.scroll-top');
+      button.style = 'animation: fade-in .5s ease-out 0s forwards;';
+    }, 0);
+  });
 
   const scroll = () => {
     const wrapper = document.querySelector('.wrapper');

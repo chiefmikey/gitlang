@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import { cubicInOut } from 'svelte/easing';
   import { tweened } from 'svelte/motion';
 
@@ -27,27 +28,29 @@
     return perc;
   };
 
-  setTimeout(() => ($progress = setProgress(dat.percent)), speed);
-  setTimeout(() => {
-    $progress2 = finalPercent;
-    if (index === count1 - 1) {
-      isDone();
-    }
-  }, speed);
-  setTimeout(() => {
-    const prog = document.querySelector(`#bar${index}`);
-    const info = document.querySelector(`.info${index}`);
-    prog.style.setProperty(
-      '--c',
-      `rgb(${255 - (255 / count1) * index}, ${
-        160 - (160 / count1) * index
-      }, ${203})`,
-    );
+  onMount(() => {
+    setTimeout(() => ($progress = setProgress(dat.percent)), speed);
+    setTimeout(() => {
+      $progress2 = finalPercent;
+      if (index === count1 - 1) {
+        isDone();
+      }
+    }, speed);
+    setTimeout(() => {
+      const prog = document.querySelector(`#bar${index}`);
+      const info = document.querySelector(`.info${index}`);
+      prog.style.setProperty(
+        '--c',
+        `rgb(${255 - (255 / count1) * index}, ${
+          160 - (160 / count1) * index
+        }, ${203})`,
+      );
 
-    info.style.color = `rgb(${275 - (225 / count1) * index}, ${
-      275 - (225 / count1) * index
-    }, ${275 - (225 / count1) * index})`;
-  }, 0);
+      info.style.color = `rgb(${275 - (225 / count1) * index}, ${
+        275 - (225 / count1) * index
+      }, ${275 - (225 / count1) * index})`;
+    }, 0);
+  });
 </script>
 
 <template>
