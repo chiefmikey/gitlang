@@ -4,7 +4,8 @@
   export let current;
   export let data;
 
-  const url = `https://github.com/${current}`;
+  let url;
+  $: url = `https://github.com/${current}`;
 </script>
 
 <template>
