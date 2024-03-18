@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { cubicInOut } from 'svelte/easing';
   import { tweened } from 'svelte/motion';
+  import { derived } from 'svelte/store';
 
   export let dat;
   export let index;
@@ -20,6 +21,8 @@
     duration: 1400,
     easing: cubicInOut,
   });
+
+  const progress2Fixed = derived(progress2, $progress2 => $progress2.toFixed(2), 0);
 
   const setProgress = (perc) => {
     if (perc < 0.003) {
@@ -63,7 +66,7 @@
         <span>{dat.name}</span>
       </td>
       <td class="percent">
-        <span>{$progress2.toFixed(2)}%</span>
+        <span>{$progress2Fixed}%</span>
       </td>
     </div>
     <td class="bar">
