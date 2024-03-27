@@ -11,7 +11,7 @@
     "start:server": "ts-node local/server.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.535.0",
+    "@aws-sdk/client-secrets-manager": "^3.540.0",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "@octokit/rest": "^20.0.2",
