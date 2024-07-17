@@ -14,6 +14,8 @@ app
   .use(bodyParser())
   .use(gitlang.routes())
   .use(gitlang.allowedMethods())
-  .listen(port, () => console.log(`Server port: ${port}`));
+  .listen(port, () => {
+    console.log(`Server port: ${port}`);
+  });
 
 export default app;
