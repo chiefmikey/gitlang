@@ -16,9 +16,7 @@ const repositories = async (username: string, token: string) => {
         type: 'owner',
       },
       (response) =>
-        response.data
-          .filter(({ fork }) => fork === false)
-          .map(({ name }) => name),
+        response.data.filter(({ fork }) => !fork).map(({ name }) => name),
     );
   } catch (error) {
     console.error('Error fetching repositories:', error);

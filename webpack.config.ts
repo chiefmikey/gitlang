@@ -1,12 +1,12 @@
 import path from 'node:path';
 
 import sveltePreprocess from 'svelte-preprocess';
-import { Configuration } from 'webpack';
+import type { Configuration } from 'webpack';
 
 const mode = process.env.NODE_ENV as
   | 'development'
-  | 'production'
   | 'none'
+  | 'production'
   | undefined;
 const production = mode === 'production';
 
