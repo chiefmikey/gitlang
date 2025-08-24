@@ -1,7 +1,7 @@
 {
   "name": "gitlang",
   "version": "4.0.0",
-  "description": "View language usage per repo or total by username",
+  "description": "View language usage per repo or total by username/organization",
   "main": "client/src/index.ts",
   "scripts": {
     "build:dev": "NODE_ENV=development webpack --mode development -w",
@@ -76,6 +76,7 @@
     "languages",
     "language",
     "user",
+    "organization",
     "profile",
     "all",
     "top",
