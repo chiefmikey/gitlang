@@ -1,6 +1,6 @@
 import data from './data';
 
-const handler = (input: string) => {
+const handler = async (input: string) => {
   return data(input);
 };
 

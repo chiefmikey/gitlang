@@ -15,4 +15,6 @@ app.use(async (context) => {
   }
 });
 
-app.listen(port, () => console.log(`Client port: ${port}`));
+app.listen(port, () => {
+  console.log(`Client port: ${port}`);
+});

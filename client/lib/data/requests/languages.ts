@@ -1,10 +1,8 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { type AxiosResponse } from 'axios';
 
 import { ROUTES } from '../constants';
 
-interface LanguageData {
-  [key: string]: number;
-}
+type LanguageData = Record<string, number>;
 
 const languages = async (
   owner: string,

@@ -10,7 +10,7 @@ const router = new Router({ prefix: '/github' });
 
 const setResponse = (
   context: { response: { status: number; body: string } },
-  data: Array<{ [key: string]: number }> | string[],
+  data: Record<string, number>[] | string[],
 ) => {
   if (data.length > 0) {
     context.response.status = 200;

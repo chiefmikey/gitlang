@@ -17,7 +17,7 @@ const auth: () => Promise<string> = async () => {
     );
 
     if (data.SecretString) {
-      const secret = JSON.parse(data.SecretString) as { [key: string]: string };
+      const secret = JSON.parse(data.SecretString) as Record<string, string>;
       return secret[secretName];
     }
 
