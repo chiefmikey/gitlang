@@ -20,8 +20,8 @@ const fetchLanguage = async (owner: string, repo: string, token: string) => {
 };
 
 const languages = async (owner: string, names: string[], token: string) => {
-  const langs = names.map((repo) => fetchLanguage(owner, repo, token));
-  return Promise.all(langs) as Promise<Array<{ [key: string]: number }>>;
+  const langs = names.map(async (repo) => fetchLanguage(owner, repo, token));
+  return Promise.all(langs) as Promise<Record<string, number>[]>;
 };
 
 export default languages;

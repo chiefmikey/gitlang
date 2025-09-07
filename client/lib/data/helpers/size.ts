@@ -1,11 +1,11 @@
-const percentage = (size: number, allSizes: { [key: string]: number }) => {
+const percentage = (size: number, allSizes: Record<string, number>) => {
   return Object.fromEntries(
     Object.entries(allSizes).map(([key, value]) => [key, value / size]),
   );
 };
 
-const eachSize = (languages: { [key: string]: number }[]) => {
-  const allSizes: { [key: string]: number } = {};
+const eachSize = (languages: Record<string, number>[]) => {
+  const allSizes: Record<string, number> = {};
   for (const language of languages) {
     for (const [key, value] of Object.entries(language)) {
       allSizes[key] = (allSizes[key] || 0) + value;
@@ -14,7 +14,7 @@ const eachSize = (languages: { [key: string]: number }[]) => {
   return allSizes;
 };
 
-const totalSize = (languages: { [key: string]: number }[]) => {
+const totalSize = (languages: Record<string, number>[]) => {
   let size = 0;
   for (const language of languages) {
     for (const value of Object.values(language)) {
@@ -24,7 +24,7 @@ const totalSize = (languages: { [key: string]: number }[]) => {
   return size;
 };
 
-const getSize = (languages: { [key: string]: number }[]) =>
+const getSize = (languages: Record<string, number>[]) =>
   percentage(totalSize(languages), eachSize(languages));
 
 export default getSize;
