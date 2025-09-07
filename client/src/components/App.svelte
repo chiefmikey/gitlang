@@ -85,7 +85,7 @@
 
 <template>
   <h5>
-    View language usage per repo<br />or total by username
+    View language usage per repo<br />or total by username/organization
   </h5>
   <Input
     {submit}
