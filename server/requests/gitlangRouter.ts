@@ -1,5 +1,6 @@
 import Router from '@koa/router';
 
+import { listContributors, getContributorLanguages } from '../helpers/github/contributors';
 import languages from '../helpers/github/languages';
 import rateLimit from '../helpers/github/rateLimit';
 import repositories from '../helpers/github/repositories';
@@ -94,6 +95,51 @@ router.get(
     } catch (error) {
       console.error('Error in /repos route:', error);
       setResponse(context, []);
+    }
+  },
+);
+
+router.get(
+  '/contributors',
+  async (context: {
+    request: { query: { owner: string; repo: string } };
+    response: { status: number; body: string };
+  }) => {
+    try {
+      const token = await getToken();
+      const { owner, repo } = context.request.query;
+      const contributors = await listContributors(owner, repo, token);
+      if (contributors.length > 0) {
+        context.response.status = 200;
+        context.response.body = JSON.stringify(contributors);
+      } else {
+        context.response.status = 404;
+        context.response.body = JSON.stringify([]);
+      }
+    } catch (error) {
+      console.error('Error in /contributors route:', error);
+      context.response.status = 500;
+      context.response.body = JSON.stringify({ error: 'Internal server error' });
+    }
+  },
+);
+
+router.get(
+  '/contributor-langs',
+  async (context: {
+    request: { query: { owner: string; repo: string; author: string } };
+    response: { status: number; body: string };
+  }) => {
+    try {
+      const token = await getToken();
+      const { owner, repo, author } = context.request.query;
+      const langs = await getContributorLanguages(owner, repo, author, token);
+      context.response.status = 200;
+      context.response.body = JSON.stringify(langs);
+    } catch (error) {
+      console.error('Error in /contributor-langs route:', error);
+      context.response.status = 500;
+      context.response.body = JSON.stringify({ error: 'Internal server error' });
     }
   },
 );

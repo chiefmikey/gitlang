@@ -1,4 +1,5 @@
 import getSize from './helpers/size';
+import { contributorLanguages } from './requests/contributors';
 import languages from './requests/languages';
 import repositories from './requests/repositories';
 
@@ -19,19 +20,29 @@ const parseOwnerName = (input: string): string => {
 interface UserQuery {
   owner: string;
   repos: string[] | null;
+  author: string | null;
 }
 
 const parseEntry = (entry: string): UserQuery => {
-  if (entry.includes('/')) {
-    const parts = entry.split('/');
+  // Extract @author filter if present (e.g., user/repo@author)
+  let author: string | null = null;
+  let entryWithoutAuthor = entry;
+  const atIndex = entry.lastIndexOf('@');
+  if (atIndex > 0) {
+    author = entry.slice(atIndex + 1);
+    entryWithoutAuthor = entry.slice(0, atIndex);
+  }
+
+  if (entryWithoutAuthor.includes('/')) {
+    const parts = entryWithoutAuthor.split('/');
     const owner = parseOwnerName(parts[0]);
     const repos = parts
       .slice(1)
       .flatMap((part) => part.split(','))
       .filter((name) => name.length > 0);
-    return { owner, repos };
+    return { owner, repos, author };
   }
-  return { owner: parseOwnerName(entry), repos: null };
+  return { owner: parseOwnerName(entryWithoutAuthor), repos: null, author };
 };
 
 interface RepoLangs {
@@ -49,6 +60,21 @@ const fetchEntryData = async (
   } else {
     repoNames = await repositories(entry.owner, options.includeForks);
   }
+
+  if (entry.author) {
+    // Contributor mode: fetch commit-level language data per repo for this author
+    const langResults = await Promise.all(
+      repoNames.map((repo) =>
+        contributorLanguages(entry.owner, repo, entry.author as string),
+      ),
+    );
+    const repoLangs: RepoLangs[] = repoNames.map((name, i) => ({
+      name,
+      langs: langResults[i] || {},
+    }));
+    return { repoLangs };
+  }
+
   const langs = await languages(entry.owner, repoNames);
 
   const repoLangs: RepoLangs[] = repoNames.map((name, i) => ({
