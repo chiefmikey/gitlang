@@ -24,9 +24,9 @@
       />
     {/if}
     {#if data}
-      <table>
-        <tbody>
-          {#if data.length > 0}
+      {#if data.length > 0}
+        <table>
+          <tbody>
             {#each data as dat, index (index)}
               <Progress
                 {count1}
@@ -35,11 +35,11 @@
                 {isDone}
               />
             {/each}
-          {:else}
-            <h4 class="error">{ERROR.NOT_FOUND}</h4>
-          {/if}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      {:else}
+        <h4 class="error">{ERROR.NOT_FOUND}</h4>
+      {/if}
     {/if}
   </div>
 </template>
