@@ -35,11 +35,6 @@ const repositories = async (
     const isOrg = isOrganization(username);
     const parsedName = isOrg ? parseOrgName(username) : username;
 
-    const filterForks = includeForks
-      ? ({ name }: { name: string }) => name
-      : ({ fork, name }: { fork: boolean; name: string }) =>
-          !fork ? name : null;
-
     if (isOrg) {
       return await octokit.paginate(
         octokit.rest.repos.listForOrg,
