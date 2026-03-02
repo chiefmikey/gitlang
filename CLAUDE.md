@@ -23,7 +23,7 @@ server/helpers/github/   # Octokit wrappers (repositories, languages, rateLimit,
 server/requests/         # Koa router endpoints
 local/                   # Local dev servers (client.ts, server.ts)
 public/                  # Static assets, built bundle
-.github/workflows/       # CI/CD (client deploy, server deploy, sonar, auto-merge)
+.github/workflows/       # CI/CD (client deploy, server deploy, auto-merge)
 ```
 
 ## Commands
