@@ -96,6 +96,10 @@ const listContributors = async (
   token: string,
 ): Promise<ContributorInfo[]> => {
   try {
+    if (!token) {
+      console.error('No token');
+      return [];
+    }
     const octokit = new Octokit({ auth: token });
     const contributors = await octokit.paginate(
       octokit.rest.repos.listContributors,
@@ -114,6 +118,8 @@ const listContributors = async (
   }
 };
 
+const BATCH_SIZE = 5;
+
 const getContributorLanguages = async (
   owner: string,
   repo: string,
@@ -121,6 +127,10 @@ const getContributorLanguages = async (
   token: string,
 ): Promise<Record<string, number>> => {
   try {
+    if (!token) {
+      console.error('No token');
+      return {};
+    }
     const octokit = new Octokit({ auth: token });
     const langBytes: Record<string, number> = {};
 
@@ -133,29 +143,38 @@ const getContributorLanguages = async (
     });
     const commitShas = response.data.map(({ sha }) => sha);
 
-    // Fetch file details for each commit
-    for (const sha of commitShas) {
+    const processCommit = async (sha: string) => {
       try {
         const commit = await octokit.rest.repos.getCommit({
           owner,
           repo,
           ref: sha,
         });
-
+        const result: Record<string, number> = {};
         if (commit.data.files) {
           for (const file of commit.data.files) {
             const ext = getExtension(file.filename);
             const lang = EXTENSION_MAP[ext];
             if (lang) {
-              // Use changes (additions + deletions) as a proxy for contribution size
               const changes = (file.additions || 0) + (file.deletions || 0);
-              langBytes[lang] = (langBytes[lang] || 0) + changes;
+              result[lang] = (result[lang] || 0) + changes;
             }
           }
         }
+        return result;
       } catch {
-        // Skip commits we can't fetch (e.g., merge commits from forks)
-        continue;
+        return {};
+      }
+    };
+
+    // Fetch commit details in batches of 5 for controlled concurrency
+    for (let i = 0; i < commitShas.length; i += BATCH_SIZE) {
+      const batch = commitShas.slice(i, i + BATCH_SIZE);
+      const results = await Promise.all(batch.map(processCommit));
+      for (const result of results) {
+        for (const [lang, changes] of Object.entries(result)) {
+          langBytes[lang] = (langBytes[lang] || 0) + changes;
+        }
       }
     }
 

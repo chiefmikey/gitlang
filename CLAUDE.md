@@ -6,13 +6,15 @@ GitLang (gitlang.net) shows programming language usage stats for any GitHub user
 
 ## Architecture
 
-**Two-server split:**
+**Local dev (two servers):**
 - **Client** (port 8080): Koa static server → `public/` with SPA fallback
 - **API** (port 3000): Koa API server → GitHub REST API via Octokit
 
-**Production:**
-- Client: AWS S3 + CloudFront (us-east-2)
-- Server: EC2 via AWS CodeDeploy
+**Production (single CloudFront distribution):**
+- Client: S3 origin → `gitlang.net/*`
+- API: Lambda Function URL origin → `gitlang.net/gitlang/github/*`
+- Region: us-east-2
+- Infrastructure as Code: SAM template at `infra/template.yaml`
 
 ## Key Directories
 
@@ -20,17 +22,20 @@ GitLang (gitlang.net) shows programming language usage stats for any GitHub user
 client/src/components/   # Svelte components (App, Input, Card, Results, Progress, ScrollTop, Footer)
 client/lib/data/         # Data fetching, parsing, aggregation
 server/helpers/github/   # Octokit wrappers (repositories, languages, rateLimit, tokenManager, auth)
-server/requests/         # Koa router endpoints
+server/requests/         # Koa router endpoints (local dev)
+server/lambda.ts         # AWS Lambda handler (production)
+infra/                   # SAM template, CloudFormation, Lambda rotation
 local/                   # Local dev servers (client.ts, server.ts)
 public/                  # Static assets, built bundle
-.github/workflows/       # CI/CD (client deploy, server deploy, auto-merge)
+.github/workflows/       # CI/CD (client deploy → S3, server deploy → Lambda)
 ```
 
 ## Commands
 
 ```bash
 npm run build:dev     # Development build with watch mode
-npm run build:prod    # Production build
+npm run build:prod    # Production build (client)
+npm run build:lambda  # Production build (API Lambda bundle)
 npm run start:client  # Start client dev server (port 8080)
 npm run start:server  # Start API dev server (port 3000)
 npm run fix           # ESLint autofix
@@ -39,9 +44,9 @@ npm run fix           # ESLint autofix
 ## Tech Stack
 
 - **Frontend:** Svelte 5 (using Svelte 4 syntax for compatibility), SCSS, Webpack 5
-- **Backend:** Koa 3, @koa/router, @octokit/rest
-- **Auth:** GitHub PAT via env var (supports multiple comma-separated tokens) with AWS Secrets Manager fallback
-- **Build:** Webpack 5 + Babel + svelte-loader + svelte-preprocess
+- **Backend:** AWS Lambda (Node.js 20, arm64) with @octokit/rest; Koa 3 for local dev
+- **Auth:** GitHub PAT via Lambda env var with AWS Secrets Manager fallback
+- **Build:** Webpack 5 + Babel + svelte-loader (client), esbuild (Lambda)
 
 ## Input Formats
 
@@ -70,3 +75,11 @@ npm run fix           # ESLint autofix
 - `GET /gitlang/github/repos?username=X&includeForks=true|false`
 - `GET /gitlang/github/langs?owner=X&repos=[...]`
 - `GET /gitlang/github/rate-limit`
+- `GET /gitlang/github/contributors?owner=X&repo=Y`
+- `GET /gitlang/github/contributor-langs?owner=X&repo=Y&author=Z`
+
+## Deployment
+
+- **Client:** Push to main → GitHub Actions → S3 sync + CloudFront invalidation
+- **API:** Push to main (server/** changes) → GitHub Actions → esbuild bundle → SAM deploy to Lambda
+- **CloudFront:** Single distribution routes `/gitlang/github/*` → Lambda, `*` → S3
