@@ -1,6 +1,6 @@
 // source
 export const INPUT = {
-  PLACEHOLDER: '[ user/repo,repo ] [ user ? user ]',
+  PLACEHOLDER: '[ user/repo ] [ user ? user ] [ user/repo@author ]',
 };
 
 export const ERROR = {
@@ -20,4 +20,6 @@ export const ROUTES = {
   REPOS: `${API_BASE}/repos`,
   LANGS: `${API_BASE}/langs`,
   RATE_LIMIT: `${API_BASE}/rate-limit`,
+  CONTRIBUTORS: `${API_BASE}/contributors`,
+  CONTRIBUTOR_LANGS: `${API_BASE}/contributor-langs`,
 };
