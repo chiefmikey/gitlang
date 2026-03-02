@@ -10,14 +10,26 @@ interface TokenState {
 
 let tokens: TokenState[] = [];
 let currentIndex = 0;
-let initialized = false;
+let lastInitTime = 0;
+
+// Re-check AWS token every 5 minutes (matches auth.ts cache TTL)
+// so rotated tokens are picked up automatically
+const REINIT_INTERVAL_MS = 5 * 60 * 1000;
 
 const initTokens = async (): Promise<void> => {
-  if (initialized) {
+  const now = Date.now();
+  const envTokens = process.env.GH_PAT;
+
+  // For env tokens, only initialize once (they don't change at runtime)
+  if (envTokens && lastInitTime > 0) {
     return;
   }
 
-  const envTokens = process.env.GH_PAT;
+  // For AWS tokens, reinitialize periodically to pick up rotations
+  if (!envTokens && lastInitTime > 0 && now - lastInitTime < REINIT_INTERVAL_MS) {
+    return;
+  }
+
   if (envTokens) {
     tokens = envTokens.split(',').map((t) => ({
       token: t.trim(),
@@ -27,11 +39,15 @@ const initTokens = async (): Promise<void> => {
   } else {
     const awsToken = await auth();
     if (awsToken) {
-      tokens = [{ token: awsToken, remaining: 5000, reset: 0 }];
+      // Check if the token changed (rotation happened)
+      const existingToken = tokens.length > 0 ? tokens[0].token : '';
+      if (awsToken !== existingToken) {
+        tokens = [{ token: awsToken, remaining: 5000, reset: 0 }];
+      }
     }
   }
 
-  initialized = true;
+  lastInitTime = now;
 };
 
 const updateTokenRateLimit = (
@@ -90,7 +106,6 @@ const refreshTokenRateLimits = async (): Promise<void> => {
       state.remaining = response.data.rate.remaining;
       state.reset = response.data.rate.reset;
     } catch {
-      // Token might be invalid, set remaining to 0
       state.remaining = 0;
     }
   }
