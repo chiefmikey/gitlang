@@ -16,28 +16,57 @@ const parseOwnerName = (input: string): string => {
   return input;
 };
 
-const data = async (username: string, options: DataOptions = {}) => {
+interface UserQuery {
+  owner: string;
+  repos: string[] | null; // null means fetch all repos
+}
+
+const parseEntry = (entry: string): UserQuery => {
+  if (entry.includes('/')) {
+    const parts = entry.split('/');
+    const owner = parseOwnerName(parts[0]);
+    const repos = parts
+      .slice(1)
+      .flatMap((part) => part.split(','))
+      .filter((name) => name.length > 0);
+    return { owner, repos };
+  }
+  return { owner: parseOwnerName(entry), repos: null };
+};
+
+const fetchEntryData = async (
+  entry: UserQuery,
+  options: DataOptions,
+): Promise<{ names: string[]; langs: Record<string, number>[] }> => {
+  let repoNames: string[];
+  if (entry.repos) {
+    repoNames = entry.repos;
+  } else {
+    repoNames = await repositories(entry.owner, options.includeForks);
+  }
+  const langs = await languages(entry.owner, repoNames);
+  return { names: repoNames, langs: langs.flat() };
+};
+
+const data = async (input: string, options: DataOptions = {}) => {
   try {
-    window.history.pushState('', '', `/${username}`);
-    let owner = username;
-    let allNames: string[];
-    if (username.includes('/')) {
-      const parts = username.split('/');
-      owner = parts[0];
-      // Support comma-separated repos: username/repo1,repo2,repo3
-      allNames = parts
-        .slice(1)
-        .flatMap((part) => part.split(','))
-        .filter((name) => name.length > 0);
-      // Parse organization prefix for the owner part
-      owner = parseOwnerName(owner);
-    } else {
-      allNames = await repositories(username, options.includeForks);
-      // Parse organization prefix for languages API call
-      owner = parseOwnerName(username);
-    }
-    const allLanguages = await languages(owner, allNames);
-    const space = getSize(allLanguages.flat());
+    window.history.pushState('', '', `/${input}`);
+
+    // Split by + for multiple users
+    const entries = input
+      .split('+')
+      .map((e) => e.trim())
+      .filter((e) => e.length > 0)
+      .map(parseEntry);
+
+    const results = await Promise.all(
+      entries.map((entry) => fetchEntryData(entry, options)),
+    );
+
+    const allNames = results.flatMap((r) => r.names);
+    const allLangs = results.flatMap((r) => r.langs);
+    const space = getSize(allLangs);
+
     return { data: { allNames, space } };
   } catch (error) {
     console.error('Error getting langs', error);
