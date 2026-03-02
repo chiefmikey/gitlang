@@ -68,6 +68,7 @@
 <template>
   <tr
     id="row{index}"
+    class="info{index}"
     style:animation="fade-in-height .5s ease-out {index / 8}s forwards"
   >
     <td class="name">
