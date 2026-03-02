@@ -124,15 +124,14 @@ const getContributorLanguages = async (
     const octokit = new Octokit({ auth: token });
     const langBytes: Record<string, number> = {};
 
-    // Fetch commits by this author (limit to most recent 100 to avoid API exhaustion)
-    const commits = await octokit.paginate(
-      octokit.rest.repos.listCommits,
-      { owner, repo, author, per_page: 100 },
-      (response) => response.data.map(({ sha }) => sha),
-    );
-
-    // Limit to 50 commits to stay within rate limits
-    const commitShas = commits.slice(0, 50);
+    // Fetch most recent 50 commits by this author (single page, no pagination)
+    const response = await octokit.rest.repos.listCommits({
+      owner,
+      repo,
+      author,
+      per_page: 50,
+    });
+    const commitShas = response.data.map(({ sha }) => sha);
 
     // Fetch file details for each commit
     for (const sha of commitShas) {
