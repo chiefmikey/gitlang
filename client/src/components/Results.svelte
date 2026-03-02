@@ -10,6 +10,7 @@
   export let data;
   export let count1;
   export let count2;
+  export let errorMessage;
   export let isDone;
 </script>
 
@@ -23,7 +24,9 @@
         {data}
       />
     {/if}
-    {#if data}
+    {#if errorMessage}
+      <h4 class="error">{errorMessage}</h4>
+    {:else if data}
       {#if data.length > 0}
         <table>
           <tbody>
