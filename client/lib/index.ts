@@ -1,7 +1,11 @@
 import data from './data';
 
-const handler = async (input: string) => {
-  return data(input);
+interface HandlerOptions {
+  includeForks?: boolean;
+}
+
+const handler = async (input: string, options: HandlerOptions = {}) => {
+  return data(input, options);
 };
 
 export default handler;

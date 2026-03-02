@@ -20,7 +20,11 @@ const parseOrgName = (input: string): string => {
   return input;
 };
 
-const repositories = async (username: string, token: string) => {
+const repositories = async (
+  username: string,
+  token: string,
+  includeForks = false,
+) => {
   try {
     if (!token) {
       console.error('No token');
@@ -31,6 +35,11 @@ const repositories = async (username: string, token: string) => {
     const isOrg = isOrganization(username);
     const parsedName = isOrg ? parseOrgName(username) : username;
 
+    const filterForks = includeForks
+      ? ({ name }: { name: string }) => name
+      : ({ fork, name }: { fork: boolean; name: string }) =>
+          !fork ? name : null;
+
     if (isOrg) {
       return await octokit.paginate(
         octokit.rest.repos.listForOrg,
@@ -39,7 +48,9 @@ const repositories = async (username: string, token: string) => {
           type: 'public',
         },
         (response) =>
-          response.data.filter(({ fork }) => !fork).map(({ name }) => name),
+          response.data
+            .filter(({ fork }) => includeForks || !fork)
+            .map(({ name }) => name),
       );
     }
     return await octokit.paginate(
@@ -49,7 +60,9 @@ const repositories = async (username: string, token: string) => {
         type: 'owner',
       },
       (response) =>
-        response.data.filter(({ fork }) => !fork).map(({ name }) => name),
+        response.data
+          .filter(({ fork }) => includeForks || !fork)
+          .map(({ name }) => name),
     );
   } catch (error) {
     console.error('Error fetching repositories:', error);

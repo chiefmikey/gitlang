@@ -2,6 +2,10 @@ import getSize from './helpers/size';
 import languages from './requests/languages';
 import repositories from './requests/repositories';
 
+interface DataOptions {
+  includeForks?: boolean;
+}
+
 const parseOwnerName = (input: string): string => {
   if (input.startsWith('@')) {
     return input.slice(1);
@@ -12,7 +16,7 @@ const parseOwnerName = (input: string): string => {
   return input;
 };
 
-const data = async (username: string) => {
+const data = async (username: string, options: DataOptions = {}) => {
   try {
     window.history.pushState('', '', `/${username}`);
     let owner = username;
@@ -22,7 +26,7 @@ const data = async (username: string) => {
       // Parse organization prefix for the owner part
       owner = parseOwnerName(owner);
     } else {
-      allNames = await repositories(username);
+      allNames = await repositories(username, options.includeForks);
       // Parse organization prefix for languages API call
       owner = parseOwnerName(username);
     }
