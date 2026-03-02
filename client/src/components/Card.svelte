@@ -16,7 +16,9 @@
         href={url}>{current}
       </a>
     {/if}
-    {#if data && data.length > 0}
+    {#if data === undefined}
+      <h5>Loading...</h5>
+    {:else if data && data.length > 0}
       {#if count2 || count1}
         <div class="counts">
           {#if count1}
@@ -27,8 +29,6 @@
           {/if}
         </div>
       {/if}
-    {:else}
-      <h5>Loading...</h5>
     {/if}
   </div>
 </template>

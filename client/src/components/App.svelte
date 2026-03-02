@@ -73,6 +73,8 @@
         const allData = await getData(current);
         if (allData) {
           processData(allData);
+        } else {
+          data = [];
         }
       }
       return true;
