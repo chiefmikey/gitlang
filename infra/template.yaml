@@ -2,13 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: GitLang API - Lambda Function URL behind CloudFront
 
-Parameters:
-  GhPat:
-    Type: String
-    NoEcho: true
-    Description: GitHub Personal Access Token
-    Default: ''
-
 Globals:
   Function:
     Timeout: 30
@@ -26,7 +19,6 @@ Resources:
         - arm64
       Environment:
         Variables:
-          GH_PAT: !Ref GhPat
           NODE_ENV: production
       FunctionUrlConfig:
         AuthType: NONE

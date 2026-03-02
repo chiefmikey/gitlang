@@ -4,7 +4,7 @@ import { listContributors, getContributorLanguages } from '../helpers/github/con
 import languages from '../helpers/github/languages';
 import rateLimit from '../helpers/github/rateLimit';
 import repositories from '../helpers/github/repositories';
-import { getToken, updateTokenRateLimit } from '../helpers/github/tokenManager';
+import { getToken } from '../helpers/github/tokenManager';
 
 const router = new Router({ prefix: '/github' });
 
@@ -30,7 +30,6 @@ router.get(
       const token = await getToken();
       const info = await rateLimit(token);
       if (info) {
-        updateTokenRateLimit(token, info.remaining, info.reset);
         context.response.status = 200;
         context.response.body = JSON.stringify(info);
       } else {
@@ -71,7 +70,6 @@ router.get(
 
       const rateLimitInfo = await rateLimit(token);
       if (rateLimitInfo) {
-        updateTokenRateLimit(token, rateLimitInfo.remaining, rateLimitInfo.reset);
         if (rateLimitInfo.remaining < repoList.length) {
           context.response.status = 429;
           context.response.body = JSON.stringify({

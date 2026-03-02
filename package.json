@@ -7,7 +7,6 @@
     "build:dev": "NODE_ENV=development webpack --mode development -w",
     "build:prod": "NODE_ENV=production webpack --mode production",
     "build:lambda": "esbuild server/lambda.ts --bundle --platform=node --target=node20 --outfile=dist/lambda/index.mjs --format=esm --external:@aws-sdk/*",
-    "build:rotation": "esbuild infra/lambda/rotate-token.ts --bundle --platform=node --target=node20 --outfile=dist/rotation/index.mjs --format=esm --external:@aws-sdk/*",
     "fix": "eslint --fix 'client/src/**/*' 'server/**/*'",
     "start:client": "ts-node local/client.ts",
     "start:server": "ts-node local/server.ts"
@@ -16,6 +15,7 @@
     "@aws-sdk/client-secrets-manager": "^3.888.0",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^15.3.1",
+    "@octokit/auth-app": "^8.2.0",
     "@octokit/rest": "^22.0.0",
     "axios": "^1.12.1",
     "dotenv": "^17.2.2",
