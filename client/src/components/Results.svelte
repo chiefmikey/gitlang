@@ -12,6 +12,7 @@
   export let count2;
   export let errorMessage;
   export let isDone;
+  export let langBreakdown;
 </script>
 
 <template>
@@ -36,6 +37,7 @@
                 {dat}
                 {index}
                 {isDone}
+                breakdown={langBreakdown ? langBreakdown[dat.name] : undefined}
               />
             {/each}
           </tbody>

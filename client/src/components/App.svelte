@@ -11,6 +11,7 @@
   let input = '';
   let current = '';
   let data;
+  let langBreakdown;
   let count1;
   let count2;
   let done = false;
@@ -73,6 +74,9 @@
       collectData.sort((a, b) => b.percent - a.percent);
       data = collectData;
     }
+    if (allData.langBreakdown) {
+      langBreakdown = allData.langBreakdown;
+    }
   };
 
   const submit = async (event) => {
@@ -86,6 +90,7 @@
         }
         done = false;
         data = undefined;
+        langBreakdown = undefined;
         count1 = undefined;
         count2 = undefined;
         errorMessage = '';
@@ -123,6 +128,7 @@
     {data}
     {errorMessage}
     {isDone}
+    {langBreakdown}
   />
   {#if done}
     <ScrollTop />
