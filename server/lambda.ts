@@ -12,17 +12,8 @@ import rateLimit from './helpers/github/rateLimit';
 import repositories from './helpers/github/repositories';
 import auth from './helpers/github/auth';
 
-let cachedToken = '';
-
 const getToken = async (): Promise<string> => {
-  const envToken = process.env.GH_PAT;
-  if (envToken) {
-    return envToken.split(',')[0].trim();
-  }
-  if (!cachedToken) {
-    cachedToken = await auth();
-  }
-  return cachedToken;
+  return auth();
 };
 
 const json = (

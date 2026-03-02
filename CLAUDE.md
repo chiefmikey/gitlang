@@ -24,7 +24,7 @@ client/lib/data/         # Data fetching, parsing, aggregation
 server/helpers/github/   # Octokit wrappers (repositories, languages, rateLimit, tokenManager, auth)
 server/requests/         # Koa router endpoints (local dev)
 server/lambda.ts         # AWS Lambda handler (production)
-infra/                   # SAM template, CloudFormation, Lambda rotation
+infra/                   # SAM template
 local/                   # Local dev servers (client.ts, server.ts)
 public/                  # Static assets, built bundle
 .github/workflows/       # CI/CD (client deploy → S3, server deploy → Lambda)
@@ -45,7 +45,7 @@ npm run fix           # ESLint autofix
 
 - **Frontend:** Svelte 5 (using Svelte 4 syntax for compatibility), SCSS, Webpack 5
 - **Backend:** AWS Lambda (Node.js 20, arm64) with @octokit/rest; Koa 3 for local dev
-- **Auth:** GitHub PAT via Lambda env var with AWS Secrets Manager fallback
+- **Auth:** GitHub App (GitLang Stats, App ID 2992472) → auto-rotating installation tokens via @octokit/auth-app. Credentials in AWS Secrets Manager (`AUTH_GITLANG`)
 - **Build:** Webpack 5 + Babel + svelte-loader (client), esbuild (Lambda)
 
 ## Input Formats
@@ -61,14 +61,16 @@ npm run fix           # ESLint autofix
 - **DO NOT change the animation or UI design** — it's intentionally crafted
 - Svelte components use Svelte 4 syntax (export let, on:click, $:) for consistency
 - API routes are prefixed `/gitlang/github/`
-- Token management supports multiple PATs with rate-limit-aware rotation
+- Auth uses GitHub App with auto-rotating installation tokens (no manual rotation needed)
 - Fork inclusion is optional (default: excluded)
 - Language bars are clickable to show per-repo breakdown (when multiple repos)
 
 ## Environment Variables
 
-- `GH_PAT` — GitHub Personal Access Token(s), comma-separated for multi-token rotation
 - `NODE_ENV` — development or production
+- `GH_APP_ID` — (optional) GitHub App ID, overrides Secrets Manager
+- `GH_INSTALLATION_ID` — (optional) GitHub App Installation ID
+- `GH_PRIVATE_KEY` — (optional) GitHub App private key PEM
 
 ## API Endpoints
 
