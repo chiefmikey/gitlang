@@ -22,7 +22,13 @@ const data = async (username: string, options: DataOptions = {}) => {
     let owner = username;
     let allNames: string[];
     if (username.includes('/')) {
-      [owner, ...allNames] = username.split('/');
+      const parts = username.split('/');
+      owner = parts[0];
+      // Support comma-separated repos: username/repo1,repo2,repo3
+      allNames = parts
+        .slice(1)
+        .flatMap((part) => part.split(','))
+        .filter((name) => name.length > 0);
       // Parse organization prefix for the owner part
       owner = parseOwnerName(owner);
     } else {
