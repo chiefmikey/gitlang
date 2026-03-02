@@ -61,6 +61,14 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['**/*.ts', '**/*.tsx'],
+      rules: {
+        // TypeScript handles undefined checks better than ESLint's no-undef
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+      },
+    },
+    {
       files: ['**/*.svelte'],
       parser: 'svelte-eslint-parser',
       parserOptions: {
