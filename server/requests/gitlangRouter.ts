@@ -54,7 +54,20 @@ router.get(
     try {
       const token = await getToken();
       const { owner, repos } = context.request.query;
-      const repoList = JSON.parse(repos) as string[];
+      let repoList: string[];
+      try {
+        const parsed = JSON.parse(repos);
+        if (!Array.isArray(parsed) || !parsed.every((r: unknown) => typeof r === 'string')) {
+          context.response.status = 400;
+          context.response.body = JSON.stringify({ error: 'repos must be a JSON array of strings' });
+          return;
+        }
+        repoList = parsed;
+      } catch {
+        context.response.status = 400;
+        context.response.body = JSON.stringify({ error: 'repos must be valid JSON' });
+        return;
+      }
 
       const rateLimitInfo = await rateLimit(token);
       if (rateLimitInfo) {

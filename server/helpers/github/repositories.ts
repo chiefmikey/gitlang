@@ -1,7 +1,5 @@
 import { Octokit } from '@octokit/rest';
 
-let octokit: Octokit;
-
 const isOrganization = (input: string): boolean => {
   return (
     input.startsWith('@') ||
@@ -30,7 +28,7 @@ const repositories = async (
       console.error('No token');
       return [];
     }
-    octokit = new Octokit({ auth: token });
+    const octokit = new Octokit({ auth: token });
 
     const isOrg = isOrganization(username);
     const parsedName = isOrg ? parseOrgName(username) : username;

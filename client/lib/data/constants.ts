@@ -14,7 +14,7 @@ const isLocal = hostname === 'localhost';
 
 const API_BASE = isLocal
   ? 'http://localhost:3000/gitlang/github'
-  : 'https://api.5105015032.com/gitlang/github';
+  : '/gitlang/github';
 
 export const ROUTES = {
   REPOS: `${API_BASE}/repos`,

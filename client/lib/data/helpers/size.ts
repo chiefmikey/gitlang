@@ -1,4 +1,5 @@
 const percentage = (size: number, allSizes: Record<string, number>) => {
+  if (size === 0) return {};
   return Object.fromEntries(
     Object.entries(allSizes).map(([key, value]) => [key, value / size]),
   );
