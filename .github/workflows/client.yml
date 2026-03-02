@@ -12,6 +12,10 @@ on:
         type: boolean
         default: true
 
+concurrency:
+  group: deploy-client
+  cancel-in-progress: false
+
 jobs:
   deploy:
     name: Deploy
