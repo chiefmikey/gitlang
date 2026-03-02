@@ -15,6 +15,7 @@
   let count2;
   let done = false;
   let errorMessage = '';
+  let includeForks = false;
 
   onMount(async () => {
     const windowOwner = `${window.location.pathname
@@ -33,7 +34,7 @@
 
   const getData = async (input) => {
     try {
-      const response = await handler(input);
+      const response = await handler(input, { includeForks });
       return response.data;
     } catch (error) {
       if (error.message) {
@@ -96,6 +97,7 @@
   </h5>
   <Input
     {submit}
+    bind:includeForks
     bind:input
   />
   <Results

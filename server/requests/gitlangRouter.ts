@@ -82,13 +82,14 @@ router.get(
 router.get(
   '/repos',
   async (context: {
-    request: { query: { username: string } };
+    request: { query: { username: string; includeForks?: string } };
     response: { status: number; body: string };
   }) => {
     try {
       const token = await getToken();
-      const { username } = context.request.query;
-      const response = await repositories(username, token);
+      const { username, includeForks } = context.request.query;
+      const forks = includeForks === 'true';
+      const response = await repositories(username, token, forks);
       setResponse(context, response);
     } catch (error) {
       console.error('Error in /repos route:', error);
