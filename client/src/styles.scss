@@ -45,10 +45,9 @@ body {
 
 .wrapper {
   position: absolute;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   width: 100%;
-  min-width: map.get($sizes, 'min-width');
-  max-width: map.get($sizes, 'max-width');
   height: 100%;
   overflow: hidden scroll;
   background-color: map.get($colors, 'dark-grey');
