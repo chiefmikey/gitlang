@@ -61,19 +61,17 @@
     id="row{index}"
     style:animation="fade-in-height .5s ease-out {index / 8}s forwards"
   >
-    <div class="info info{index}">
-      <td class="name">
-        <span>{dat.name}</span>
-      </td>
-      <td class="percent">
-        <span>{$progress2Fixed}%</span>
-      </td>
-    </div>
+    <td class="name">
+      <span>{dat.name}</span>
+    </td>
+    <td class="percent">
+      <span>{$progress2Fixed}%</span>
+    </td>
     <td class="bar">
       <progress
         id="bar{index}"
         value={$progress}
-      />
+      ></progress>
     </td>
   </tr>
 </template>
@@ -99,22 +97,13 @@ progress::-webkit-progress-value {
   background: var(--c, #fe9fc9);
 }
 
-.info {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  width: 100%;
-  margin-bottom: -37px;
-  z-index: 1;
-  height: 37px;
-}
-
 .name {
   width: 100%;
   text-align: left;
   padding: 0;
   white-space: nowrap;
   overflow: hidden;
+  vertical-align: bottom;
 }
 
 .name span {
@@ -135,6 +124,7 @@ progress::-webkit-progress-value {
   align-items: flex-end;
   height: 18px;
   padding: 0 10px 0 10px;
+  vertical-align: bottom;
 }
 
 .percent span {

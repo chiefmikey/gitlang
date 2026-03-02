@@ -39,7 +39,7 @@ const configuration: Configuration = {
                   '@babel/preset-env',
                   {
                     targets: {
-                      node: 'current',
+                      browsers: ['> 1%', 'last 2 versions', 'not dead'],
                     },
                   },
                 ],
@@ -54,16 +54,12 @@ const configuration: Configuration = {
         use: {
           loader: 'svelte-loader',
           options: {
-            compilerOptions: {
-              dev: !production,
-            },
+            compilerOptions: { dev: !production },
             // emitCss: production,
             hotReload: !production,
             preprocess: sveltePreprocess({
               postcss: true,
-              scss: {
-                includePaths: ['src'],
-              },
+              scss: { includePaths: ['src'] },
             }),
           },
         },
@@ -81,9 +77,7 @@ const configuration: Configuration = {
   },
   mode: production ? 'production' : 'development',
   devtool: production ? false : 'source-map',
-  experiments: {
-    topLevelAwait: true,
-  },
+  experiments: { topLevelAwait: true },
 };
 
 export default configuration;
