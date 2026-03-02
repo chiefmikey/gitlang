@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse } from 'axios';
 
-import { ROUTES } from '../constants';
+import { ERROR, ROUTES } from '../constants';
 
 type LanguageData = Record<string, number>;
 
@@ -20,7 +20,10 @@ const languages = async (
     );
     return response.data.length > 0 ? response.data : [];
   } catch (error) {
-    console.error('Error getting token from auth api', error);
+    if (axios.isAxiosError(error) && error.response?.status === 429) {
+      throw new Error(ERROR.RATE_LIMIT);
+    }
+    console.error('Error fetching languages', error);
     throw error;
   }
 };

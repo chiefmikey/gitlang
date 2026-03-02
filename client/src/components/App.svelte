@@ -14,6 +14,7 @@
   let count1;
   let count2;
   let done = false;
+  let errorMessage = '';
 
   onMount(async () => {
     const windowOwner = `${window.location.pathname
@@ -35,6 +36,9 @@
       const response = await handler(input);
       return response.data;
     } catch (error) {
+      if (error.message) {
+        errorMessage = error.message;
+      }
       console.error(error);
     }
   };
@@ -68,6 +72,7 @@
         data = undefined;
         count1 = undefined;
         count2 = undefined;
+        errorMessage = '';
         current = input.replaceAll(' ', '');
         input = '';
         const allData = await getData(current);
@@ -98,6 +103,7 @@
     {count2}
     {current}
     {data}
+    {errorMessage}
     {isDone}
   />
   {#if done}
