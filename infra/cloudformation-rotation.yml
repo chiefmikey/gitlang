@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: GitLang GitHub PAT rotation infrastructure
+
+Parameters:
+  NotificationEmail:
+    Type: String
+    Description: Email address for rotation notifications
+
+  RotationSchedule:
+    Type: String
+    Default: 'rate(30 days)'
+    Description: How often to check/rotate the token (e.g., rate(30 days))
+
+Resources:
+  RotationNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: gitlang-token-rotation
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref NotificationEmail
+
+  RotationLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: gitlang-token-rotation-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: SecretsManagerAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                  - secretsmanager:PutSecretValue
+                  - secretsmanager:UpdateSecretVersionStage
+                  - secretsmanager:DescribeSecret
+                Resource: !Sub 'arn:aws:secretsmanager:us-east-2:${AWS::AccountId}:secret:AUTH_GITLANG*'
+        - PolicyName: SNSPublish
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: sns:Publish
+                Resource: !Ref RotationNotificationTopic
+
+  RotationLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: gitlang-rotate-token
+      Runtime: nodejs20.x
+      Handler: rotate-token.handler
+      Role: !GetAtt RotationLambdaRole.Arn
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Ref RotationNotificationTopic
+      Code:
+        # Deploy the compiled Lambda code here
+        # Build: npx tsc infra/lambda/rotate-token.ts --outDir infra/lambda/dist
+        # Then zip and upload to S3 or inline
+        ZipFile: |
+          // Placeholder - deploy compiled TypeScript
+          exports.handler = async (event) => {
+            console.log('Deploy the compiled rotate-token.ts');
+          };
+
+  RotationLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref RotationLambdaFunction
+      Action: lambda:InvokeFunction
+      Principal: secretsmanager.amazonaws.com
+
+  SecretRotationSchedule:
+    Type: AWS::SecretsManager::RotationSchedule
+    Properties:
+      SecretId: AUTH_GITLANG
+      RotationLambdaARN: !GetAtt RotationLambdaFunction.Arn
+      RotationRules:
+        ScheduleExpression: !Ref RotationSchedule
+
+Outputs:
+  NotificationTopicArn:
+    Description: SNS topic for rotation notifications
+    Value: !Ref RotationNotificationTopic
+
+  LambdaFunctionArn:
+    Description: Rotation Lambda ARN
+    Value: !GetAtt RotationLambdaFunction.Arn

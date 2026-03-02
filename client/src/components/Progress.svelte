@@ -8,6 +8,9 @@
   export let index;
   export let count1;
   export let isDone;
+  export let breakdown;
+
+  let expanded = false;
 
   const finalPercent = Number((dat.percent * 100).toFixed(2));
   const speed = (index / 8) * 1000 + 222;
@@ -29,6 +32,12 @@
       return 0.003;
     }
     return perc;
+  };
+
+  const toggleBreakdown = () => {
+    if (breakdown && breakdown.length > 1) {
+      expanded = !expanded;
+    }
   };
 
   onMount(() => {
@@ -59,23 +68,36 @@
 <template>
   <tr
     id="row{index}"
+    class="info{index}"
     style:animation="fade-in-height .5s ease-out {index / 8}s forwards"
   >
-    <div class="info info{index}">
-      <td class="name">
+    <td class="name">
+      {#if breakdown && breakdown.length > 1}
+        <button class="lang-btn" on:click={toggleBreakdown}>{dat.name}</button>
+      {:else}
         <span>{dat.name}</span>
-      </td>
-      <td class="percent">
-        <span>{$progress2Fixed}%</span>
-      </td>
-    </div>
+      {/if}
+    </td>
+    <td class="percent">
+      <span>{$progress2Fixed}%</span>
+    </td>
     <td class="bar">
       <progress
         id="bar{index}"
         value={$progress}
-      />
+      ></progress>
     </td>
   </tr>
+  {#if expanded && breakdown}
+    {#each breakdown as item}
+      <tr class="breakdown-row">
+        <td class="breakdown-repo" colspan="3">
+          <span class="breakdown-name">{item.repo}</span>
+          <span class="breakdown-percent">{(item.percent * 100).toFixed(1)}%</span>
+        </td>
+      </tr>
+    {/each}
+  {/if}
 </template>
 
 <style>
@@ -99,28 +121,37 @@ progress::-webkit-progress-value {
   background: var(--c, #fe9fc9);
 }
 
-.info {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  width: 100%;
-  margin-bottom: -37px;
-  z-index: 1;
-  height: 37px;
-}
-
 .name {
   width: 100%;
   text-align: left;
   padding: 0;
   white-space: nowrap;
   overflow: hidden;
+  vertical-align: bottom;
 }
 
-.name span {
+.name span,
+.name .lang-btn {
   font-size: 16px;
   padding: 0 5px 0 10px;
   font-weight: 600;
+}
+
+.name .lang-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  width: auto;
+  height: auto;
+  text-align: left;
+}
+
+.name .lang-btn:hover {
+  color: #fe9fc9;
 }
 
 .bar {
@@ -135,10 +166,36 @@ progress::-webkit-progress-value {
   align-items: flex-end;
   height: 18px;
   padding: 0 10px 0 10px;
+  vertical-align: bottom;
 }
 
 .percent span {
   font-size: 12px;
   padding: 0;
+}
+
+.breakdown-row {
+  height: auto !important;
+  opacity: 1;
+  animation: none !important;
+}
+
+.breakdown-repo {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 15px 2px 25px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.breakdown-name {
+  font-size: 11px;
+  padding: 0;
+}
+
+.breakdown-percent {
+  font-size: 10px;
+  padding: 0;
+  opacity: 0.8;
 }
 </style>

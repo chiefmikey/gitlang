@@ -4,6 +4,8 @@
   import { INPUT } from '../../lib/data/constants';
 
   export let input;
+  export let includeForks;
+  export let randomize;
   export let submit;
 
   const { PLACEHOLDER } = INPUT;
@@ -77,10 +79,24 @@
       on:click={handleClick}
     />
   </div>
-  <button
-    type="button"
-    on:click={submit}>Submit
-  </button>
+  <div class="controls">
+    <label class="toggle">
+      <input
+        type="checkbox"
+        bind:checked={includeForks}
+      />
+      <span>include forks</span>
+    </label>
+    <button
+      type="button"
+      on:click={submit}>Submit
+    </button>
+    <button
+      class="random-btn"
+      type="button"
+      on:click={randomize}>Random
+    </button>
+  </div>
 </template>
 
 <style>
@@ -89,5 +105,55 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    color: #e8e6e2;
+    opacity: 0.6;
+  }
+
+  .toggle:hover {
+    opacity: 1;
+  }
+
+  .toggle input[type="checkbox"] {
+    width: auto;
+    min-width: auto;
+    cursor: pointer;
+    accent-color: #fe9fc9;
+  }
+
+  .toggle span {
+    padding: 0;
+    white-space: nowrap;
+  }
+
+  .random-btn {
+    background-color: transparent;
+    color: #e8e6e2;
+    border: 1px solid #e8e6e2;
+    font-size: 10px;
+    padding: 6px 12px;
+    height: auto;
+    width: auto;
+    opacity: 0.6;
+  }
+
+  .random-btn:hover {
+    opacity: 1;
+    border-color: #fe9fc9;
+    color: #fe9fc9;
   }
 </style>

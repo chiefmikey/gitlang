@@ -10,7 +10,9 @@
   export let data;
   export let count1;
   export let count2;
+  export let errorMessage;
   export let isDone;
+  export let langBreakdown;
 </script>
 
 <template>
@@ -23,23 +25,26 @@
         {data}
       />
     {/if}
-    {#if data}
-      <table>
-        <tbody>
-          {#if data.length > 0}
+    {#if errorMessage}
+      <h4 class="error">{errorMessage}</h4>
+    {:else if data}
+      {#if data.length > 0}
+        <table>
+          <tbody>
             {#each data as dat, index (index)}
               <Progress
                 {count1}
                 {dat}
                 {index}
                 {isDone}
+                breakdown={langBreakdown ? langBreakdown[dat.name] : undefined}
               />
             {/each}
-          {:else}
-            <h4 class="error">{ERROR.NOT_FOUND}</h4>
-          {/if}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      {:else}
+        <h4 class="error">{ERROR.NOT_FOUND}</h4>
+      {/if}
     {/if}
   </div>
 </template>
