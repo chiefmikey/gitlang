@@ -1,15 +1,9 @@
 import Router from '@koa/router';
 
-import auth from '../helpers/github/auth';
 import languages from '../helpers/github/languages';
 import rateLimit from '../helpers/github/rateLimit';
 import repositories from '../helpers/github/repositories';
-
-const environmentToken = process.env.GH_PAT;
-
-const getToken = async (): Promise<string> => {
-  return environmentToken ?? (await auth());
-};
+import { getToken, updateTokenRateLimit } from '../helpers/github/tokenManager';
 
 const router = new Router({ prefix: '/github' });
 
@@ -35,6 +29,7 @@ router.get(
       const token = await getToken();
       const info = await rateLimit(token);
       if (info) {
+        updateTokenRateLimit(token, info.remaining, info.reset);
         context.response.status = 200;
         context.response.body = JSON.stringify(info);
       } else {
@@ -61,15 +56,18 @@ router.get(
       const repoList = JSON.parse(repos) as string[];
 
       const rateLimitInfo = await rateLimit(token);
-      if (rateLimitInfo && rateLimitInfo.remaining < repoList.length) {
-        context.response.status = 429;
-        context.response.body = JSON.stringify({
-          error: 'Rate limit insufficient',
-          remaining: rateLimitInfo.remaining,
-          needed: repoList.length,
-          reset: rateLimitInfo.reset,
-        });
-        return;
+      if (rateLimitInfo) {
+        updateTokenRateLimit(token, rateLimitInfo.remaining, rateLimitInfo.reset);
+        if (rateLimitInfo.remaining < repoList.length) {
+          context.response.status = 429;
+          context.response.body = JSON.stringify({
+            error: 'Rate limit insufficient',
+            remaining: rateLimitInfo.remaining,
+            needed: repoList.length,
+            reset: rateLimitInfo.reset,
+          });
+          return;
+        }
       }
 
       const response = await languages(owner, repoList, token);
