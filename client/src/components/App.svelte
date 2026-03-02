@@ -74,7 +74,7 @@
         count1 = undefined;
         count2 = undefined;
         errorMessage = '';
-        current = input.replaceAll(' ', '');
+        current = input.trim().replaceAll(/\s+/g, '+');
         input = '';
         const allData = await getData(current);
         if (allData) {
