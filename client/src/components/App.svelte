@@ -17,6 +17,21 @@
   let errorMessage = '';
   let includeForks = false;
 
+  const RANDOM_USERS = [
+    'torvalds', 'gaearon', 'sindresorhus', 'tj', 'mrdoob',
+    'antirez', 'jakubroztocil', 'jessfraz', 'ThePrimeagen', 'tpope',
+    'mitchellh', 'fatih', 'BurntSushi', 'dtolnay', 'matklad',
+    'wez', 'sharkdp', 'ogham', 'JakeWharton', 'yyx990803',
+    'Rich-Harris', 'getify', 'mpj', 'kentcdodds', 'chrisbiscardi',
+    'wesbos', 'benawad', 'rwieruch', 'bradtraversy', 'florinpop17',
+  ];
+
+  const randomize = async () => {
+    const randomUser = RANDOM_USERS[Math.floor(Math.random() * RANDOM_USERS.length)];
+    input = randomUser;
+    await submit('window');
+  };
+
   onMount(async () => {
     const windowOwner = `${window.location.pathname
       .split('/')
@@ -96,6 +111,7 @@
     View language usage per repo<br />or total by username/organization
   </h5>
   <Input
+    {randomize}
     {submit}
     bind:includeForks
     bind:input

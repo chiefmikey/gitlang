@@ -5,6 +5,7 @@
 
   export let input;
   export let includeForks;
+  export let randomize;
   export let submit;
 
   const { PLACEHOLDER } = INPUT;
@@ -90,6 +91,11 @@
       type="button"
       on:click={submit}>Submit
     </button>
+    <button
+      class="random-btn"
+      type="button"
+      on:click={randomize}>Random
+    </button>
   </div>
 </template>
 
@@ -132,5 +138,22 @@
   .toggle span {
     padding: 0;
     white-space: nowrap;
+  }
+
+  .random-btn {
+    background-color: transparent;
+    color: #e8e6e2;
+    border: 1px solid #e8e6e2;
+    font-size: 10px;
+    padding: 6px 12px;
+    height: auto;
+    width: auto;
+    opacity: 0.6;
+  }
+
+  .random-btn:hover {
+    opacity: 1;
+    border-color: #fe9fc9;
+    color: #fe9fc9;
   }
 </style>
