@@ -1,27 +1,32 @@
 import { Octokit } from '@octokit/rest';
 
-let octokit: Octokit;
-
-const fetchLanguage = async (owner: string, repo: string, token: string) => {
+const fetchLanguage = async (
+  owner: string,
+  repo: string,
+  token: string,
+): Promise<Record<string, number>> => {
   try {
     if (!token) {
       console.error('No token');
-      return [];
+      return {};
     }
-    octokit = new Octokit({ auth: token });
-    return await octokit.paginate(octokit.rest.repos.listLanguages, {
-      owner,
-      repo,
-    });
+    const octokit = new Octokit({ auth: token });
+    const response = await octokit.rest.repos.listLanguages({ owner, repo });
+    return response.data;
   } catch (error) {
     console.error('Error fetching language:', error);
-    return [];
+    return {};
   }
 };
 
-const languages = async (owner: string, names: string[], token: string) => {
-  const langs = names.map(async (repo) => fetchLanguage(owner, repo, token));
-  return Promise.all(langs) as Promise<Record<string, number>[]>;
+const languages = async (
+  owner: string,
+  names: string[],
+  token: string,
+): Promise<Record<string, number>[]> => {
+  return Promise.all(
+    names.map((repo) => fetchLanguage(owner, repo, token)),
+  );
 };
 
 export default languages;

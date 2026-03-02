@@ -152,7 +152,7 @@ const data = async (input: string, options: DataOptions = {}) => {
     // Split by ~ for compare mode (? in input becomes ~ in URL)
     const groups = input
       .split('~')
-      .map((g) => g.trim())
+      .map((g) => g.trim().replace(/^\++|\++$/g, ''))
       .filter((g) => g.length > 0);
 
     if (groups.length <= 1) {
