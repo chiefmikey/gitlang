@@ -17,6 +17,7 @@
   let done = false;
   let errorMessage = '';
   let includeForks = false;
+  let compareGroups;
 
   const RANDOM_USERS = [
     'torvalds', 'gaearon', 'sindresorhus', 'tj', 'mrdoob',
@@ -60,7 +61,36 @@
     }
   };
 
+  const processGroupData = (group) => {
+    const collectData = [];
+    const keys = Object.keys(group.space);
+    for (const key of keys) {
+      collectData.push({ name: key, percent: group.space[key] });
+    }
+    collectData.sort((a, b) => b.percent - a.percent);
+    return {
+      label: group.label,
+      data: collectData,
+      count1: keys.length,
+      count2: group.allNames.length,
+      langBreakdown: group.langBreakdown,
+    };
+  };
+
   const processData = (allData) => {
+    if (allData.compareGroups) {
+      // Compare mode — multiple groups
+      compareGroups = allData.compareGroups.map(processGroupData);
+      data = undefined;
+      count1 = undefined;
+      count2 = undefined;
+      langBreakdown = undefined;
+      done = true;
+      return;
+    }
+
+    // Standard compile mode
+    compareGroups = undefined;
     const collectData = [];
     if (allData.allNames) {
       count2 = allData.allNames.length;
@@ -91,10 +121,12 @@
         done = false;
         data = undefined;
         langBreakdown = undefined;
+        compareGroups = undefined;
         count1 = undefined;
         count2 = undefined;
         errorMessage = '';
-        current = input.trim().replaceAll(/\s+/g, '+');
+        // Convert spaces to + (compile), ? to ~ (compare delimiter in URL)
+        current = input.trim().replaceAll(/\s+/g, '+').replaceAll('?', '~');
         input = '';
         const allData = await getData(current);
         if (allData) {
@@ -121,17 +153,60 @@
     bind:includeForks
     bind:input
   />
-  <Results
-    {count1}
-    {count2}
-    {current}
-    {data}
-    {errorMessage}
-    {isDone}
-    {langBreakdown}
-  />
+  {#if compareGroups}
+    {#each compareGroups as group, i}
+      <div class="compare-label">
+        <span>{group.label}</span>
+      </div>
+      <Results
+        count1={group.count1}
+        count2={group.count2}
+        current={group.label}
+        data={group.data}
+        {errorMessage}
+        isDone={() => { if (i === compareGroups.length - 1) { done = true; } }}
+        langBreakdown={group.langBreakdown}
+      />
+      {#if i < compareGroups.length - 1}
+        <div class="compare-divider">
+          <span>vs</span>
+        </div>
+      {/if}
+    {/each}
+  {:else}
+    <Results
+      {count1}
+      {count2}
+      {current}
+      {data}
+      {errorMessage}
+      {isDone}
+      {langBreakdown}
+    />
+  {/if}
   {#if done}
     <ScrollTop />
   {/if}
   <Footer />
 </template>
+
+<style>
+  .compare-label {
+    text-align: center;
+    padding: 1rem 0 0.2rem 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fe9fc9;
+    animation: fade-in 0.3s ease forwards;
+  }
+
+  .compare-divider {
+    text-align: center;
+    padding: 0.8rem 0;
+    font-size: 12px;
+    font-weight: 200;
+    color: #e8e6e2;
+    opacity: 0.5;
+    animation: fade-in 0.3s ease forwards;
+  }
+</style>

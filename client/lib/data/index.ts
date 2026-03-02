@@ -59,7 +59,6 @@ const fetchEntryData = async (
   return { repoLangs };
 };
 
-// Build per-language repo breakdown: { "TypeScript": [{ repo: "gitlang", bytes: 1234, percent: 0.75 }, ...] }
 const buildLangRepoBreakdown = (
   repoLangs: RepoLangs[],
 ): Record<string, { repo: string; percent: number }[]> => {
@@ -90,27 +89,68 @@ const buildLangRepoBreakdown = (
   return breakdown;
 };
 
+interface GroupResult {
+  label: string;
+  allNames: string[];
+  space: Record<string, number>;
+  langBreakdown: Record<string, { repo: string; percent: number }[]>;
+}
+
+const processGroup = async (
+  groupInput: string,
+  options: DataOptions,
+): Promise<GroupResult> => {
+  const entries = groupInput
+    .split('+')
+    .map((e) => e.trim())
+    .filter((e) => e.length > 0)
+    .map(parseEntry);
+
+  const results = await Promise.all(
+    entries.map((entry) => fetchEntryData(entry, options)),
+  );
+
+  const allRepoLangs = results.flatMap((r) => r.repoLangs);
+  const allNames = allRepoLangs.map((r) => r.name);
+  const allLangs = allRepoLangs.map((r) => r.langs);
+  const space = getSize(allLangs);
+  const langBreakdown = buildLangRepoBreakdown(allRepoLangs);
+
+  return { label: groupInput, allNames, space, langBreakdown };
+};
+
 const data = async (input: string, options: DataOptions = {}) => {
   try {
     window.history.pushState('', '', `/${input}`);
 
-    const entries = input
-      .split('+')
-      .map((e) => e.trim())
-      .filter((e) => e.length > 0)
-      .map(parseEntry);
+    // Split by ~ for compare mode (? in input becomes ~ in URL)
+    const groups = input
+      .split('~')
+      .map((g) => g.trim())
+      .filter((g) => g.length > 0);
 
+    if (groups.length <= 1) {
+      // Single group — standard compile mode
+      const result = await processGroup(groups[0] || input, options);
+      return {
+        data: {
+          allNames: result.allNames,
+          space: result.space,
+          langBreakdown: result.langBreakdown,
+        },
+      };
+    }
+
+    // Multiple groups — compare mode
     const results = await Promise.all(
-      entries.map((entry) => fetchEntryData(entry, options)),
+      groups.map((group) => processGroup(group, options)),
     );
 
-    const allRepoLangs = results.flatMap((r) => r.repoLangs);
-    const allNames = allRepoLangs.map((r) => r.name);
-    const allLangs = allRepoLangs.map((r) => r.langs);
-    const space = getSize(allLangs);
-    const langBreakdown = buildLangRepoBreakdown(allRepoLangs);
-
-    return { data: { allNames, space, langBreakdown } };
+    return {
+      data: {
+        compareGroups: results,
+      },
+    };
   } catch (error) {
     console.error('Error getting langs', error);
     throw error;
