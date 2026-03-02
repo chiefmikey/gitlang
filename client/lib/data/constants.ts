@@ -1,6 +1,6 @@
 // source
 export const INPUT = {
-  PLACEHOLDER: '[ user/repo,repo ] [ @org ] [ user+user ]',
+  PLACEHOLDER: '[ user/repo,repo ] [ user ? user ]',
 };
 
 export const ERROR = {
