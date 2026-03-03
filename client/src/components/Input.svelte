@@ -61,34 +61,38 @@
 
 <template>
   <div class="input-area">
-    <input
-      bind:this={inputElement}
-      name="input"
-      style={`caret-color: ${isInputActive ? '#e8e6e2' : 'transparent'}`}
-      autocapitalize="none"
-      autocomplete="off"
-      autocorrect="off"
-      {placeholder}
-      tabindex="0"
-      type="text"
-      value={input}
-      on:keydown={handleKeyDown}
-      on:blur={handleBlur}
-      on:input={handleInput}
-      on:click={handleClick}
-    />
+    <div class="input-wrapper">
+      <span class="arrow">&#9654;</span>
+      <input
+        bind:this={inputElement}
+        name="input"
+        style={`caret-color: ${isInputActive ? '#e8e6e2' : 'transparent'}`}
+        autocapitalize="none"
+        autocomplete="off"
+        autocorrect="off"
+        {placeholder}
+        tabindex="0"
+        type="text"
+        value={input}
+        on:keydown={handleKeyDown}
+        on:blur={handleBlur}
+        on:input={handleInput}
+        on:click={handleClick}
+      />
+      <span class="arrow flip">&#9654;</span>
+    </div>
   </div>
   <div class="controls">
     <button
       type="button"
       on:click={submit}>Submit
     </button>
-    <button
-      class="random-btn"
-      type="button"
-      on:click={randomize}>Random
-    </button>
   </div>
+  <button
+    class="random-btn"
+    type="button"
+    on:click={randomize}>random
+  </button>
 </template>
 
 <style>
@@ -100,27 +104,44 @@
     width: 100%;
   }
 
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .arrow {
+    color: #e8e6e2;
+    font-size: 10px;
+    opacity: 0.3;
+    flex-shrink: 0;
+  }
+
+  .arrow.flip {
+    transform: scaleX(-1);
+  }
+
   .controls {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 12px;
   }
 
   .random-btn {
-    background-color: transparent;
+    background: none;
+    border: none;
     color: #e8e6e2;
-    border: 1px solid #e8e6e2;
     font-size: 10px;
-    padding: 6px 12px;
+    padding: 2px 12px;
     height: auto;
     width: auto;
-    opacity: 0.6;
+    opacity: 0.4;
+    cursor: pointer;
   }
 
   .random-btn:hover {
     opacity: 1;
-    border-color: #fe9fc9;
     color: #fe9fc9;
   }
 </style>
