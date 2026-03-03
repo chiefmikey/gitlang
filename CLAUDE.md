@@ -55,6 +55,8 @@ npm run fix           # ESLint autofix
 - `username/repo1,repo2,repo3` — multiple repos
 - `@org` or `org:name` or `org/name` — organization
 - `user1+user2` — multiple users aggregated (space in input → + in URL)
+- `user1~user2` — compare mode (side-by-side groups, ? in input → ~ in URL)
+- `user/repo@author` — contributor mode (language stats for specific author's commits)
 
 ## Key Conventions
 
@@ -63,7 +65,7 @@ npm run fix           # ESLint autofix
 - API routes are prefixed `/gitlang/github/`
 - Auth uses GitHub App with auto-rotating installation tokens (no manual rotation needed)
 - Fork inclusion is optional (default: excluded)
-- Language bars are clickable to show per-repo breakdown (when multiple repos)
+- Language bars are clickable anywhere to show per-repo breakdown (when multiple repos)
 
 ## Environment Variables
 
@@ -74,6 +76,7 @@ npm run fix           # ESLint autofix
 
 ## API Endpoints
 
+- `GET /gitlang/github/merged?username=X&includeForks=true|false` — combined repos + langs in one call (primary endpoint)
 - `GET /gitlang/github/repos?username=X&includeForks=true|false`
 - `GET /gitlang/github/langs?owner=X&repos=[...]`
 - `GET /gitlang/github/rate-limit`
