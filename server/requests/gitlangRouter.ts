@@ -5,6 +5,7 @@ import {
   listContributors,
 } from '../helpers/github/contributors';
 import languages from '../helpers/github/languages';
+import fetchMerged from '../helpers/github/merged';
 import rateLimit from '../helpers/github/rateLimit';
 import repositories from '../helpers/github/repositories';
 import { getToken } from '../helpers/github/tokenManager';
@@ -157,21 +158,14 @@ router.get(
       const token = await getToken();
       const { includeForks, username } = context.request.query;
       const forks = includeForks === 'true';
-      const repos = await repositories(username, token, forks);
-      if (repos.length === 0) {
+      const result = await fetchMerged(username, token, forks);
+      if (result.repos.length === 0) {
         context.response.status = 404;
         context.response.body = JSON.stringify({ langs: [], repos: [] });
         return;
       }
-      let parsedName = username;
-      if (username.startsWith('@')) {
-        parsedName = username.slice(1);
-      } else if (username.startsWith('org:') || username.startsWith('org/')) {
-        parsedName = username.slice(4);
-      }
-      const langs = await languages(parsedName, repos, token);
       context.response.status = 200;
-      context.response.body = JSON.stringify({ langs, repos });
+      context.response.body = JSON.stringify(result);
     } catch (error) {
       console.error('Error in /merged route:', error);
       context.response.status = 500;

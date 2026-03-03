@@ -9,6 +9,7 @@ import {
   listContributors,
 } from './helpers/github/contributors';
 import languages from './helpers/github/languages';
+import fetchMerged from './helpers/github/merged';
 import rateLimit from './helpers/github/rateLimit';
 import repositories from './helpers/github/repositories';
 
@@ -92,18 +93,15 @@ const handleMerged = async (
   if (username === undefined || username === '') {
     return json(400, { error: 'username required' });
   }
-  const repos = await repositories(username, token, includeForks === 'true');
-  if (repos.length === 0) {
+  const result = await fetchMerged(
+    username,
+    token,
+    includeForks === 'true',
+  );
+  if (result.repos.length === 0) {
     return json(404, { langs: [], repos: [] });
   }
-  let parsedName = username;
-  if (username.startsWith('@')) {
-    parsedName = username.slice(1);
-  } else if (username.startsWith('org:') || username.startsWith('org/')) {
-    parsedName = username.slice(4);
-  }
-  const langs = await languages(parsedName, repos, token);
-  return json(200, { langs, repos });
+  return json(200, result);
 };
 
 const handleRateLimit = async (
