@@ -94,15 +94,16 @@ const handleMerged = async (
   }
   const repos = await repositories(username, token, includeForks === 'true');
   if (repos.length === 0) {
-    return json(404, { repos: [], langs: [] });
+    return json(404, { langs: [], repos: [] });
   }
-  const parsedName = username.startsWith('@')
-    ? username.slice(1)
-    : username.startsWith('org:') || username.startsWith('org/')
-      ? username.slice(4)
-      : username;
+  let parsedName = username;
+  if (username.startsWith('@')) {
+    parsedName = username.slice(1);
+  } else if (username.startsWith('org:') || username.startsWith('org/')) {
+    parsedName = username.slice(4);
+  }
   const langs = await languages(parsedName, repos, token);
-  return json(200, { repos, langs });
+  return json(200, { langs, repos });
 };
 
 const handleRateLimit = async (

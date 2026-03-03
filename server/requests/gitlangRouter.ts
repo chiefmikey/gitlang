@@ -160,17 +160,18 @@ router.get(
       const repos = await repositories(username, token, forks);
       if (repos.length === 0) {
         context.response.status = 404;
-        context.response.body = JSON.stringify({ repos: [], langs: [] });
+        context.response.body = JSON.stringify({ langs: [], repos: [] });
         return;
       }
-      const parsedName = username.startsWith('@')
-        ? username.slice(1)
-        : username.startsWith('org:') || username.startsWith('org/')
-          ? username.slice(4)
-          : username;
+      let parsedName = username;
+      if (username.startsWith('@')) {
+        parsedName = username.slice(1);
+      } else if (username.startsWith('org:') || username.startsWith('org/')) {
+        parsedName = username.slice(4);
+      }
       const langs = await languages(parsedName, repos, token);
       context.response.status = 200;
-      context.response.body = JSON.stringify({ repos, langs });
+      context.response.body = JSON.stringify({ langs, repos });
     } catch (error) {
       console.error('Error in /merged route:', error);
       context.response.status = 500;
