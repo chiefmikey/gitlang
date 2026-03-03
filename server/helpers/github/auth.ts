@@ -1,6 +1,6 @@
 import {
-  SecretsManagerClient,
   GetSecretValueCommand,
+  SecretsManagerClient,
 } from '@aws-sdk/client-secrets-manager';
 import { createAppAuth } from '@octokit/auth-app';
 
@@ -13,15 +13,61 @@ interface AppCredentials {
   privateKey: string;
 }
 
-let cachedCredentials: AppCredentials | null = null;
-let cachedAppAuth: ReturnType<typeof createAppAuth> | null = null;
+let cachedCredentials: AppCredentials | undefined;
+let cachedAppAuth: ReturnType<typeof createAppAuth> | undefined;
 let cachedToken = '';
 let tokenExpiry = 0;
 
 const smClient = new SecretsManagerClient({ region });
 
-const getCredentials = async (): Promise<AppCredentials | null> => {
-  if (cachedCredentials) {
+const parseSecretString = (
+  secretString: string,
+): AppCredentials | undefined => {
+  const parsed: unknown = JSON.parse(secretString);
+  if (
+    typeof parsed !== 'object' ||
+    parsed === null ||
+    !('APP_ID' in parsed) ||
+    !('INSTALLATION_ID' in parsed) ||
+    !('PRIVATE_KEY' in parsed)
+  ) {
+    return undefined;
+  }
+  const object = parsed as {
+    APP_ID: unknown;
+    INSTALLATION_ID: unknown;
+    PRIVATE_KEY: unknown;
+  };
+  if (
+    typeof object.APP_ID !== 'string' ||
+    typeof object.INSTALLATION_ID !== 'string' ||
+    typeof object.PRIVATE_KEY !== 'string'
+  ) {
+    return undefined;
+  }
+  return {
+    appId: object.APP_ID,
+    installationId: object.INSTALLATION_ID,
+    privateKey: object.PRIVATE_KEY,
+  };
+};
+
+const getCredentialsFromAws = async (): Promise<AppCredentials | undefined> => {
+  try {
+    const data = await smClient.send(
+      new GetSecretValueCommand({ SecretId: secretName }),
+    );
+    if (data.SecretString !== undefined && data.SecretString !== '') {
+      return parseSecretString(data.SecretString);
+    }
+  } catch (error) {
+    console.error('Error fetching secret from AWS:', error);
+  }
+  return undefined;
+};
+
+const getCredentials = async (): Promise<AppCredentials | undefined> => {
+  if (cachedCredentials !== undefined) {
     return cachedCredentials;
   }
 
@@ -30,53 +76,44 @@ const getCredentials = async (): Promise<AppCredentials | null> => {
   const installationId = process.env.GH_INSTALLATION_ID;
   const privateKey = process.env.GH_PRIVATE_KEY;
 
-  if (appId && installationId && privateKey) {
+  if (
+    appId !== undefined &&
+    installationId !== undefined &&
+    privateKey !== undefined
+  ) {
     cachedCredentials = { appId, installationId, privateKey };
     return cachedCredentials;
   }
 
   // Fall back to AWS Secrets Manager
-  try {
-    const data = await smClient.send(
-      new GetSecretValueCommand({ SecretId: secretName }),
-    );
-    if (data.SecretString) {
-      const secret = JSON.parse(data.SecretString) as Record<string, string>;
-      cachedCredentials = {
-        appId: secret.APP_ID,
-        installationId: secret.INSTALLATION_ID,
-        privateKey: secret.PRIVATE_KEY,
-      };
-      return cachedCredentials;
-    }
-  } catch (error) {
-    console.error('Error fetching secret from AWS:', error);
+  const awsCredentials = await getCredentialsFromAws();
+  if (awsCredentials !== undefined) {
+    cachedCredentials = awsCredentials;
   }
-
-  return null;
+  return cachedCredentials;
 };
 
 const auth = async (): Promise<string> => {
   const now = Date.now();
-  if (cachedToken && now < tokenExpiry) {
+  if (cachedToken !== '' && now < tokenExpiry) {
     return cachedToken;
   }
 
   const creds = await getCredentials();
-  if (!creds) {
+  if (creds === undefined) {
     return '';
   }
 
   try {
-    if (!cachedAppAuth) {
+    if (cachedAppAuth === undefined) {
       cachedAppAuth = createAppAuth({
         appId: creds.appId,
-        privateKey: creds.privateKey,
         installationId: creds.installationId,
+        privateKey: creds.privateKey,
       });
     }
 
-    const { token, expiresAt } = await cachedAppAuth({
+    const { expiresAt, token } = await cachedAppAuth({
       type: 'installation',
     });
 

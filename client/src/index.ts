@@ -5,8 +5,12 @@ import { mount } from 'svelte';
 
 import App from './components/App.svelte';
 
-const app = mount(App, {
-  target: document.querySelector('.app') as Element,
-});
+const target = document.querySelector('.app');
+
+if (target === null) {
+  throw new Error('Could not find .app element');
+}
+
+const app = mount(App, { target });
 
 export default app;

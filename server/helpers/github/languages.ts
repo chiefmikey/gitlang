@@ -6,7 +6,7 @@ const fetchLanguage = async (
   token: string,
 ): Promise<Record<string, number>> => {
   try {
-    if (!token) {
+    if (token === '') {
       console.error('No token');
       return {};
     }
@@ -25,7 +25,7 @@ const languages = async (
   token: string,
 ): Promise<Record<string, number>[]> => {
   return Promise.all(
-    names.map((repo) => fetchLanguage(owner, repo, token)),
+    names.map(async (repo) => fetchLanguage(owner, repo, token)),
   );
 };
 

@@ -3,14 +3,15 @@
   import { cubicInOut } from 'svelte/easing';
   import { tweened } from 'svelte/motion';
   import { derived } from 'svelte/store';
+  import { slide } from 'svelte/transition';
 
   export let dat;
   export let index;
   export let count1;
   export let isDone;
   export let breakdown;
-
-  let expanded = false;
+  export let expandedLang;
+  export let onToggleLang;
 
   const finalPercent = Number((dat.percent * 100).toFixed(2));
   const speed = (index / 8) * 1000 + 222;
@@ -36,7 +37,7 @@
 
   const toggleBreakdown = () => {
     if (breakdown && breakdown.length > 1) {
-      expanded = !expanded;
+      onToggleLang(dat.name);
     }
   };
 
@@ -66,59 +67,79 @@
 </script>
 
 <template>
-  <tr
+  <div
+    class="bar-row"
     id="row{index}"
-    class="info{index}"
     style:animation="fade-in-height .5s ease-out {index / 8}s forwards"
   >
-    <td class="name">
-      {#if breakdown && breakdown.length > 1}
-        <button class="lang-btn" on:click={toggleBreakdown}>{dat.name}</button>
-      {:else}
-        <span>{dat.name}</span>
-      {/if}
-    </td>
-    <td class="percent">
-      <span>{$progress2Fixed}%</span>
-    </td>
-    <td class="bar">
-      <progress
+    <div class="cell">
+      <div
+        class="bar-fill"
         id="bar{index}"
-        value={$progress}
-      ></progress>
-    </td>
-  </tr>
-  {#if expanded && breakdown}
-    {#each breakdown as item}
-      <tr class="breakdown-row">
-        <td class="breakdown-repo" colspan="3">
-          <span class="breakdown-name">{item.repo}</span>
-          <span class="breakdown-percent">{(item.percent * 100).toFixed(1)}%</span>
-        </td>
-      </tr>
-    {/each}
+        style:width="{$progress * 100}%"
+      ></div>
+      <span class="info info{index}">
+        <span class="name">
+          {#if breakdown && breakdown.length > 1}
+            <button class="lang-btn" on:click={toggleBreakdown}>{dat.name}</button>
+          {:else}
+            <span>{dat.name}</span>
+          {/if}
+        </span>
+        <span class="percent">
+          <span>{$progress2Fixed}%</span>
+        </span>
+      </span>
+    </div>
+  </div>
+  {#if expandedLang === dat.name && breakdown}
+    <div class="breakdown-container" transition:slide={{ duration: 400, easing: cubicInOut }}>
+      <div class="breakdown-list">
+        {#each breakdown as item, i}
+          <div
+            class="breakdown-item"
+            style:animation="fade-in .3s ease-out {i * 0.04}s both"
+          >
+            <span class="breakdown-name">{item.repo}</span>
+            <span class="breakdown-percent">{(item.percent * 100).toFixed(1)}%</span>
+          </div>
+        {/each}
+      </div>
+    </div>
   {/if}
 </template>
 
 <style>
-progress {
+.bar-row {
   width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  height: 104%;
-  background-color: transparent;
+  height: 0;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: -1px;
 }
 
-progress::-moz-progress-bar {
-  background-color: transparent;
+.cell {
+  position: relative;
+  height: 50px;
+  padding: 0;
 }
 
-progress::-webkit-progress-bar {
-  background-color: transparent;
-}
-
-progress::-webkit-progress-value {
+.bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% + 1px);
   background: var(--c, #fe9fc9);
+}
+
+.info {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .name {
@@ -127,7 +148,6 @@ progress::-webkit-progress-value {
   padding: 0;
   white-space: nowrap;
   overflow: hidden;
-  vertical-align: bottom;
 }
 
 .name span,
@@ -142,9 +162,7 @@ progress::-webkit-progress-value {
   border: none;
   color: inherit;
   cursor: pointer;
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-underline-offset: 3px;
+  text-decoration: none;
   width: auto;
   height: auto;
   text-align: left;
@@ -154,19 +172,12 @@ progress::-webkit-progress-value {
   color: #fe9fc9;
 }
 
-.bar {
-  padding: 0;
-  height: 50px;
-  float: none;
-}
-
 .percent {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   height: 18px;
   padding: 0 10px 0 10px;
-  vertical-align: bottom;
 }
 
 .percent span {
@@ -174,28 +185,35 @@ progress::-webkit-progress-value {
   padding: 0;
 }
 
-.breakdown-row {
+.breakdown-container {
   height: auto !important;
-  opacity: 1;
+  overflow: hidden;
   animation: none !important;
 }
 
-.breakdown-repo {
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.breakdown-item {
   display: flex;
   justify-content: space-between;
   padding: 2px 15px 2px 25px;
   font-size: 11px;
-  opacity: 0.7;
+  opacity: 0;
 }
 
 .breakdown-name {
   font-size: 11px;
   padding: 0;
+  opacity: 0.7;
 }
 
 .breakdown-percent {
   font-size: 10px;
   padding: 0;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 </style>

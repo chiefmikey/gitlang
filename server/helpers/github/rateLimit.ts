@@ -7,11 +7,11 @@ interface RateLimitInfo {
   used: number;
 }
 
-const rateLimit = async (token: string): Promise<RateLimitInfo | null> => {
+const rateLimit = async (token: string): Promise<RateLimitInfo | undefined> => {
   try {
-    if (!token) {
+    if (token === '') {
       console.error('No token');
-      return null;
+      return undefined;
     }
     const octokit = new Octokit({ auth: token });
     const response = await octokit.rest.rateLimit.get();
@@ -19,7 +19,7 @@ const rateLimit = async (token: string): Promise<RateLimitInfo | null> => {
     return { limit, remaining, reset, used };
   } catch (error) {
     console.error('Error fetching rate limit:', error);
-    return null;
+    return undefined;
   }
 };
 
