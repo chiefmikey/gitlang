@@ -12,7 +12,7 @@ Resources:
     Properties:
       FunctionName: gitlang-api
       Handler: index.handler
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       CodeUri: ../dist/lambda/
       MemorySize: 256
       Architectures:

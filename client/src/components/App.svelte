@@ -143,9 +143,6 @@
 </script>
 
 <template>
-  <h5>
-    View language usage per repo<br />or total by username/organization<br />or per contributor with @author
-  </h5>
   <Input
     {randomize}
     {submit}

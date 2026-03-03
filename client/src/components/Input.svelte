@@ -61,26 +61,22 @@
 
 <template>
   <div class="input-area">
-    <div class="input-wrapper">
-      <span class="arrow">&#9654;</span>
-      <input
-        bind:this={inputElement}
-        name="input"
-        style={`caret-color: ${isInputActive ? '#e8e6e2' : 'transparent'}`}
-        autocapitalize="none"
-        autocomplete="off"
-        autocorrect="off"
-        {placeholder}
-        tabindex="0"
-        type="text"
-        value={input}
-        on:keydown={handleKeyDown}
-        on:blur={handleBlur}
-        on:input={handleInput}
-        on:click={handleClick}
-      />
-      <span class="arrow flip">&#9654;</span>
-    </div>
+    <input
+      bind:this={inputElement}
+      name="input"
+      style={`caret-color: ${isInputActive ? '#e8e6e2' : 'transparent'}`}
+      autocapitalize="none"
+      autocomplete="off"
+      autocorrect="off"
+      {placeholder}
+      tabindex="0"
+      type="text"
+      value={input}
+      on:keydown={handleKeyDown}
+      on:blur={handleBlur}
+      on:input={handleInput}
+      on:click={handleClick}
+    />
   </div>
   <div class="controls">
     <button
@@ -97,35 +93,45 @@
 
 <style>
   .input-area {
-    padding-top: 3%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+    margin-top: 5%;
+    position: relative;
+    display: inline-flex;
   }
 
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 6px;
+  .input-area input {
+    width: 390px;
+    padding-top: 4px;
+    padding-bottom: 4px;
   }
 
-  .arrow {
-    color: #e8e6e2;
-    font-size: 10px;
-    opacity: 0.3;
-    flex-shrink: 0;
+  .input-area::before,
+  .input-area::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    opacity: 0.6;
   }
 
-  .arrow.flip {
-    transform: scaleX(-1);
+  .input-area::before {
+    left: -16px;
+    border-left: 8px solid #e8e6e2;
+  }
+
+  .input-area::after {
+    right: -16px;
+    border-right: 8px solid #e8e6e2;
   }
 
   .controls {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-top: 16px;
   }
 
   .random-btn {
@@ -133,7 +139,7 @@
     border: none;
     color: #e8e6e2;
     font-size: 10px;
-    padding: 2px 12px;
+    padding: 8px 12px 2px;
     height: auto;
     width: auto;
     opacity: 0.4;
