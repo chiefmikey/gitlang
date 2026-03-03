@@ -61,7 +61,6 @@
 
 <template>
   <div class="input-area">
-    <span class="arrow">&#9654;</span>
     <input
       bind:this={inputElement}
       name="input"
@@ -78,7 +77,6 @@
       on:input={handleInput}
       on:click={handleClick}
     />
-    <span class="arrow flip">&#9654;</span>
   </div>
   <div class="controls">
     <button
@@ -95,27 +93,38 @@
 
 <style>
   .input-area {
-    padding-top: 3%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
+    margin-top: 3%;
+    position: relative;
+    display: inline-flex;
   }
 
   .input-area input {
     width: 275px;
+    padding-top: 4px;
+    padding-bottom: 4px;
   }
 
-  .arrow {
-    color: #e8e6e2;
-    font-size: 10px;
-    opacity: 0.3;
-    flex-shrink: 0;
-    padding: 0;
+  .input-area::before,
+  .input-area::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    opacity: 0.4;
   }
 
-  .arrow.flip {
-    transform: scaleX(-1);
+  .input-area::before {
+    left: -16px;
+    border-left: 8px solid #e8e6e2;
+  }
+
+  .input-area::after {
+    right: -16px;
+    border-right: 8px solid #e8e6e2;
   }
 
   .controls {
@@ -129,7 +138,7 @@
     border: none;
     color: #e8e6e2;
     font-size: 10px;
-    padding: 2px 12px;
+    padding: 8px 12px 2px;
     height: auto;
     width: auto;
     opacity: 0.4;
