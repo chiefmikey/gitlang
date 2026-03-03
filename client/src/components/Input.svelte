@@ -61,26 +61,24 @@
 
 <template>
   <div class="input-area">
-    <div class="input-wrapper">
-      <span class="arrow">&#9654;</span>
-      <input
-        bind:this={inputElement}
-        name="input"
-        style={`caret-color: ${isInputActive ? '#e8e6e2' : 'transparent'}`}
-        autocapitalize="none"
-        autocomplete="off"
-        autocorrect="off"
-        {placeholder}
-        tabindex="0"
-        type="text"
-        value={input}
-        on:keydown={handleKeyDown}
-        on:blur={handleBlur}
-        on:input={handleInput}
-        on:click={handleClick}
-      />
-      <span class="arrow flip">&#9654;</span>
-    </div>
+    <span class="arrow">&#9654;</span>
+    <input
+      bind:this={inputElement}
+      name="input"
+      style={`caret-color: ${isInputActive ? '#e8e6e2' : 'transparent'}`}
+      autocapitalize="none"
+      autocomplete="off"
+      autocorrect="off"
+      {placeholder}
+      tabindex="0"
+      type="text"
+      value={input}
+      on:keydown={handleKeyDown}
+      on:blur={handleBlur}
+      on:input={handleInput}
+      on:click={handleClick}
+    />
+    <span class="arrow flip">&#9654;</span>
   </div>
   <div class="controls">
     <button
@@ -99,16 +97,13 @@
   .input-area {
     padding-top: 3%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    width: 100%;
+    gap: 6px;
   }
 
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 6px;
+  .input-area input {
+    width: 275px;
   }
 
   .arrow {
@@ -116,6 +111,7 @@
     font-size: 10px;
     opacity: 0.3;
     flex-shrink: 0;
+    padding: 0;
   }
 
   .arrow.flip {
