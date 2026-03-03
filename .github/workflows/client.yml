@@ -30,12 +30,17 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v6
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
     - name: Build
       run: |
         set -x
         npm i
         sed -i "1i console.log('Updated:', '$(TZ=PST8PDT date)')" ${ENTRY}
-        npm run build:prod
+        NODE_OPTIONS='--import tsx' npm run build:prod
 
     - name: Configure AWS
       uses: aws-actions/configure-aws-credentials@v6
