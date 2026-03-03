@@ -25,6 +25,6 @@
   }
 
   .footer a:hover {
-    color: #ff69b4;
+    color: inherit;
   }
 </style>

@@ -93,7 +93,7 @@
 
 <style>
   .input-area {
-    margin-top: 8%;
+    margin-top: 5%;
     position: relative;
     display: inline-flex;
   }
@@ -114,7 +114,7 @@
     height: 0;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
-    opacity: 0.4;
+    opacity: 0.6;
   }
 
   .input-area::before {
@@ -131,7 +131,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 8px;
+    margin-top: 16px;
   }
 
   .random-btn {
