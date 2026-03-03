@@ -30,9 +30,7 @@
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
-    "@mikey-pro/eslint-config": "^10.0.2",
-    "@mikey-pro/eslint-config-svelte": "^10.0.2",
-    "@mikey-pro/prettier-config": "^10.0.2",
+    "@mikey-pro/eslint-config-svelte": "^10.1.0",
     "@types/aws-lambda": "^8.10.161",
     "@types/koa": "^3.0.0",
     "@types/koa__cors": "^5.0.0",
@@ -91,7 +89,7 @@
     "total"
   ],
   "author": "Mikl Wolfe <wolfe@mikl.io> (https://mikl.io)",
-  "prettier": "@mikey-pro/prettier-config",
+  "prettier": "mikey-pro/prettier",
   "stylelint": {
     "extends": "./.stylelintrc.cjs"
   },
