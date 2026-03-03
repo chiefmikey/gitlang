@@ -93,7 +93,7 @@
 
 <style>
   .input-area {
-    margin-top: 3%;
+    margin-top: 8%;
     position: relative;
     display: inline-flex;
   }
