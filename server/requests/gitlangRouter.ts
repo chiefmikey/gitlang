@@ -109,11 +109,17 @@ router.get(
 
 router.get(
   '/repos',
-  async (context: KoaContextWithQuery<{ username: string }>) => {
+  async (
+    context: KoaContextWithQuery<{ username: string; includeForks?: string }>,
+  ) => {
     try {
       const token = await getToken();
-      const { username } = context.request.query;
-      const response = await repositories(username, token);
+      const { includeForks, username } = context.request.query;
+      const response = await repositories(
+        username,
+        token,
+        includeForks === 'true',
+      );
       setResponse(context, response);
     } catch (error) {
       console.error('Error in /repos route:', error);

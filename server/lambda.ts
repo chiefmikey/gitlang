@@ -42,11 +42,11 @@ const handleRepos = async (
   params: QueryParameters,
   token: string,
 ): Promise<APIGatewayProxyResultV2> => {
-  const { username } = params;
+  const { includeForks, username } = params;
   if (username === undefined || username === '') {
     return json(400, { error: 'username required' });
   }
-  const repos = await repositories(username, token);
+  const repos = await repositories(username, token, includeForks === 'true');
   return repos.length > 0 ? json(200, repos) : json(404, []);
 };
 

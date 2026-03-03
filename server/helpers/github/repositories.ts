@@ -21,6 +21,7 @@ const parseOrgName = (input: string): string => {
 const repositories = async (
   username: string,
   token: string,
+  includeForks = false,
 ): Promise<string[]> => {
   try {
     if (token === '') {
@@ -42,7 +43,7 @@ const repositories = async (
         },
         (response) =>
           response.data
-            .filter(({ fork }) => !fork)
+            .filter(({ fork }) => includeForks || !fork)
             .map(({ name }) => name),
       );
     }
@@ -55,7 +56,7 @@ const repositories = async (
       },
       (response) =>
         response.data
-          .filter(({ fork }) => !fork)
+          .filter(({ fork }) => includeForks || !fork)
           .map(({ name }) => name),
     );
   } catch (error) {

@@ -64,7 +64,8 @@ const fetchEntryData = async (
   if (entry.repos) {
     repoNames = entry.repos;
   } else {
-    repoNames = await repositories(entry.owner);
+    // In author mode, include forks — contributor analysis isolates the author's work
+    repoNames = await repositories(entry.owner, Boolean(entry.author));
   }
 
   if (entry.author) {
