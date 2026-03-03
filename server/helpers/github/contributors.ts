@@ -223,5 +223,12 @@ const getContributorLanguages = async (
   }
 };
 
-export { getContributorLanguages, listContributors };
-export type { ContributorInfo };
+export {
+  accumulateFileLanguages,
+  getContributorLanguages,
+  getExtension,
+  getFileChanges,
+  listContributors,
+  mergeLanguageCounts,
+};
+export type { CommitFile, ContributorInfo };

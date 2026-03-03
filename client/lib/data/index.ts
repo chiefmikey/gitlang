@@ -187,4 +187,5 @@ const data = async (input: string) => {
   }
 };
 
+export { buildLangRepoBreakdown, parseEntry, parseOwnerName };
 export default data;

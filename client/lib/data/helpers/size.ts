@@ -28,4 +28,5 @@ const totalSize = (languages: Record<string, number>[]) => {
 const getSize = (languages: Record<string, number>[]) =>
   percentage(totalSize(languages), eachSize(languages));
 
+export { eachSize, percentage, totalSize };
 export default getSize;
