@@ -99,7 +99,7 @@
   }
 
   .input-area input {
-    width: 275px;
+    width: 390px;
     padding-top: 4px;
     padding-bottom: 4px;
   }
@@ -131,6 +131,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-top: 8px;
   }
 
   .random-btn {

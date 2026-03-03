@@ -7,7 +7,7 @@
   "scripts": {
     "build:dev": "NODE_ENV=development webpack --mode development -w",
     "build:prod": "NODE_ENV=production webpack --mode production",
-    "build:lambda": "esbuild server/lambda.ts --bundle --platform=node --target=node20 --outfile=dist/lambda/index.mjs --format=esm --external:@aws-sdk/*",
+    "build:lambda": "esbuild server/lambda.ts --bundle --platform=node --target=node22 --outfile=dist/lambda/index.mjs --format=esm --external:@aws-sdk/*",
     "fix": "eslint --fix 'client/src/**/*' 'server/**/*'",
     "start:client": "ts-node local/client.ts",
     "start:server": "ts-node local/server.ts"

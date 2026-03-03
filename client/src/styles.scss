@@ -127,8 +127,6 @@ input:focus {
 }
 
 input::placeholder {
-  font-size: map.get($font-sizes, 'body');
-  line-height: map.get($font-sizes, 'input');
   color: map.get($colors, 'light-grey');
   opacity: 0.4;
 }
