@@ -1,6 +1,9 @@
 import Router from '@koa/router';
 
-import { listContributors, getContributorLanguages } from '../helpers/github/contributors';
+import {
+  getContributorLanguages,
+  listContributors,
+} from '../helpers/github/contributors';
 import languages from '../helpers/github/languages';
 import rateLimit from '../helpers/github/rateLimit';
 import repositories from '../helpers/github/repositories';
@@ -8,10 +11,18 @@ import { getToken } from '../helpers/github/tokenManager';
 
 const router = new Router({ prefix: '/github' });
 
+interface KoaContext {
+  response: { status: number; body: string };
+}
+
+interface KoaContextWithQuery<TQuery> extends KoaContext {
+  request: { query: TQuery };
+}
+
 const setResponse = (
-  context: { response: { status: number; body: string } },
+  context: KoaContext,
   data: Record<string, number>[] | string[],
-) => {
+): void => {
   if (data.length > 0) {
     context.response.status = 200;
     context.response.body = JSON.stringify(data);
@@ -21,65 +32,69 @@ const setResponse = (
   }
 };
 
-router.get(
-  '/rate-limit',
-  async (context: {
-    response: { status: number; body: string };
-  }) => {
-    try {
-      const token = await getToken();
-      const info = await rateLimit(token);
-      if (info) {
-        context.response.status = 200;
-        context.response.body = JSON.stringify(info);
-      } else {
-        context.response.status = 500;
-        context.response.body = JSON.stringify({ error: 'Unable to fetch rate limit' });
-      }
-    } catch (error) {
-      console.error('Error in /rate-limit route:', error);
-      context.response.status = 500;
-      context.response.body = JSON.stringify({ error: 'Internal server error' });
+const parseRepoList = (repos: string): string[] | undefined => {
+  try {
+    const parsed: unknown = JSON.parse(repos);
+    if (
+      Array.isArray(parsed) &&
+      parsed.every((r: unknown) => typeof r === 'string')
+    ) {
+      return parsed;
     }
-  },
-);
+    return undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+router.get('/rate-limit', async (context: KoaContext) => {
+  try {
+    const token = await getToken();
+    const info = await rateLimit(token);
+    if (info === undefined) {
+      context.response.status = 500;
+      context.response.body = JSON.stringify({
+        error: 'Unable to fetch rate limit',
+      });
+    } else {
+      context.response.status = 200;
+      context.response.body = JSON.stringify(info);
+    }
+  } catch (error) {
+    console.error('Error in /rate-limit route:', error);
+    context.response.status = 500;
+    context.response.body = JSON.stringify({ error: 'Internal server error' });
+  }
+});
 
 router.get(
   '/langs',
-  async (context: {
-    request: { query: { owner: string; repos: string } };
-    response: { status: number; body: string };
-  }) => {
+  async (context: KoaContextWithQuery<{ owner: string; repos: string }>) => {
     try {
       const token = await getToken();
       const { owner, repos } = context.request.query;
-      let repoList: string[];
-      try {
-        const parsed = JSON.parse(repos);
-        if (!Array.isArray(parsed) || !parsed.every((r: unknown) => typeof r === 'string')) {
-          context.response.status = 400;
-          context.response.body = JSON.stringify({ error: 'repos must be a JSON array of strings' });
-          return;
-        }
-        repoList = parsed;
-      } catch {
+      const repoList = parseRepoList(repos);
+      if (repoList === undefined) {
         context.response.status = 400;
-        context.response.body = JSON.stringify({ error: 'repos must be valid JSON' });
+        context.response.body = JSON.stringify({
+          error: 'repos must be a JSON array of strings',
+        });
         return;
       }
 
       const rateLimitInfo = await rateLimit(token);
-      if (rateLimitInfo) {
-        if (rateLimitInfo.remaining < repoList.length) {
-          context.response.status = 429;
-          context.response.body = JSON.stringify({
-            error: 'Rate limit insufficient',
-            remaining: rateLimitInfo.remaining,
-            needed: repoList.length,
-            reset: rateLimitInfo.reset,
-          });
-          return;
-        }
+      if (
+        rateLimitInfo !== undefined &&
+        rateLimitInfo.remaining < repoList.length
+      ) {
+        context.response.status = 429;
+        context.response.body = JSON.stringify({
+          error: 'Rate limit insufficient',
+          needed: repoList.length,
+          remaining: rateLimitInfo.remaining,
+          reset: rateLimitInfo.reset,
+        });
+        return;
       }
 
       const response = await languages(owner, repoList, token);
@@ -93,13 +108,12 @@ router.get(
 
 router.get(
   '/repos',
-  async (context: {
-    request: { query: { username: string; includeForks?: string } };
-    response: { status: number; body: string };
-  }) => {
+  async (
+    context: KoaContextWithQuery<{ username: string; includeForks?: string }>,
+  ) => {
     try {
       const token = await getToken();
-      const { username, includeForks } = context.request.query;
+      const { includeForks, username } = context.request.query;
       const forks = includeForks === 'true';
       const response = await repositories(username, token, forks);
       setResponse(context, response);
@@ -112,10 +126,7 @@ router.get(
 
 router.get(
   '/contributors',
-  async (context: {
-    request: { query: { owner: string; repo: string } };
-    response: { status: number; body: string };
-  }) => {
+  async (context: KoaContextWithQuery<{ owner: string; repo: string }>) => {
     try {
       const token = await getToken();
       const { owner, repo } = context.request.query;
@@ -130,27 +141,68 @@ router.get(
     } catch (error) {
       console.error('Error in /contributors route:', error);
       context.response.status = 500;
-      context.response.body = JSON.stringify({ error: 'Internal server error' });
+      context.response.body = JSON.stringify({
+        error: 'Internal server error',
+      });
+    }
+  },
+);
+
+router.get(
+  '/merged',
+  async (
+    context: KoaContextWithQuery<{ username: string; includeForks?: string }>,
+  ) => {
+    try {
+      const token = await getToken();
+      const { includeForks, username } = context.request.query;
+      const forks = includeForks === 'true';
+      const repos = await repositories(username, token, forks);
+      if (repos.length === 0) {
+        context.response.status = 404;
+        context.response.body = JSON.stringify({ langs: [], repos: [] });
+        return;
+      }
+      let parsedName = username;
+      if (username.startsWith('@')) {
+        parsedName = username.slice(1);
+      } else if (username.startsWith('org:') || username.startsWith('org/')) {
+        parsedName = username.slice(4);
+      }
+      const langs = await languages(parsedName, repos, token);
+      context.response.status = 200;
+      context.response.body = JSON.stringify({ langs, repos });
+    } catch (error) {
+      console.error('Error in /merged route:', error);
+      context.response.status = 500;
+      context.response.body = JSON.stringify({
+        error: 'Internal server error',
+      });
     }
   },
 );
 
 router.get(
   '/contributor-langs',
-  async (context: {
-    request: { query: { owner: string; repo: string; author: string } };
-    response: { status: number; body: string };
-  }) => {
+  async (
+    context: KoaContextWithQuery<{
+      author: string;
+      owner: string;
+      repo: string;
+    }>,
+  ) => {
     try {
       const token = await getToken();
-      const { owner, repo, author } = context.request.query;
+      const { author, owner, repo } = context.request.query;
       const langs = await getContributorLanguages(owner, repo, author, token);
       context.response.status = 200;
       context.response.body = JSON.stringify(langs);
     } catch (error) {
       console.error('Error in /contributor-langs route:', error);
       context.response.status = 500;
-      context.response.body = JSON.stringify({ error: 'Internal server error' });
+      context.response.body = JSON.stringify({
+        error: 'Internal server error',
+      });
     }
   },
 );

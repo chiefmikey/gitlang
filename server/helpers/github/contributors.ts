@@ -2,83 +2,85 @@ import { Octokit } from '@octokit/rest';
 
 // Map common file extensions to language names (matching GitHub's linguist)
 const EXTENSION_MAP: Record<string, string> = {
-  '.ts': 'TypeScript',
-  '.tsx': 'TypeScript',
-  '.js': 'JavaScript',
-  '.jsx': 'JavaScript',
-  '.mjs': 'JavaScript',
-  '.cjs': 'JavaScript',
-  '.py': 'Python',
-  '.rb': 'Ruby',
-  '.go': 'Go',
-  '.rs': 'Rust',
-  '.java': 'Java',
-  '.kt': 'Kotlin',
-  '.kts': 'Kotlin',
-  '.swift': 'Swift',
-  '.c': 'C',
-  '.h': 'C',
-  '.cpp': 'C++',
-  '.cc': 'C++',
-  '.cxx': 'C++',
-  '.hpp': 'C++',
-  '.cs': 'C#',
-  '.php': 'PHP',
-  '.html': 'HTML',
-  '.htm': 'HTML',
-  '.css': 'CSS',
-  '.scss': 'SCSS',
-  '.sass': 'SCSS',
-  '.less': 'Less',
-  '.vue': 'Vue',
-  '.svelte': 'Svelte',
-  '.dart': 'Dart',
-  '.lua': 'Lua',
-  '.r': 'R',
-  '.R': 'R',
-  '.scala': 'Scala',
-  '.ex': 'Elixir',
-  '.exs': 'Elixir',
-  '.erl': 'Erlang',
-  '.hrl': 'Erlang',
-  '.hs': 'Haskell',
-  '.ml': 'OCaml',
-  '.mli': 'OCaml',
-  '.pl': 'Perl',
-  '.pm': 'Perl',
-  '.sh': 'Shell',
   '.bash': 'Shell',
-  '.zsh': 'Shell',
-  '.fish': 'Shell',
-  '.ps1': 'PowerShell',
-  '.sql': 'SQL',
-  '.m': 'Objective-C',
-  '.mm': 'Objective-C',
-  '.zig': 'Zig',
-  '.nim': 'Nim',
-  '.jl': 'Julia',
+  '.c': 'C',
+  '.cc': 'C++',
+  '.cjs': 'JavaScript',
   '.clj': 'Clojure',
   '.cljs': 'Clojure',
+  '.cpp': 'C++',
+  '.cs': 'C#',
+  '.css': 'CSS',
+  '.cxx': 'C++',
+  '.dart': 'Dart',
+  '.dockerfile': 'Dockerfile',
+  '.erl': 'Erlang',
+  '.ex': 'Elixir',
+  '.exs': 'Elixir',
+  '.fish': 'Shell',
   '.fs': 'F#',
   '.fsx': 'F#',
-  '.tf': 'HCL',
-  '.yml': 'YAML',
-  '.yaml': 'YAML',
+  '.go': 'Go',
+  '.h': 'C',
+  '.hpp': 'C++',
+  '.hrl': 'Erlang',
+  '.hs': 'Haskell',
+  '.htm': 'HTML',
+  '.html': 'HTML',
+  '.java': 'Java',
+  '.jl': 'Julia',
+  '.js': 'JavaScript',
   '.json': 'JSON',
-  '.xml': 'XML',
-  '.toml': 'TOML',
+  '.jsx': 'JavaScript',
+  '.kt': 'Kotlin',
+  '.kts': 'Kotlin',
+  '.less': 'Less',
+  '.lua': 'Lua',
+  '.m': 'Objective-C',
   '.md': 'Markdown',
+  '.mjs': 'JavaScript',
+  '.ml': 'OCaml',
+  '.mli': 'OCaml',
+  '.mm': 'Objective-C',
+  '.nim': 'Nim',
+  '.php': 'PHP',
+  '.pl': 'Perl',
+  '.pm': 'Perl',
+  '.ps1': 'PowerShell',
+  '.py': 'Python',
+  '.r': 'R',
+  '.R': 'R',
+  '.rb': 'Ruby',
+  '.rs': 'Rust',
   '.rst': 'reStructuredText',
+  '.sass': 'SCSS',
+  '.scala': 'Scala',
+  '.scss': 'SCSS',
+  '.sh': 'Shell',
+  '.sql': 'SQL',
+  '.svelte': 'Svelte',
+  '.swift': 'Swift',
   '.tex': 'TeX',
-  '.dockerfile': 'Dockerfile',
+  '.tf': 'HCL',
+  '.toml': 'TOML',
+  '.ts': 'TypeScript',
+  '.tsx': 'TypeScript',
+  '.vue': 'Vue',
+  '.xml': 'XML',
+  '.yaml': 'YAML',
+  '.yml': 'YAML',
+  '.zig': 'Zig',
+  '.zsh': 'Shell',
 };
 
 const getExtension = (filename: string): string => {
   const lastDot = filename.lastIndexOf('.');
   if (lastDot === -1) {
     // Handle extensionless files like Dockerfile, Makefile
-    const base = filename.split('/').pop()?.toLowerCase() || '';
-    if (base === 'dockerfile') { return '.dockerfile'; }
+    const base = filename.split('/').pop()?.toLowerCase() ?? '';
+    if (base === 'dockerfile') {
+      return '.dockerfile';
+    }
     return '';
   }
   return filename.slice(lastDot).toLowerCase();
@@ -96,22 +98,21 @@ const listContributors = async (
   token: string,
 ): Promise<ContributorInfo[]> => {
   try {
-    if (!token) {
+    if (token === '') {
       console.error('No token');
       return [];
     }
     const octokit = new Octokit({ auth: token });
-    const contributors = await octokit.paginate(
+    return await octokit.paginate(
       octokit.rest.repos.listContributors,
-      { owner, repo, per_page: 100 },
+      { owner, per_page: 100, repo },
       (response) =>
-        response.data.map(({ login, contributions, avatar_url }) => ({
-          login: login || 'unknown',
+        response.data.map(({ avatar_url, contributions, login }) => ({
+          avatar_url: avatar_url === undefined ? '' : avatar_url,
           contributions,
-          avatar_url: avatar_url || '',
+          login: login === undefined ? 'unknown' : login,
         })),
     );
-    return contributors;
   } catch (error) {
     console.error('Error fetching contributors:', error);
     return [];
@@ -120,6 +121,67 @@ const listContributors = async (
 
 const BATCH_SIZE = 5;
 
+interface CommitFile {
+  filename: string;
+  additions?: number;
+  deletions?: number;
+}
+
+const getFileChanges = (file: CommitFile): number => {
+  const additions =
+    file.additions !== undefined && file.additions > 0 ? file.additions : 0;
+  const deletions =
+    file.deletions !== undefined && file.deletions > 0 ? file.deletions : 0;
+  return additions + deletions;
+};
+
+const accumulateFileLanguages = (
+  files: CommitFile[],
+): Record<string, number> => {
+  const result: Record<string, number> = {};
+  for (const file of files) {
+    const extension = getExtension(file.filename);
+    const lang = EXTENSION_MAP[extension];
+    if (lang !== undefined) {
+      const existing = result[lang];
+      result[lang] =
+        (existing === undefined ? 0 : existing) + getFileChanges(file);
+    }
+  }
+  return result;
+};
+
+const processCommit = async (
+  octokit: Octokit,
+  owner: string,
+  repo: string,
+  sha: string,
+): Promise<Record<string, number>> => {
+  try {
+    const commit = await octokit.rest.repos.getCommit({
+      owner,
+      ref: sha,
+      repo,
+    });
+    if (commit.data.files === undefined) {
+      return {};
+    }
+    return accumulateFileLanguages(commit.data.files);
+  } catch {
+    return {};
+  }
+};
+
+const mergeLanguageCounts = (
+  target: Record<string, number>,
+  source: Record<string, number>,
+): void => {
+  for (const [lang, changes] of Object.entries(source)) {
+    const existing = target[lang];
+    target[lang] = (existing === undefined ? 0 : existing) + changes;
+  }
+};
+
 const getContributorLanguages = async (
   owner: string,
   repo: string,
@@ -127,7 +189,7 @@ const getContributorLanguages = async (
   token: string,
 ): Promise<Record<string, number>> => {
   try {
-    if (!token) {
+    if (token === '') {
       console.error('No token');
       return {};
     }
@@ -136,45 +198,21 @@ const getContributorLanguages = async (
 
     // Fetch most recent 50 commits by this author (single page, no pagination)
     const response = await octokit.rest.repos.listCommits({
-      owner,
-      repo,
       author,
+      owner,
       per_page: 50,
+      repo,
     });
     const commitShas = response.data.map(({ sha }) => sha);
 
-    const processCommit = async (sha: string) => {
-      try {
-        const commit = await octokit.rest.repos.getCommit({
-          owner,
-          repo,
-          ref: sha,
-        });
-        const result: Record<string, number> = {};
-        if (commit.data.files) {
-          for (const file of commit.data.files) {
-            const ext = getExtension(file.filename);
-            const lang = EXTENSION_MAP[ext];
-            if (lang) {
-              const changes = (file.additions || 0) + (file.deletions || 0);
-              result[lang] = (result[lang] || 0) + changes;
-            }
-          }
-        }
-        return result;
-      } catch {
-        return {};
-      }
-    };
-
     // Fetch commit details in batches of 5 for controlled concurrency
-    for (let i = 0; i < commitShas.length; i += BATCH_SIZE) {
-      const batch = commitShas.slice(i, i + BATCH_SIZE);
-      const results = await Promise.all(batch.map(processCommit));
+    for (let index = 0; index < commitShas.length; index += BATCH_SIZE) {
+      const batch = commitShas.slice(index, index + BATCH_SIZE);
+      const results = await Promise.all(
+        batch.map(async (sha) => processCommit(octokit, owner, repo, sha)),
+      );
       for (const result of results) {
-        for (const [lang, changes] of Object.entries(result)) {
-          langBytes[lang] = (langBytes[lang] || 0) + changes;
-        }
+        mergeLanguageCounts(langBytes, result);
       }
     }
 
@@ -185,5 +223,5 @@ const getContributorLanguages = async (
   }
 };
 
-export { listContributors, getContributorLanguages };
+export { getContributorLanguages, listContributors };
 export type { ContributorInfo };

@@ -22,9 +22,9 @@ const repositories = async (
   username: string,
   token: string,
   includeForks = false,
-) => {
+): Promise<string[]> => {
   try {
-    if (!token) {
+    if (token === '') {
       console.error('No token');
       return [];
     }
@@ -38,6 +38,7 @@ const repositories = async (
         octokit.rest.repos.listForOrg,
         {
           org: parsedName,
+          per_page: 100,
           type: 'public',
         },
         (response) =>
@@ -49,8 +50,9 @@ const repositories = async (
     return await octokit.paginate(
       octokit.rest.repos.listForUser,
       {
-        username: parsedName,
+        per_page: 100,
         type: 'owner',
+        username: parsedName,
       },
       (response) =>
         response.data

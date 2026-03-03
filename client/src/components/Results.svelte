@@ -13,6 +13,12 @@
   export let errorMessage;
   export let isDone;
   export let langBreakdown;
+
+  let expandedLang = null;
+
+  const onToggleLang = (name) => {
+    expandedLang = expandedLang === name ? null : name;
+  };
 </script>
 
 <template>
@@ -29,19 +35,19 @@
       <h4 class="error">{errorMessage}</h4>
     {:else if data}
       {#if data.length > 0}
-        <table>
-          <tbody>
-            {#each data as dat, index (index)}
-              <Progress
-                {count1}
-                {dat}
-                {index}
-                {isDone}
-                breakdown={langBreakdown ? langBreakdown[dat.name] : undefined}
-              />
-            {/each}
-          </tbody>
-        </table>
+        <div class="bars">
+          {#each data as dat, index (index)}
+            <Progress
+              {count1}
+              {dat}
+              {index}
+              {isDone}
+              breakdown={langBreakdown ? langBreakdown[dat.name] : undefined}
+              {expandedLang}
+              {onToggleLang}
+            />
+          {/each}
+        </div>
       {:else}
         <h4 class="error">{ERROR.NOT_FOUND}</h4>
       {/if}
@@ -57,6 +63,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .bars {
+    width: 100%;
   }
 
   .error {
