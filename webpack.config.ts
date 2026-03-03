@@ -9,6 +9,7 @@ const mode = process.env.NODE_ENV as
   | 'production'
   | undefined;
 const production = mode === 'production';
+const coverage = process.env.COVERAGE === 'true';
 
 const SRC_DIR = path.join(path.resolve(), '/client/src');
 const DIST_DIR = path.join(path.resolve(), '/public/dist');
@@ -45,6 +46,7 @@ const configuration: Configuration = {
                 ],
                 ['@babel/preset-typescript', { jsxPragma: 'h' }],
               ],
+              plugins: coverage ? ['istanbul'] : [],
             },
           },
         ],
@@ -76,7 +78,7 @@ const configuration: Configuration = {
     ],
   },
   mode: production ? 'production' : 'development',
-  devtool: production ? false : 'source-map',
+  devtool: production && !coverage ? false : 'source-map',
   experiments: { topLevelAwait: true },
 };
 

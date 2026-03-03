@@ -163,4 +163,5 @@ const fetchMerged = async (
   return result;
 };
 
+export { edgesToLangs, parseOwnerName };
 export default fetchMerged;

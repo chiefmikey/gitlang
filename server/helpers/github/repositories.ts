@@ -65,4 +65,5 @@ const repositories = async (
   }
 };
 
+export { isOrganization, parseOrgName };
 export default repositories;
