@@ -4,10 +4,6 @@ import languages from './requests/languages';
 import merged from './requests/merged';
 import repositories from './requests/repositories';
 
-interface DataOptions {
-  includeForks?: boolean;
-}
-
 const parseOwnerName = (input: string): string => {
   if (input.startsWith('@')) {
     return input.slice(1);
@@ -53,11 +49,10 @@ interface RepoLangs {
 
 const fetchEntryData = async (
   entry: UserQuery,
-  options: DataOptions,
 ): Promise<{ repoLangs: RepoLangs[] }> => {
   // Fast path: use merged endpoint for full-user lookups (no specific repos, no author)
   if (!entry.repos && !entry.author) {
-    const result = await merged(entry.owner, options.includeForks);
+    const result = await merged(entry.owner);
     const repoLangs: RepoLangs[] = result.repos.map((name, i) => ({
       name,
       langs: result.langs[i] || {},
@@ -69,7 +64,7 @@ const fetchEntryData = async (
   if (entry.repos) {
     repoNames = entry.repos;
   } else {
-    repoNames = await repositories(entry.owner, options.includeForks);
+    repoNames = await repositories(entry.owner);
   }
 
   if (entry.author) {
@@ -133,10 +128,7 @@ interface GroupResult {
   langBreakdown: Record<string, { repo: string; percent: number }[]>;
 }
 
-const processGroup = async (
-  groupInput: string,
-  options: DataOptions,
-): Promise<GroupResult> => {
+const processGroup = async (groupInput: string): Promise<GroupResult> => {
   const entries = groupInput
     .split('+')
     .map((e) => e.trim())
@@ -144,7 +136,7 @@ const processGroup = async (
     .map(parseEntry);
 
   const results = await Promise.all(
-    entries.map((entry) => fetchEntryData(entry, options)),
+    entries.map((entry) => fetchEntryData(entry)),
   );
 
   const allRepoLangs = results.flatMap((r) => r.repoLangs);
@@ -156,7 +148,7 @@ const processGroup = async (
   return { label: groupInput, allNames, space, langBreakdown };
 };
 
-const data = async (input: string, options: DataOptions = {}) => {
+const data = async (input: string) => {
   try {
     window.history.pushState('', '', `/${input}`);
 
@@ -168,7 +160,7 @@ const data = async (input: string, options: DataOptions = {}) => {
 
     if (groups.length <= 1) {
       // Single group — standard compile mode
-      const result = await processGroup(groups[0] || input, options);
+      const result = await processGroup(groups[0] || input);
       return {
         data: {
           allNames: result.allNames,
@@ -180,7 +172,7 @@ const data = async (input: string, options: DataOptions = {}) => {
 
     // Multiple groups — compare mode
     const results = await Promise.all(
-      groups.map((group) => processGroup(group, options)),
+      groups.map((group) => processGroup(group)),
     );
 
     return {

@@ -42,11 +42,11 @@ const handleRepos = async (
   params: QueryParameters,
   token: string,
 ): Promise<APIGatewayProxyResultV2> => {
-  const { includeForks, username } = params;
+  const { username } = params;
   if (username === undefined || username === '') {
     return json(400, { error: 'username required' });
   }
-  const repos = await repositories(username, token, includeForks === 'true');
+  const repos = await repositories(username, token);
   return repos.length > 0 ? json(200, repos) : json(404, []);
 };
 
@@ -89,15 +89,11 @@ const handleMerged = async (
   params: QueryParameters,
   token: string,
 ): Promise<APIGatewayProxyResultV2> => {
-  const { includeForks, username } = params;
+  const { username } = params;
   if (username === undefined || username === '') {
     return json(400, { error: 'username required' });
   }
-  const result = await fetchMerged(
-    username,
-    token,
-    includeForks === 'true',
-  );
+  const result = await fetchMerged(username, token);
   if (result.repos.length === 0) {
     return json(404, { langs: [], repos: [] });
   }

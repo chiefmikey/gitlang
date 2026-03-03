@@ -64,7 +64,7 @@ npm run fix           # ESLint autofix
 - Svelte components use Svelte 4 syntax (export let, on:click, $:) for consistency
 - API routes are prefixed `/gitlang/github/`
 - Auth uses GitHub App with auto-rotating installation tokens (no manual rotation needed)
-- Fork inclusion is optional (default: excluded)
+- Forks are always excluded — language stats reflect repos owned by the user
 - Language bars are clickable anywhere to show per-repo breakdown (when multiple repos)
 
 ## Environment Variables
@@ -76,8 +76,8 @@ npm run fix           # ESLint autofix
 
 ## API Endpoints
 
-- `GET /gitlang/github/merged?username=X&includeForks=true|false` — combined repos + langs in one call (primary endpoint)
-- `GET /gitlang/github/repos?username=X&includeForks=true|false`
+- `GET /gitlang/github/merged?username=X` — combined repos + langs in one call (primary endpoint, GraphQL-backed, cached 5min)
+- `GET /gitlang/github/repos?username=X`
 - `GET /gitlang/github/langs?owner=X&repos=[...]`
 - `GET /gitlang/github/rate-limit`
 - `GET /gitlang/github/contributors?owner=X&repo=Y`

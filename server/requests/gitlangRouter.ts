@@ -109,14 +109,11 @@ router.get(
 
 router.get(
   '/repos',
-  async (
-    context: KoaContextWithQuery<{ username: string; includeForks?: string }>,
-  ) => {
+  async (context: KoaContextWithQuery<{ username: string }>) => {
     try {
       const token = await getToken();
-      const { includeForks, username } = context.request.query;
-      const forks = includeForks === 'true';
-      const response = await repositories(username, token, forks);
+      const { username } = context.request.query;
+      const response = await repositories(username, token);
       setResponse(context, response);
     } catch (error) {
       console.error('Error in /repos route:', error);
@@ -151,14 +148,11 @@ router.get(
 
 router.get(
   '/merged',
-  async (
-    context: KoaContextWithQuery<{ username: string; includeForks?: string }>,
-  ) => {
+  async (context: KoaContextWithQuery<{ username: string }>) => {
     try {
       const token = await getToken();
-      const { includeForks, username } = context.request.query;
-      const forks = includeForks === 'true';
-      const result = await fetchMerged(username, token, forks);
+      const { username } = context.request.query;
+      const result = await fetchMerged(username, token);
       if (result.repos.length === 0) {
         context.response.status = 404;
         context.response.body = JSON.stringify({ langs: [], repos: [] });

@@ -16,7 +16,6 @@
   let count2;
   let done = false;
   let errorMessage = '';
-  let includeForks = false;
   let compareGroups;
 
   const RANDOM_USERS = [
@@ -51,7 +50,7 @@
 
   const getData = async (input) => {
     try {
-      const response = await handler(input, { includeForks });
+      const response = await handler(input);
       return response.data;
     } catch (error) {
       if (error.message) {
@@ -150,7 +149,6 @@
   <Input
     {randomize}
     {submit}
-    bind:includeForks
     bind:input
   />
   {#if compareGroups}

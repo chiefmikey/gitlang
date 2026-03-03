@@ -139,14 +139,12 @@ const fetchAllRepos = async (
 const fetchMerged = async (
   username: string,
   token: string,
-  includeForks = false,
 ): Promise<MergedResult> => {
   if (token === '') {
     return { langs: [], repos: [] };
   }
 
-  const cacheKey = `${username}:${includeForks}`;
-  const cached = cache.get(cacheKey);
+  const cached = cache.get(username);
   if (cached !== undefined && cached.expires > Date.now()) {
     return cached.data;
   }
@@ -154,16 +152,13 @@ const fetchMerged = async (
   const octokit = new Octokit({ auth: token });
   const { isOrg, name } = parseOwnerName(username);
   const allNodes = await fetchAllRepos(octokit, name, isOrg);
-
-  const filtered = includeForks
-    ? allNodes
-    : allNodes.filter((node) => !node.isFork);
+  const filtered = allNodes.filter((node) => !node.isFork);
 
   const repos = filtered.map((node) => node.name);
   const langs = filtered.map((node) => edgesToLangs(node.languages.edges));
 
   const result = { langs, repos };
-  cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL_MS });
+  cache.set(username, { data: result, expires: Date.now() + CACHE_TTL_MS });
 
   return result;
 };

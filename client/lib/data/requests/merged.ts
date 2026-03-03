@@ -9,15 +9,12 @@ interface MergedResponse {
   langs: LanguageData[];
 }
 
-const merged = async (
-  username: string,
-  includeForks = false,
-): Promise<MergedResponse> => {
+const merged = async (username: string): Promise<MergedResponse> => {
   try {
     const response: AxiosResponse<MergedResponse> = await axios.get(
       ROUTES.MERGED,
       {
-        params: { username, includeForks: String(includeForks) },
+        params: { username },
       },
     );
     return response.data;
