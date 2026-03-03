@@ -1,6 +1,7 @@
 import getSize from './helpers/size';
 import { contributorLanguages } from './requests/contributors';
 import languages from './requests/languages';
+import merged from './requests/merged';
 import repositories from './requests/repositories';
 
 interface DataOptions {
@@ -54,6 +55,16 @@ const fetchEntryData = async (
   entry: UserQuery,
   options: DataOptions,
 ): Promise<{ repoLangs: RepoLangs[] }> => {
+  // Fast path: use merged endpoint for full-user lookups (no specific repos, no author)
+  if (!entry.repos && !entry.author) {
+    const result = await merged(entry.owner, options.includeForks);
+    const repoLangs: RepoLangs[] = result.repos.map((name, i) => ({
+      name,
+      langs: result.langs[i] || {},
+    }));
+    return { repoLangs };
+  }
+
   let repoNames: string[];
   if (entry.repos) {
     repoNames = entry.repos;

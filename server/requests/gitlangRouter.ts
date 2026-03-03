@@ -149,6 +149,39 @@ router.get(
 );
 
 router.get(
+  '/merged',
+  async (
+    context: KoaContextWithQuery<{ username: string; includeForks?: string }>,
+  ) => {
+    try {
+      const token = await getToken();
+      const { includeForks, username } = context.request.query;
+      const forks = includeForks === 'true';
+      const repos = await repositories(username, token, forks);
+      if (repos.length === 0) {
+        context.response.status = 404;
+        context.response.body = JSON.stringify({ repos: [], langs: [] });
+        return;
+      }
+      const parsedName = username.startsWith('@')
+        ? username.slice(1)
+        : username.startsWith('org:') || username.startsWith('org/')
+          ? username.slice(4)
+          : username;
+      const langs = await languages(parsedName, repos, token);
+      context.response.status = 200;
+      context.response.body = JSON.stringify({ repos, langs });
+    } catch (error) {
+      console.error('Error in /merged route:', error);
+      context.response.status = 500;
+      context.response.body = JSON.stringify({
+        error: 'Internal server error',
+      });
+    }
+  },
+);
+
+router.get(
   '/contributor-langs',
   async (
     context: KoaContextWithQuery<{

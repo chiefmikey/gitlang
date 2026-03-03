@@ -72,7 +72,14 @@
     id="row{index}"
     style:animation="fade-in-height .5s ease-out {index / 8}s forwards"
   >
-    <div class="cell">
+    <div
+      class="cell"
+      class:clickable={breakdown && breakdown.length > 1}
+      on:click={toggleBreakdown}
+      on:keydown={e => e.key === 'Enter' && toggleBreakdown()}
+      role={breakdown && breakdown.length > 1 ? 'button' : undefined}
+      tabindex={breakdown && breakdown.length > 1 ? 0 : undefined}
+    >
       <div
         class="bar-fill"
         id="bar{index}"
@@ -80,11 +87,7 @@
       ></div>
       <span class="info info{index}">
         <span class="name">
-          {#if breakdown && breakdown.length > 1}
-            <button class="lang-btn" on:click={toggleBreakdown}>{dat.name}</button>
-          {:else}
-            <span>{dat.name}</span>
-          {/if}
+          <span>{dat.name}</span>
         </span>
         <span class="percent">
           <span>{$progress2Fixed}%</span>
@@ -93,7 +96,7 @@
     </div>
   </div>
   {#if expandedLang === dat.name && breakdown}
-    <div class="breakdown-container" transition:slide={{ duration: 400, easing: cubicInOut }}>
+    <div class="breakdown-container" in:slide={{ duration: 300, easing: cubicInOut }} out:slide={{ duration: 200, easing: cubicInOut }}>
       <div class="breakdown-list">
         {#each breakdown as item, i}
           <div
@@ -115,7 +118,6 @@
   height: 0;
   overflow: hidden;
   position: relative;
-  margin-bottom: -1px;
 }
 
 .cell {
@@ -128,7 +130,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: calc(100% + 1px);
+  height: 100%;
   background: var(--c, #fe9fc9);
 }
 
@@ -136,7 +138,7 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -150,33 +152,20 @@
   overflow: hidden;
 }
 
-.name span,
-.name .lang-btn {
+.name span {
   font-size: 16px;
   padding: 0 5px 0 10px;
   font-weight: 600;
 }
 
-.name .lang-btn {
-  background: none;
-  border: none;
-  color: inherit;
+.clickable {
   cursor: pointer;
-  text-decoration: none;
-  width: auto;
-  height: auto;
-  text-align: left;
-}
-
-.name .lang-btn:hover {
-  color: #fe9fc9;
 }
 
 .percent {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  height: 18px;
   padding: 0 10px 0 10px;
 }
 
@@ -186,9 +175,7 @@
 }
 
 .breakdown-container {
-  height: auto !important;
   overflow: hidden;
-  animation: none !important;
 }
 
 .breakdown-list {

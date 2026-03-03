@@ -19,6 +19,7 @@ const API_BASE = isLocal
 export const ROUTES = {
   REPOS: `${API_BASE}/repos`,
   LANGS: `${API_BASE}/langs`,
+  MERGED: `${API_BASE}/merged`,
   RATE_LIMIT: `${API_BASE}/rate-limit`,
   CONTRIBUTORS: `${API_BASE}/contributors`,
   CONTRIBUTOR_LANGS: `${API_BASE}/contributor-langs`,

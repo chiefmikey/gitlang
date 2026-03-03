@@ -38,6 +38,7 @@ const repositories = async (
         octokit.rest.repos.listForOrg,
         {
           org: parsedName,
+          per_page: 100,
           type: 'public',
         },
         (response) =>
@@ -49,6 +50,7 @@ const repositories = async (
     return await octokit.paginate(
       octokit.rest.repos.listForUser,
       {
+        per_page: 100,
         type: 'owner',
         username: parsedName,
       },

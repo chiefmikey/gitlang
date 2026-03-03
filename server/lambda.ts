@@ -84,6 +84,27 @@ const handleLangs = async (
   return langs.length > 0 ? json(200, langs) : json(404, []);
 };
 
+const handleMerged = async (
+  params: QueryParameters,
+  token: string,
+): Promise<APIGatewayProxyResultV2> => {
+  const { includeForks, username } = params;
+  if (username === undefined || username === '') {
+    return json(400, { error: 'username required' });
+  }
+  const repos = await repositories(username, token, includeForks === 'true');
+  if (repos.length === 0) {
+    return json(404, { repos: [], langs: [] });
+  }
+  const parsedName = username.startsWith('@')
+    ? username.slice(1)
+    : username.startsWith('org:') || username.startsWith('org/')
+      ? username.slice(4)
+      : username;
+  const langs = await languages(parsedName, repos, token);
+  return json(200, { repos, langs });
+};
+
 const handleRateLimit = async (
   token: string,
 ): Promise<APIGatewayProxyResultV2> => {
@@ -147,6 +168,9 @@ export const handler = async (
       }
       case '/langs': {
         return await handleLangs(params, token);
+      }
+      case '/merged': {
+        return await handleMerged(params, token);
       }
       case '/rate-limit': {
         return await handleRateLimit(token);
