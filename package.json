@@ -23,7 +23,7 @@
     "@koa/router": "^15.3.1",
     "@octokit/auth-app": "^8.2.0",
     "@octokit/rest": "^22.0.0",
-    "axios": "^1.12.1",
+    "axios": "^1.15.0",
     "dotenv": "^17.2.2",
     "koa": "^3.0.1",
     "koa-bodyparser": "^4.4.1",
