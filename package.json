@@ -28,7 +28,7 @@
     "koa": "^3.0.1",
     "koa-bodyparser": "^4.4.1",
     "koa-static": "^5.0.0",
-    "svelte": "^5.38.10",
+    "svelte": "^5.55.7",
     "the-new-css-reset": "^1.11.3"
   },
   "devDependencies": {
