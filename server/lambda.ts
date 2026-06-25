@@ -145,6 +145,18 @@ const handleContributorLangs = async (
   return json(200, langs);
 };
 
+// Structured error logging for CloudWatch: every 500 carries the request
+// path and an operation tag so failures are diagnosable from the log stream.
+const logHandlerError = (
+  operation: string,
+  path: string,
+  extra: Record<string, string>,
+): void => {
+  console.error(
+    JSON.stringify({ ...extra, event: 'handler_error', operation, path }),
+  );
+};
+
 export const handler = async (
   event: APIGatewayProxyEventV2,
 ): Promise<APIGatewayProxyResultV2> => {
@@ -154,6 +166,9 @@ export const handler = async (
   try {
     const token = await getToken();
     if (token === '') {
+      logHandlerError('get_token', path, {
+        detail: 'auth() returned empty token',
+      });
       return json(500, { error: 'No GitHub token configured' });
     }
 
@@ -181,7 +196,9 @@ export const handler = async (
       }
     }
   } catch (error) {
-    console.error('Lambda handler error:', error);
+    logHandlerError('route_dispatch', path, {
+      error: error instanceof Error ? error.message : String(error),
+    });
     return json(500, { error: 'Internal server error' });
   }
 };
