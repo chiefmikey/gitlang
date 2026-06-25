@@ -57,3 +57,7 @@ npm run test:coverage # Vitest with V8 coverage
 - **Unit:** Vitest + jsdom + @testing-library/svelte (`tests/client/`, `tests/server/`)
 - **E2E:** Playwright (`tests/e2e/`)
 - **Run:** `npm test`, `npm run test:e2e`, `npm run test:coverage`
+
+### Test gotchas
+- **Constructor mocks must be classes, not arrow/function fns.** ESLint/Prettier autofix rewrites `vi.fn(function () {...})` into a non-constructable arrow, which breaks `new` (e.g. `new SecretsManagerClient()` in `auth.ts`). For any mock instantiated with `new`, use a `class { ... }` mock — it is both constructable and lint-stable.
+- **Test files are NOT in the lint scope.** `npm run fix` only targets `client/src/**` and `server/**`; `tests/**` is intentionally excluded, so existing test files carry many un-enforced lint violations. Don't run repo-wide `npm run fix` expecting clean test diffs — it produces large formatting churn (key-sorting, import reordering, numeric separators).
