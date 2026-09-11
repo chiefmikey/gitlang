@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { capture } from '@mikl/analytics/vanilla';
 
   import handler from '../../lib/index';
 
@@ -117,6 +118,7 @@
         if (event !== 'window') {
           event.target.blur();
         }
+        capture('search_submitted', { query: input.trim() });
         done = false;
         data = undefined;
         langBreakdown = undefined;
