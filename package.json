@@ -21,7 +21,6 @@
     "@aws-sdk/client-secrets-manager": "^3.888.0",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^15.3.1",
-    "@mikl/analytics": "git+ssh://git@git.wolfe.tools:2222/mikl/analytics.git",
     "@octokit/auth-app": "^8.2.0",
     "@octokit/rest": "^22.0.0",
     "axios": "^1.15.2",
@@ -29,6 +28,7 @@
     "koa": "^3.0.1",
     "koa-bodyparser": "^4.4.1",
     "koa-static": "^5.0.0",
+    "posthog-js": "^1.430.2",
     "svelte": "^5.55.7",
     "the-new-css-reset": "^1.11.3"
   },

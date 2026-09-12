@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { capture } from '@mikl/analytics/vanilla';
+  import { capture } from '../lib/analytics';
 
   import handler from '../../lib/index';
 
