@@ -7,6 +7,7 @@ GitLang (gitlang.net) shows programming language usage stats for any GitHub user
 - **Frontend:** Svelte 5 (using Svelte 4 syntax), SCSS, Webpack 5 + Babel + svelte-loader
 - **Backend:** AWS Lambda (Node.js 22, arm64) with @octokit/rest; Koa 3 for local dev
 - **Auth:** GitHub App (GitLang Stats) with auto-rotating installation tokens via @octokit/auth-app
+- **Analytics:** PostHog via vendored wrapper (`client/src/lib/analytics.ts`), `posthog-js` from public npm — autocapture/session recording/pageview capture off, memory-only persistence
 - **Testing:** Vitest + @testing-library/svelte (unit), Playwright (e2e)
 - **Linting:** ESLint via `@mikey-pro/eslint-config-svelte`, Prettier, Stylelint (local `.stylelintrc.cjs`)
 
@@ -61,3 +62,4 @@ npm run test:coverage # Vitest with V8 coverage
 ### Test gotchas
 - **Constructor mocks must be classes, not arrow/function fns.** ESLint/Prettier autofix rewrites `vi.fn(function () {...})` into a non-constructable arrow, which breaks `new` (e.g. `new SecretsManagerClient()` in `auth.ts`). For any mock instantiated with `new`, use a `class { ... }` mock — it is both constructable and lint-stable.
 - **Test files are NOT in the lint scope.** `npm run fix` only targets `client/src/**` and `server/**`; `tests/**` is intentionally excluded, so existing test files carry many un-enforced lint violations. Don't run repo-wide `npm run fix` expecting clean test diffs — it produces large formatting churn (key-sorting, import reordering, numeric separators).
+- **Never point `.npmrc` at an internal/private registry for `posthog-js`.** It was tried once and silently broke `npm install` on GitHub Actions runners (no VPN/hosts access to the internal host). Install straight from public npm.
