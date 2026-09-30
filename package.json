@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "test:e2e:coverage": "COVERAGE=true NODE_ENV=production webpack --mode production && rm -rf .nyc_output && playwright test && nyc report --temp-dir .nyc_output --reporter=text --reporter=text-summary"
+    "test:e2e:coverage": "COVERAGE=true NODE_ENV=production webpack --mode production && rm -rf .nyc_output && playwright test && nyc report --temp-dir .nyc_output --reporter=text --reporter=text-summary",
+    "prepare": "husky"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.888.0",
@@ -54,7 +55,9 @@
     "css-loader": "^7.1.2",
     "esbuild": "^0.27.3",
     "eslint": "^10.0.2",
+    "husky": "^9.1.7",
     "jsdom": "^28.1.0",
+    "lint-staged": "^17.6.0",
     "msw": "^2.12.10",
     "nodemon": "^3.1.10",
     "nyc": "^18.0.0",
@@ -108,5 +111,19 @@
   "overrides": {
     "fast-xml-parser": "5.4.1",
     "serialize-javascript": "7.0.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs}": [
+      "bash -c 'eslint --fix --cache --no-error-on-unmatched-pattern \"$@\" || true' --",
+      "prettier --write"
+    ],
+    "*.svelte": [
+      "bash -c 'eslint --fix --cache --no-error-on-unmatched-pattern \"$@\" || true' --"
+    ],
+    "*.{css,scss}": [
+      "bash -c 'stylelint --fix --cache --allow-empty-input \"$@\" || true' --",
+      "prettier --write"
+    ],
+    "*.{html,json,md,yml,yaml}": ["prettier --write"]
   }
 }
