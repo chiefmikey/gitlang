@@ -4,14 +4,15 @@ type PostHog = typeof posthogJs;
 type Properties = NonNullable<Parameters<PostHog['capture']>[1]>;
 type CaptureOptions = Parameters<PostHog['capture']>[2];
 
-// Kill switch. The self-hosted PostHog at analytics.wolfe.family was frozen on
+// Kill switch. The self-hosted PostHog backend was frozen on
 // 2026-09-28. While false, init and capture are no-ops: no SDK load, no network
 // requests, no console errors. Flip to true only after POSTHOG_HOST/KEY point
 // at a live backend.
 const ANALYTICS_ENABLED = false as boolean;
 
-const POSTHOG_HOST = 'https://analytics.wolfe.family';
-const POSTHOG_KEY = 'phc_qwmTbmBYEBvZfpK8L8wZNmMsknSu2itJDpQjJ5FfndE4';
+// Intentionally empty: the backend address is private and must not be committed.
+const POSTHOG_HOST = '';
+const POSTHOG_KEY = '';
 
 let posthogInstance: PostHog | undefined;
 
@@ -34,7 +35,11 @@ function getInstance(): PostHog {
   return posthogInstance ?? initAnalytics();
 }
 
-export function capture(event: string, properties?: Properties, options?: CaptureOptions): void {
+export function capture(
+  event: string,
+  properties?: Properties,
+  options?: CaptureOptions,
+): void {
   if (!ANALYTICS_ENABLED) {
     return;
   }
