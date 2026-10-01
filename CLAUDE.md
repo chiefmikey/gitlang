@@ -1,17 +1,20 @@
 # GitLang - Claude Code Instructions
 
 ## Project Overview
+
 GitLang (gitlang.net) shows programming language usage stats for any GitHub user, organization, or repo. Users type a username and see animated percentage bars for each language.
 
 ## Tech Stack
+
 - **Frontend:** Svelte 5 (using Svelte 4 syntax), SCSS, Webpack 5 + Babel + svelte-loader
 - **Backend:** AWS Lambda (Node.js 22, arm64) with @octokit/rest; Koa 3 for local dev
 - **Auth:** GitHub App (GitLang Stats) with auto-rotating installation tokens via @octokit/auth-app
-- **Analytics:** currently DISABLED (`ANALYTICS_ENABLED = false` in `client/src/lib/analytics.ts`); the self-hosted PostHog backend (`analytics.wolfe.family`) was frozen and removed 2026-09-28 and its 502 is intentional -- do not repair it. To re-enable, point at a live backend and flip the flag. Client code: PostHog via vendored wrapper (`client/src/lib/analytics.ts`), `posthog-js` from public npm — autocapture/session recording/pageview capture off, memory-only persistence
+- **Analytics:** currently DISABLED (`ANALYTICS_ENABLED = false` in `client/src/lib/analytics.ts`); the self-hosted PostHog backend was frozen and removed 2026-09-28 and its 502 is intentional -- do not repair it. To re-enable, point at a live backend and flip the flag. Client code: PostHog via vendored wrapper (`client/src/lib/analytics.ts`), `posthog-js` from public npm — autocapture/session recording/pageview capture off, memory-only persistence
 - **Testing:** Vitest + @testing-library/svelte (unit), Playwright (e2e)
 - **Linting:** ESLint via `@mikey-pro/eslint-config-svelte`, Prettier, Stylelint (local `.stylelintrc.cjs`)
 
 ## Architecture
+
 ```
 client/src/components/   # Svelte components (App, Input, Card, Results, Progress, ScrollTop, Footer)
 client/lib/data/         # Data fetching, parsing, aggregation
@@ -25,6 +28,7 @@ tests/                   # client/, server/, e2e/, setup/
 ```
 
 ## Commands
+
 ```bash
 npm run build:dev     # Development build with watch
 npm run build:prod    # Production build (client)
@@ -38,11 +42,13 @@ npm run test:coverage # Vitest with V8 coverage
 ```
 
 ## Input Formats
+
 - `username` — all repos | `username/repo` — single repo | `username/repo1,repo2` — multiple repos
 - `@org` or `org:name` — organization | `user1+user2` — aggregated | `user1~user2` — compare mode
 - `user/repo@author` — contributor mode (language stats for specific author's commits)
 
 ## Conventions
+
 - **DO NOT change the animation or UI design** — intentionally crafted
 - Svelte components use Svelte 4 syntax (export let, on:click, $:) with a Vite plugin to strip `<template>` wrappers
 - API routes prefixed `/gitlang/github/`; primary endpoint: `GET /merged?username=X` (GraphQL-backed, cached 5min)
@@ -50,16 +56,19 @@ npm run test:coverage # Vitest with V8 coverage
 - Conventional commits: `feat:`, `fix:`, `chore:`, `refactor:`
 
 ## Deployment
+
 - **Client:** Push to main -> GitHub Actions -> S3 sync + CloudFront invalidation
-- **API:** Push to main (server/** changes) -> esbuild bundle -> SAM deploy to Lambda
+- **API:** Push to main (server/\*\* changes) -> esbuild bundle -> SAM deploy to Lambda
 - **CloudFront:** Single distribution routes `/gitlang/github/*` -> Lambda, `*` -> S3
 
 ## Testing
+
 - **Unit:** Vitest + jsdom + @testing-library/svelte (`tests/client/`, `tests/server/`)
 - **E2E:** Playwright (`tests/e2e/`)
 - **Run:** `npm test`, `npm run test:e2e`, `npm run test:coverage`
 
 ### Test gotchas
+
 - **Constructor mocks must be classes, not arrow/function fns.** ESLint/Prettier autofix rewrites `vi.fn(function () {...})` into a non-constructable arrow, which breaks `new` (e.g. `new SecretsManagerClient()` in `auth.ts`). For any mock instantiated with `new`, use a `class { ... }` mock — it is both constructable and lint-stable.
 - **Test files are NOT in the lint scope.** `npm run fix` only targets `client/src/**` and `server/**`; `tests/**` is intentionally excluded, so existing test files carry many un-enforced lint violations. Don't run repo-wide `npm run fix` expecting clean test diffs — it produces large formatting churn (key-sorting, import reordering, numeric separators).
 - **Never point `.npmrc` at an internal/private registry for `posthog-js`.** It was tried once and silently broke `npm install` on GitHub Actions runners (no VPN/hosts access to the internal host). Install straight from public npm.
