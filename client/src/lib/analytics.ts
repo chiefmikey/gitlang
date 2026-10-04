@@ -4,13 +4,12 @@ type PostHog = typeof posthogJs;
 type Properties = NonNullable<Parameters<PostHog['capture']>[1]>;
 type CaptureOptions = Parameters<PostHog['capture']>[2];
 
-// Kill switch. The self-hosted PostHog at analytics.wolfe.family was frozen on
-// 2026-09-28. While false, init and capture are no-ops: no SDK load, no network
-// requests, no console errors. Flip to true only after POSTHOG_HOST/KEY point
-// at a live backend.
-const ANALYTICS_ENABLED = false as boolean;
+// Kill switch. Analytics intake is the public PostHog endpoint below (cookieless,
+// memory persistence). Set false to make init and capture no-ops (no SDK load,
+// no network requests). Never set ui_host: it would expose the private dashboard.
+const ANALYTICS_ENABLED = true as boolean;
 
-const POSTHOG_HOST = 'https://analytics.wolfe.family';
+const POSTHOG_HOST = 'https://e.wolfe.works';
 const POSTHOG_KEY = 'phc_qwmTbmBYEBvZfpK8L8wZNmMsknSu2itJDpQjJ5FfndE4';
 
 let posthogInstance: PostHog | undefined;

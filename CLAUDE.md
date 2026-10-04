@@ -7,7 +7,7 @@ GitLang (gitlang.net) shows programming language usage stats for any GitHub user
 - **Frontend:** Svelte 5 (using Svelte 4 syntax), SCSS, Webpack 5 + Babel + svelte-loader
 - **Backend:** AWS Lambda (Node.js 22, arm64) with @octokit/rest; Koa 3 for local dev
 - **Auth:** GitHub App (GitLang Stats) with auto-rotating installation tokens via @octokit/auth-app
-- **Analytics:** currently DISABLED (`ANALYTICS_ENABLED = false` in `client/src/lib/analytics.ts`); the self-hosted PostHog backend (`analytics.wolfe.family`) was frozen and removed 2026-09-28 and its 502 is intentional -- do not repair it. To re-enable, point at a live backend and flip the flag. Client code: PostHog via vendored wrapper (`client/src/lib/analytics.ts`), `posthog-js` from public npm — autocapture/session recording/pageview capture off, memory-only persistence
+- **Analytics:** PostHog via vendored wrapper (`client/src/lib/analytics.ts`), intake host `https://e.wolfe.works` (public intake only; never reference the private dashboard host here -- repo is public). Kill switch: `ANALYTICS_ENABLED` in the same file. `posthog-js` from public npm — autocapture/session recording/automatic pageview off (manual `capturePageView`), memory-only persistence, no `ui_host`
 - **Testing:** Vitest + @testing-library/svelte (unit), Playwright (e2e)
 - **Linting:** ESLint via `@mikey-pro/eslint-config-svelte`, Prettier, Stylelint (local `.stylelintrc.cjs`)
 
