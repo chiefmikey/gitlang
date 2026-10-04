@@ -9,6 +9,7 @@ type CaptureOptions = Parameters<PostHog['capture']>[2];
 // no network requests). Never set ui_host: it would expose the private dashboard.
 const ANALYTICS_ENABLED = true as boolean;
 
+// Public intake endpoint + publishable project key (safe to commit).
 const POSTHOG_HOST = 'https://e.wolfe.works';
 const POSTHOG_KEY = 'phc_qwmTbmBYEBvZfpK8L8wZNmMsknSu2itJDpQjJ5FfndE4';
 
@@ -33,7 +34,11 @@ function getInstance(): PostHog {
   return posthogInstance ?? initAnalytics();
 }
 
-export function capture(event: string, properties?: Properties, options?: CaptureOptions): void {
+export function capture(
+  event: string,
+  properties?: Properties,
+  options?: CaptureOptions,
+): void {
   if (!ANALYTICS_ENABLED) {
     return;
   }
