@@ -6,3 +6,7 @@ dist
 coverage
 .nyc_output
 test-results
+
+# mikey-pro lint caches
+.eslintcache
+.stylelintcache
