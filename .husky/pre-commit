@@ -1,1 +1,11 @@
-npx lint-staged --concurrent false
+#!/bin/sh
+# mikey-pro v2: auto-fix + log lint debt; NEVER blocks a commit.
+# core.hooksPath=.husky/_ replaces the global hooks dir, so the global pre-commit
+# hook does not run in this repo -- this shim is what calls the runner.
+r="$HOME/.config/mikey-pro/precommit.sh"
+if [ -x "$r" ]; then
+  "$r" || true
+else
+  npx --no-install lint-staged --concurrent false || true
+fi
+exit 0
