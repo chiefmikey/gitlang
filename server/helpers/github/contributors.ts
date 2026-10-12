@@ -6,6 +6,7 @@ import {
   isValidLogin,
   isValidRepoName,
 } from '../validation';
+import { describeError } from './githubSafety';
 
 // Map common file extensions to language names (matching GitHub's linguist)
 const EXTENSION_MAP: Record<string, string> = {
@@ -130,7 +131,7 @@ const listContributors = async (
     if (isRateLimitError(error)) {
       throw error;
     }
-    console.error('Error fetching contributors:', error);
+    console.error(`Error fetching contributors: ${describeError(error)}`);
     return [];
   }
 };
@@ -247,7 +248,9 @@ const getContributorLanguages = async (
     if (isRateLimitError(error)) {
       throw error;
     }
-    console.error('Error fetching contributor languages:', error);
+    console.error(
+      `Error fetching contributor languages: ${describeError(error)}`,
+    );
     return {};
   }
 };

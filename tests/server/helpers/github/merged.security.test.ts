@@ -215,3 +215,32 @@ describe('fetchMerged upstream errors', () => {
     await expect(fetchMerged('busy', 'tok')).rejects.toBe(rateLimited);
   });
 });
+
+describe('fetchMerged review follow-ups', () => {
+  it('wraps an HTTP 429 so reset / Retry-After survive to the handler', async () => {
+    const { default: fetchMerged } = await loadFresh();
+    const { GitHubRateLimitError } =
+      await import('../../../../server/helpers/github/githubSafety');
+    mockGraphql.mockRejectedValue(
+      Object.assign(new Error('secondary limit'), {
+        response: { headers: { 'retry-after': '42' } },
+        status: 429,
+      }),
+    );
+
+    const error = await fetchMerged('busy2', 'tok').catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(GitHubRateLimitError);
+    expect((error as { retryAfter?: number }).retryAfter).toBe(42);
+  });
+
+  it('logs a warning when the listing is truncated at the page cap', async () => {
+    const { MAX_PAGES, default: fetchMerged } = await loadFresh();
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    stopAfter(500, 'c');
+    await fetchMerged('hugeorg', 'tok');
+
+    expect(mockGraphql).toHaveBeenCalledTimes(MAX_PAGES);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('truncated'));
+    warn.mockRestore();
+  });
+});

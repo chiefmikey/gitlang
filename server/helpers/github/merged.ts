@@ -1,6 +1,7 @@
 import { Octokit } from '@octokit/rest';
 
 import { isNotFoundError, isValidLogin, parseOwnerName } from '../validation';
+import { toRateLimitError } from './githubSafety';
 
 interface LanguageEdge {
   size: number;
@@ -129,7 +130,8 @@ const fetchAllRepos = async (
       if (isNotFoundError(error)) {
         break;
       }
-      throw error;
+      // Preserve reset / Retry-After so the handler can pass them to the client.
+      throw toRateLimitError(error) ?? error;
     }
     const connection = getConnection(response, isOrg);
 
@@ -141,6 +143,11 @@ const fetchAllRepos = async (
     after = connection.pageInfo.endCursor ?? undefined;
     if (!connection.pageInfo.hasNextPage || after === undefined) {
       break;
+    }
+    if (page === MAX_PAGES - 1) {
+      console.warn(
+        `merged: truncated ${name} at ${String(MAX_PAGES * 100)} repositories`,
+      );
     }
   }
 
