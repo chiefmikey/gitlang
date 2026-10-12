@@ -47,11 +47,19 @@ jobs:
           aws-region: us-east-2
 
       - name: Deploy with SAM
+        env:
+          ORIGIN_VERIFY_SECRET: ${{ secrets.ORIGIN_VERIFY_SECRET }}
         run: |
+          # Unset secret => parameter omitted => origin lock stays disabled.
+          overrides=()
+          if [ -n "$ORIGIN_VERIFY_SECRET" ]; then
+            overrides=(--parameter-overrides "OriginVerifySecret=$ORIGIN_VERIFY_SECRET")
+          fi
           sam deploy \
             --template-file infra/template.yaml \
             --stack-name gitlang-api \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --resolve-s3
+            --resolve-s3 \
+            "${overrides[@]}"

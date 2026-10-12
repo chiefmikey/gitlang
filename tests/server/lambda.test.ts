@@ -244,24 +244,12 @@ describe('handler /merged', () => {
 // ---------------------------------------------------------------------------
 // /rate-limit
 // ---------------------------------------------------------------------------
-describe('handler /rate-limit', () => {
-  it('returns 200 with rate limit info', async () => {
+describe('handler /rate-limit (removed)', () => {
+  it('returns 404 and never queries the rate limit', async () => {
     const response = await handler(makeEvent('/rate-limit'));
-    expect(response.statusCode).toBe(200);
-    const body = parseBody(response);
-    expect(body).toMatchObject({
-      limit: 5000,
-      remaining: 4999,
-      reset: 1234567890,
-      used: 1,
-    });
-  });
-
-  it('returns 500 when rateLimit returns undefined', async () => {
-    (rateLimit as ReturnType<typeof vi.fn>).mockResolvedValueOnce(undefined);
-    const response = await handler(makeEvent('/rate-limit'));
-    expect(response.statusCode).toBe(500);
-    expect(parseBody(response)).toMatchObject({ error: expect.any(String) });
+    expect(response.statusCode).toBe(404);
+    expect(parseBody(response)).toEqual({ error: 'Not found' });
+    expect(rateLimit).not.toHaveBeenCalled();
   });
 });
 
@@ -453,7 +441,9 @@ describe('handler error propagation', () => {
 // ---------------------------------------------------------------------------
 describe('handler response shape', () => {
   it('always sets Content-Type to application/json', async () => {
-    const response = await handler(makeEvent('/rate-limit'));
+    const response = await handler(
+      makeEvent('/repos', { username: 'torvalds' }),
+    );
     expect((response as any).headers?.['Content-Type']).toBe(
       'application/json',
     );

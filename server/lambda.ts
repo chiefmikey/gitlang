@@ -1,3 +1,5 @@
+import { createHash, timingSafeEqual } from 'node:crypto';
+
 import type {
   APIGatewayProxyEventV2,
   APIGatewayProxyResultV2,
@@ -29,6 +31,7 @@ const getToken = async (): Promise<string> => {
 };
 
 const API_PREFIX = '/gitlang/github';
+const ORIGIN_VERIFY_HEADER = 'x-origin-verify';
 const ALLOWED_METHODS = new Set(['GET', 'HEAD']);
 
 // One /contributor-langs call costs 1 commit-list request plus up to 50
@@ -142,15 +145,6 @@ const handleMerged = async (
   return json(200, result);
 };
 
-const handleRateLimit = async (
-  token: string,
-): Promise<APIGatewayProxyResultV2> => {
-  const info = await rateLimit(token);
-  return info === undefined
-    ? json(500, { error: 'Unable to fetch rate limit' })
-    : json(200, info);
-};
-
 const handleContributors = async (
   params: QueryParameters,
   token: string,
@@ -226,6 +220,31 @@ const logHandlerError = (
   );
 };
 
+// Shared-secret origin lock. CloudFront adds `X-Origin-Verify` to every origin
+// request; when ORIGIN_VERIFY_SECRET is set, requests that reach the Function
+// URL without the matching header (i.e. bypassing CloudFront) are rejected.
+// Unset or empty disables enforcement so the rollout can be staged. The env var
+// is read per call, and both sides are hashed to a fixed length so the
+// constant-time compare neither throws nor leaks the secret's length.
+const sha256 = (value: string): Buffer =>
+  createHash('sha256').update(value).digest();
+
+const isOriginVerified = (event: APIGatewayProxyEventV2): boolean => {
+  const secret = process.env.ORIGIN_VERIFY_SECRET;
+  if (secret === undefined || secret === '') {
+    return true;
+  }
+  // Function URLs lower-case header names; match case-insensitively anyway.
+  const entry = Object.entries(event.headers ?? {}).find(
+    ([name]) => name.toLowerCase() === ORIGIN_VERIFY_HEADER,
+  );
+  const supplied: unknown = entry?.[1];
+  if (typeof supplied !== 'string') {
+    return false;
+  }
+  return timingSafeEqual(sha256(supplied), sha256(secret));
+};
+
 const routeRequest = async (
   path: string,
   params: QueryParameters,
@@ -240,9 +259,6 @@ const routeRequest = async (
     }
     case '/merged': {
       return handleMerged(params, token);
-    }
-    case '/rate-limit': {
-      return handleRateLimit(token);
     }
     case '/contributors': {
       return handleContributors(params, token);
@@ -296,6 +312,14 @@ export const handler = async (
 ): Promise<APIGatewayProxyResultV2> => {
   const path = getRoutePath(event.rawPath);
   const params: QueryParameters = event.queryStringParameters ?? {};
+
+  if (!isOriginVerified(event)) {
+    // Never log the header value or the secret.
+    logHandlerError('origin_verify', path, {
+      detail: 'missing or invalid x-origin-verify header',
+    });
+    return json(403, { error: 'Forbidden' });
+  }
 
   const method = getMethod(event);
   if (method !== undefined && !ALLOWED_METHODS.has(method)) {

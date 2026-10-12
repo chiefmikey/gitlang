@@ -2,6 +2,18 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: GitLang API - Lambda Function URL behind CloudFront
 
+Parameters:
+  # Shared secret for the origin lock. CloudFront must send the same value in
+  # the `X-Origin-Verify` origin header; the Lambda rejects requests to the
+  # Function URL that lack it (403). Empty (the default) DISABLES enforcement so
+  # the change can be rolled out in stages. See
+  # docs/decisions/2026-10-12-lambda-origin-verify-header.md.
+  OriginVerifySecret:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: Expected X-Origin-Verify header value; empty disables the check
+
 Globals:
   Function:
     Timeout: 30
@@ -20,6 +32,7 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: production
+          ORIGIN_VERIFY_SECRET: !Ref OriginVerifySecret
       FunctionUrlConfig:
         AuthType: NONE
       Policies:
