@@ -1,5 +1,7 @@
 import { Octokit } from '@octokit/rest';
 
+import { isNotFoundError, isValidLogin, parseOwnerName } from '../validation';
+
 interface LanguageEdge {
   size: number;
   node: { name: string };
@@ -32,6 +34,14 @@ interface MergedResult {
 }
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
+// Bounded so that an attacker cycling through account names cannot grow the
+// per-container cache without limit.
+const MAX_CACHE_ENTRIES = 200;
+// Each page is one GraphQL call costing many rate-limit points (100 repos x 20
+// languages). Bounding the page count caps the cost of a single request for a
+// huge organization (and stops a runaway loop if GitHub ever reports
+// hasNextPage with no usable cursor).
+const MAX_PAGES = 20;
 const cache = new Map<string, { data: MergedResult; expires: number }>();
 
 const REPOS_QUERY = `
@@ -80,16 +90,6 @@ const ORG_QUERY = `
   }
 `;
 
-const parseOwnerName = (input: string): { isOrg: boolean; name: string } => {
-  if (input.startsWith('@')) {
-    return { isOrg: false, name: input.slice(1) };
-  }
-  if (input.startsWith('org:') || input.startsWith('org/')) {
-    return { isOrg: true, name: input.slice(4) };
-  }
-  return { isOrg: false, name: input };
-};
-
 const edgesToLangs = (edges: LanguageEdge[]): Record<string, number> => {
   const result: Record<string, number> = {};
   for (const edge of edges) {
@@ -112,16 +112,25 @@ const fetchAllRepos = async (
   isOrg: boolean,
 ): Promise<RepoNode[]> => {
   const allNodes: RepoNode[] = [];
+  const query = isOrg ? ORG_QUERY : REPOS_QUERY;
   let after: string | undefined;
-  let hasNextPage = true;
 
-  while (hasNextPage) {
-    const query = isOrg ? ORG_QUERY : REPOS_QUERY;
-    const response: GraphQLUserResponse = await octokit.graphql(query, {
-      after,
-      first: 100,
-      login: name,
-    });
+  for (let page = 0; page < MAX_PAGES; page += 1) {
+    let response: GraphQLUserResponse;
+    try {
+      response = await octokit.graphql(query, {
+        after,
+        first: 100,
+        login: name,
+      });
+    } catch (error) {
+      // GitHub reports an unknown account as a GraphQL NOT_FOUND error; that
+      // means "no repositories", not a server failure.
+      if (isNotFoundError(error)) {
+        break;
+      }
+      throw error;
+    }
     const connection = getConnection(response, isOrg);
 
     if (connection === undefined) {
@@ -129,11 +138,37 @@ const fetchAllRepos = async (
     }
 
     allNodes.push(...connection.nodes);
-    ({ hasNextPage } = connection.pageInfo);
     after = connection.pageInfo.endCursor ?? undefined;
+    if (!connection.pageInfo.hasNextPage || after === undefined) {
+      break;
+    }
   }
 
   return allNodes;
+};
+
+const cacheKey = (isOrg: boolean, name: string): string =>
+  `${isOrg ? 'org' : 'user'}:${name.toLowerCase()}`;
+
+const storeInCache = (key: string, data: MergedResult): void => {
+  const now = Date.now();
+  // Re-insert so Map iteration order reflects recency of the write.
+  cache.delete(key);
+  if (cache.size >= MAX_CACHE_ENTRIES) {
+    for (const [entryKey, entry] of cache) {
+      if (entry.expires <= now) {
+        cache.delete(entryKey);
+      }
+    }
+  }
+  while (cache.size >= MAX_CACHE_ENTRIES) {
+    const oldest = cache.keys().next();
+    if (oldest.done === true) {
+      break;
+    }
+    cache.delete(oldest.value);
+  }
+  cache.set(key, { data, expires: now + CACHE_TTL_MS });
 };
 
 const fetchMerged = async (
@@ -144,13 +179,20 @@ const fetchMerged = async (
     return { langs: [], repos: [] };
   }
 
-  const cached = cache.get(username);
+  const { isOrg, name } = parseOwnerName(username);
+  if (!isValidLogin(name)) {
+    return { langs: [], repos: [] };
+  }
+
+  // GitHub logins are case-insensitive, so normalize to stop case variants
+  // from bypassing the cache.
+  const key = cacheKey(isOrg, name);
+  const cached = cache.get(key);
   if (cached !== undefined && cached.expires > Date.now()) {
     return cached.data;
   }
 
   const octokit = new Octokit({ auth: token });
-  const { isOrg, name } = parseOwnerName(username);
   const allNodes = await fetchAllRepos(octokit, name, isOrg);
   const filtered = allNodes.filter((node) => !node.isFork);
 
@@ -158,10 +200,11 @@ const fetchMerged = async (
   const langs = filtered.map((node) => edgesToLangs(node.languages.edges));
 
   const result = { langs, repos };
-  cache.set(username, { data: result, expires: Date.now() + CACHE_TTL_MS });
+  storeInCache(key, result);
 
   return result;
 };
 
-export { edgesToLangs, parseOwnerName };
+export { parseOwnerName } from '../validation';
+export { edgesToLangs, MAX_CACHE_ENTRIES, MAX_PAGES };
 export default fetchMerged;

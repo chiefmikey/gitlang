@@ -1,5 +1,12 @@
 import { Octokit } from '@octokit/rest';
 
+import {
+  isRateLimitError,
+  isValidAuthor,
+  isValidLogin,
+  isValidRepoName,
+} from '../validation';
+
 // Map common file extensions to language names (matching GitHub's linguist)
 const EXTENSION_MAP: Record<string, string> = {
   '.bash': 'Shell',
@@ -102,6 +109,11 @@ const listContributors = async (
       console.error('No token');
       return [];
     }
+    // Reject anything that is not a plain GitHub owner/repo name before it is
+    // interpolated into an authenticated API URL path.
+    if (!isValidLogin(owner) || !isValidRepoName(repo)) {
+      return [];
+    }
     const octokit = new Octokit({ auth: token });
     return await octokit.paginate(
       octokit.rest.repos.listContributors,
@@ -114,6 +126,10 @@ const listContributors = async (
         })),
     );
   } catch (error) {
+    // A rate-limited app must surface as such (HTTP 429), not as "no data".
+    if (isRateLimitError(error)) {
+      throw error;
+    }
     console.error('Error fetching contributors:', error);
     return [];
   }
@@ -167,7 +183,10 @@ const processCommit = async (
       return {};
     }
     return accumulateFileLanguages(commit.data.files);
-  } catch {
+  } catch (error) {
+    if (isRateLimitError(error)) {
+      throw error;
+    }
     return {};
   }
 };
@@ -191,6 +210,13 @@ const getContributorLanguages = async (
   try {
     if (token === '') {
       console.error('No token');
+      return {};
+    }
+    if (
+      !isValidLogin(owner) ||
+      !isValidRepoName(repo) ||
+      !isValidAuthor(author)
+    ) {
       return {};
     }
     const octokit = new Octokit({ auth: token });
@@ -218,6 +244,9 @@ const getContributorLanguages = async (
 
     return langBytes;
   } catch (error) {
+    if (isRateLimitError(error)) {
+      throw error;
+    }
     console.error('Error fetching contributor languages:', error);
     return {};
   }
