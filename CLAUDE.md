@@ -58,7 +58,7 @@ npm run test:coverage # Vitest with V8 coverage
 ## Deployment
 
 - **Client:** Push to main -> GitHub Actions -> S3 sync + CloudFront invalidation
-- **API:** Push to main (server/\*\* changes) -> esbuild bundle -> SAM deploy to Lambda
+- **API:** Manual. The CI user has no CloudFormation/Lambda rights (last CI deploy 2026-03-03), so `Deploy API` is `workflow_dispatch` only. Deploy by hand: `npm run build:lambda`, review the changeset, then `sam deploy --template-file infra/template.yaml --stack-name gitlang-api --capabilities CAPABILITY_IAM --resolve-s3 --region us-east-2` with an admin AWS profile
 - **CloudFront:** Single distribution routes `/gitlang/github/*` -> Lambda, `*` -> S3
 
 ## Testing
