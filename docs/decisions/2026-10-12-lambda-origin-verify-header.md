@@ -9,7 +9,7 @@ The API is a Lambda Function URL with `AuthType: NONE` (`infra/template.yaml`), 
 ## Decision
 
 - The Lambda requires header `x-origin-verify` to equal the `ORIGIN_VERIFY_SECRET` env var (sha256 digests compared with `crypto.timingSafeEqual`; mismatch or missing header returns 403 `{"error":"Forbidden"}`, logged as `handler_error` / `origin_verify` without the value). The check runs before token minting and routing.
-- The env var comes from the SAM parameter `OriginVerifySecret` (NoEcho, default empty). **Empty means enforcement is disabled**, so merging and deploying this change alone changes nothing. CI passes it from the GitHub secret `ORIGIN_VERIFY_SECRET`.
+- The env var comes from the SAM parameter `OriginVerifySecret` (NoEcho, default empty). **Empty means enforcement is disabled**, so merging and deploying this change alone changes nothing. API deploys are manual (the CI user cannot deploy the stack), so the value is set with `--parameter-overrides` on a manual `sam deploy`. A later deploy that omits the parameter keeps the stack's previous value (SAM sends `UsePreviousValue`), so routine deploys need not know the secret.
 - CloudFront adds the same value as a custom origin header `X-Origin-Verify` on the Lambda origin.
 - The `/rate-limit` route is removed from the Lambda (now 404). The local-dev Koa router is unchanged.
 
@@ -19,15 +19,18 @@ Origin Access Control with `AuthType: AWS_IAM` is the stronger, secret-free opti
 
 ## ROLLOUT RUNBOOK
 
-1. Merge and deploy this code with the secret unset. No-op: enforcement stays disabled.
-2. Generate a random secret (for example `openssl rand -hex 32`). Add it as a custom origin header `X-Origin-Verify` on the CloudFront origin for the Lambda (path pattern `/gitlang/github/*`) and deploy the distribution. Verify traffic through gitlang.net still returns 200.
-3. Set the GitHub Actions secret `ORIGIN_VERIFY_SECRET` to the same value and redeploy the API (workflow_dispatch on "Deploy API").
+All AWS steps use an admin profile (stack `gitlang-api` in us-east-2; the gitlang.net CloudFront distribution, origin id `gitlang-lambda-api`).
+
+1. Deploy this code with no `OriginVerifySecret` override. No-op: enforcement stays disabled; `/rate-limit` returns 404.
+2. Generate a random secret (`openssl rand -hex 32`). Add it as custom origin header `X-Origin-Verify` on origin `gitlang-lambda-api` and wait for the distribution to deploy. The Lambda ignores the header while enforcement is off. Verify gitlang.net API calls still return 200.
+3. `sam deploy --template-file infra/template.yaml --stack-name gitlang-api --capabilities CAPABILITY_IAM --resolve-s3 --region us-east-2 --parameter-overrides OriginVerifySecret=<secret>`.
 4. Verify: a direct Function URL call returns 403; a call via gitlang.net returns 200.
 
-**ROLLBACK:** clear the GitHub secret and redeploy, or remove the `ORIGIN_VERIFY_SECRET` env var in the Lambda console. Enforcement is disabled immediately (the env var is read per request).
+**ROLLBACK:** for an immediate fix, remove the `ORIGIN_VERIFY_SECRET` env var from the function configuration (read per request, takes effect at once). Then make it durable with a deploy that passes `--parameter-overrides OriginVerifySecret=""`. Omitting the parameter does NOT disable enforcement; it keeps the previous value.
 
 ## Notes
 
 - Rotation: repeat steps 2-3 with a new value. CloudFront could transition by adding the new value first only if the Lambda accepted both; this change accepts one value, so rotation causes a brief mismatch window (403 through CloudFront). Schedule it for low traffic, or roll back to disabled during the swap.
 - Use a hex or base64url secret (no spaces, quotes or shell metacharacters) so the `sam deploy --parameter-overrides` argument parses cleanly.
-- The current CI deploy user lacks CloudFormation permissions (deploys fail with AccessDenied on `CreateChangeSet`). Steps 1 and 3 need that fixed, or a manual `sam deploy` by an admin.
+- The CI deploy user lacks CloudFormation permissions by design, so the Deploy API workflow is manual-only and API deploys run from an admin profile.
+- The secret lives only in the CloudFront origin config and the stack parameter (NoEcho). To recover it, read the origin's custom header from the distribution config.

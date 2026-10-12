@@ -46,7 +46,7 @@ jobs:
         env:
           ORIGIN_VERIFY_SECRET: ${{ secrets.ORIGIN_VERIFY_SECRET }}
         run: |
-          # Unset secret => parameter omitted => origin lock stays disabled.
+          # Unset secret => parameter omitted => the stack keeps its previous value.
           overrides=()
           if [ -n "$ORIGIN_VERIFY_SECRET" ]; then
             overrides=(--parameter-overrides "OriginVerifySecret=$ORIGIN_VERIFY_SECRET")
