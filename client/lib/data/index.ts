@@ -33,10 +33,15 @@ const parseEntry = (entry: string): UserQuery => {
   if (entryWithoutAuthor.includes('/')) {
     const parts = entryWithoutAuthor.split('/');
     const owner = parseOwnerName(parts[0]);
-    const repos = parts
-      .slice(1)
-      .flatMap((part) => part.split(','))
-      .filter((name) => name.length > 0);
+    // Dedupe so a repeated repo (user/a,b,a) is not counted twice
+    const repos = [
+      ...new Set(
+        parts
+          .slice(1)
+          .flatMap((part) => part.split(','))
+          .filter((name) => name.length > 0),
+      ),
+    ];
     return { owner, repos, author };
   }
   return { owner: parseOwnerName(entryWithoutAuthor), repos: null, author };
@@ -134,7 +139,9 @@ const processGroup = async (groupInput: string): Promise<GroupResult> => {
     .split('+')
     .map((e) => e.trim())
     .filter((e) => e.length > 0)
-    .map(parseEntry);
+    .map(parseEntry)
+    // A bare prefix (@, org:) has no owner to look up
+    .filter((entry) => entry.owner.length > 0);
 
   const results = await Promise.all(
     entries.map((entry) => fetchEntryData(entry)),
@@ -161,7 +168,7 @@ const data = async (input: string) => {
 
     if (groups.length <= 1) {
       // Single group — standard compile mode
-      const result = await processGroup(groups[0] || input);
+      const result = await processGroup(groups[0] ?? '');
       return {
         data: {
           allNames: result.allNames,
