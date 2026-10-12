@@ -112,10 +112,20 @@ describe('repositories', () => {
     );
   });
 
-  it('returns empty array when paginate throws', async () => {
-    mockPaginate.mockRejectedValue(new Error('Network error'));
+  it('returns empty array when GitHub reports the account as not found', async () => {
+    mockPaginate.mockRejectedValue(
+      Object.assign(new Error('Not Found'), { status: 404 }),
+    );
 
     const result = await repositories('torvalds', 'ghs_token');
     expect(result).toEqual([]);
+  });
+
+  it('rethrows other errors so an outage is not reported as not found', async () => {
+    mockPaginate.mockRejectedValue(new Error('Network error'));
+
+    await expect(repositories('torvalds', 'ghs_token')).rejects.toThrow(
+      'Network error',
+    );
   });
 });

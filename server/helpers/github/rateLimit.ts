@@ -1,5 +1,7 @@
 import { Octokit } from '@octokit/rest';
 
+import { describeError } from './githubSafety';
+
 interface RateLimitInfo {
   limit: number;
   remaining: number;
@@ -18,7 +20,9 @@ const rateLimit = async (token: string): Promise<RateLimitInfo | undefined> => {
     const { limit, remaining, reset, used } = response.data.rate;
     return { limit, remaining, reset, used };
   } catch (error) {
-    console.error('Error fetching rate limit:', error);
+    // Log a compact description, never the raw Octokit error (it embeds
+    // request/response headers and bodies).
+    console.error(`Error fetching rate limit: ${describeError(error)}`);
     return undefined;
   }
 };
