@@ -1,14 +1,10 @@
 name: Deploy API
 
+# Manual only: the CI IAM user is scoped to S3 + CloudFront and cannot create
+# CloudFormation change sets. API deploys are run by hand with an admin profile
+# (sam deploy, stack gitlang-api, us-east-2). Do not re-add a push trigger
+# unless the CI user is granted a scoped deploy role.
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'server/**'
-      - 'infra/template.yaml'
-      - '.github/workflows/server.yml'
-
   workflow_dispatch:
 
 concurrency:
