@@ -58,7 +58,9 @@ describe('languages', () => {
   it('returns empty object for a repo that errors while others succeed', async () => {
     mockListLanguages
       .mockResolvedValueOnce({ data: { TypeScript: 5000 } })
-      .mockRejectedValueOnce(new Error('Not Found'))
+      .mockRejectedValueOnce(
+        Object.assign(new Error('Not Found'), { status: 404 }),
+      )
       .mockResolvedValueOnce({ data: { Go: 2000 } });
 
     const result = await languages(
@@ -68,6 +70,16 @@ describe('languages', () => {
     );
 
     expect(result).toEqual([{ TypeScript: 5000 }, {}, { Go: 2000 }]);
+  });
+
+  it('rethrows an error without a 404-style status instead of returning {}', async () => {
+    mockListLanguages
+      .mockResolvedValueOnce({ data: { TypeScript: 5000 } })
+      .mockRejectedValueOnce(new Error('socket hang up'));
+
+    await expect(
+      languages('torvalds', ['repo1', 'repo2'], 'ghs_token'),
+    ).rejects.toThrow('socket hang up');
   });
 
   it('returns a single language record for a single repo', async () => {

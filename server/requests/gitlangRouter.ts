@@ -9,6 +9,14 @@ import fetchMerged from '../helpers/github/merged';
 import rateLimit from '../helpers/github/rateLimit';
 import repositories from '../helpers/github/repositories';
 import { getToken } from '../helpers/github/tokenManager';
+import {
+  isRateLimitError,
+  isValidAuthor,
+  isValidLogin,
+  isValidOwnerInput,
+  isValidRepoName,
+  parseRepoList,
+} from '../helpers/validation';
 
 const router = new Router({ prefix: '/github' });
 
@@ -33,19 +41,20 @@ const setResponse = (
   }
 };
 
-const parseRepoList = (repos: string): string[] | undefined => {
-  try {
-    const parsed: unknown = JSON.parse(repos);
-    if (
-      Array.isArray(parsed) &&
-      parsed.every((r: unknown) => typeof r === 'string')
-    ) {
-      return parsed;
-    }
-    return undefined;
-  } catch {
-    return undefined;
-  }
+// Mirrors the Lambda handler: one /contributor-langs run costs 1 commit-list
+// request plus up to 50 commit-detail requests.
+const CONTRIBUTOR_LANGS_MAX_REQUESTS = 51;
+
+const setBadRequest = (context: KoaContext, error: string): void => {
+  context.response.status = 400;
+  context.response.body = JSON.stringify({ error });
+};
+
+const setRateLimited = (context: KoaContext): void => {
+  context.response.status = 429;
+  context.response.body = JSON.stringify({
+    error: 'GitHub API rate limit reached, try again later',
+  });
 };
 
 router.get('/rate-limit', async (context: KoaContext) => {
@@ -72,16 +81,22 @@ router.get(
   '/langs',
   async (context: KoaContextWithQuery<{ owner: string; repos: string }>) => {
     try {
-      const token = await getToken();
       const { owner, repos } = context.request.query;
-      const repoList = parseRepoList(repos);
-      if (repoList === undefined) {
-        context.response.status = 400;
-        context.response.body = JSON.stringify({
-          error: 'repos must be a JSON array of strings',
-        });
+      if (!isValidLogin(owner)) {
+        setBadRequest(context, 'invalid owner');
         return;
       }
+      if (typeof repos !== 'string') {
+        setBadRequest(context, 'repos required');
+        return;
+      }
+      const parsedRepos = parseRepoList(repos);
+      if ('error' in parsedRepos) {
+        setBadRequest(context, parsedRepos.error);
+        return;
+      }
+      const repoList = parsedRepos.repos;
+      const token = await getToken();
 
       const rateLimitInfo = await rateLimit(token);
       if (
@@ -102,6 +117,10 @@ router.get(
       setResponse(context, response);
     } catch (error) {
       console.error('Error in /langs route:', error);
+      if (isRateLimitError(error)) {
+        setRateLimited(context);
+        return;
+      }
       setResponse(context, []);
     }
   },
@@ -113,8 +132,12 @@ router.get(
     context: KoaContextWithQuery<{ username: string; includeForks?: string }>,
   ) => {
     try {
-      const token = await getToken();
       const { includeForks, username } = context.request.query;
+      if (!isValidOwnerInput(username)) {
+        setBadRequest(context, 'invalid username');
+        return;
+      }
+      const token = await getToken();
       const response = await repositories(
         username,
         token,
@@ -123,6 +146,10 @@ router.get(
       setResponse(context, response);
     } catch (error) {
       console.error('Error in /repos route:', error);
+      if (isRateLimitError(error)) {
+        setRateLimited(context);
+        return;
+      }
       setResponse(context, []);
     }
   },
@@ -132,8 +159,12 @@ router.get(
   '/contributors',
   async (context: KoaContextWithQuery<{ owner: string; repo: string }>) => {
     try {
-      const token = await getToken();
       const { owner, repo } = context.request.query;
+      if (!isValidLogin(owner) || !isValidRepoName(repo)) {
+        setBadRequest(context, 'invalid owner or repo');
+        return;
+      }
+      const token = await getToken();
       const contributors = await listContributors(owner, repo, token);
       if (contributors.length > 0) {
         context.response.status = 200;
@@ -144,6 +175,10 @@ router.get(
       }
     } catch (error) {
       console.error('Error in /contributors route:', error);
+      if (isRateLimitError(error)) {
+        setRateLimited(context);
+        return;
+      }
       context.response.status = 500;
       context.response.body = JSON.stringify({
         error: 'Internal server error',
@@ -156,8 +191,12 @@ router.get(
   '/merged',
   async (context: KoaContextWithQuery<{ username: string }>) => {
     try {
-      const token = await getToken();
       const { username } = context.request.query;
+      if (!isValidOwnerInput(username)) {
+        setBadRequest(context, 'invalid username');
+        return;
+      }
+      const token = await getToken();
       const result = await fetchMerged(username, token);
       if (result.repos.length === 0) {
         context.response.status = 404;
@@ -168,6 +207,10 @@ router.get(
       context.response.body = JSON.stringify(result);
     } catch (error) {
       console.error('Error in /merged route:', error);
+      if (isRateLimitError(error)) {
+        setRateLimited(context);
+        return;
+      }
       context.response.status = 500;
       context.response.body = JSON.stringify({
         error: 'Internal server error',
@@ -186,13 +229,39 @@ router.get(
     }>,
   ) => {
     try {
-      const token = await getToken();
       const { author, owner, repo } = context.request.query;
+      if (
+        !isValidLogin(owner) ||
+        !isValidRepoName(repo) ||
+        !isValidAuthor(author)
+      ) {
+        setBadRequest(context, 'invalid owner, repo, or author');
+        return;
+      }
+      const token = await getToken();
+      const rateLimitInfo = await rateLimit(token);
+      if (
+        rateLimitInfo !== undefined &&
+        rateLimitInfo.remaining < CONTRIBUTOR_LANGS_MAX_REQUESTS
+      ) {
+        context.response.status = 429;
+        context.response.body = JSON.stringify({
+          error: 'Rate limit insufficient',
+          needed: CONTRIBUTOR_LANGS_MAX_REQUESTS,
+          remaining: rateLimitInfo.remaining,
+          reset: rateLimitInfo.reset,
+        });
+        return;
+      }
       const langs = await getContributorLanguages(owner, repo, author, token);
       context.response.status = 200;
       context.response.body = JSON.stringify(langs);
     } catch (error) {
       console.error('Error in /contributor-langs route:', error);
+      if (isRateLimitError(error)) {
+        setRateLimited(context);
+        return;
+      }
       context.response.status = 500;
       context.response.body = JSON.stringify({
         error: 'Internal server error',

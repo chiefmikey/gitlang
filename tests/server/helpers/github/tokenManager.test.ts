@@ -31,3 +31,11 @@ describe('getToken', () => {
     await expect(getToken()).rejects.toThrow('Auth failed');
   });
 });
+
+describe('getToken: empty token contract', () => {
+  it('passes an empty token through unchanged so callers can detect auth failure', async () => {
+    vi.mocked(auth).mockResolvedValueOnce('');
+
+    await expect(getToken()).resolves.toBe('');
+  });
+});
