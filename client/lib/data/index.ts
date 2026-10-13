@@ -37,9 +37,9 @@ const parseEntry = (entry: string): UserQuery => {
       .slice(1)
       .flatMap((part) => part.split(','))
       .filter((name) => name.length > 0);
-    return { owner, repos, author };
+    return { author, owner, repos };
   }
-  return { owner: parseOwnerName(entryWithoutAuthor), repos: null, author };
+  return { author, owner: parseOwnerName(entryWithoutAuthor), repos: null };
 };
 
 interface RepoLangs {
@@ -50,43 +50,39 @@ interface RepoLangs {
 const fetchEntryData = async (
   entry: UserQuery,
 ): Promise<{ repoLangs: RepoLangs[] }> => {
+  const { author, owner, repos } = entry;
+  const hasAuthor = author !== null && author !== '';
+
   // Fast path: use merged endpoint for full-user lookups (no specific repos, no author)
-  if (!entry.repos && !entry.author) {
-    const result = await merged(entry.owner);
-    const repoLangs: RepoLangs[] = result.repos.map((name, i) => ({
+  if (repos === null && !hasAuthor) {
+    const result = await merged(owner);
+    const repoLangs: RepoLangs[] = result.repos.map((name, index) => ({
+      langs: result.langs[index] ?? {},
       name,
-      langs: result.langs[i] || {},
     }));
     return { repoLangs };
   }
 
-  let repoNames: string[];
-  if (entry.repos) {
-    repoNames = entry.repos;
-  } else {
-    // In author mode, include forks — contributor analysis isolates the author's work
-    repoNames = await repositories(entry.owner, Boolean(entry.author));
-  }
+  // In author mode, include forks — contributor analysis isolates the author's work
+  const repoNames = repos ?? (await repositories(owner, hasAuthor));
 
-  if (entry.author) {
+  if (hasAuthor) {
     // Contributor mode: fetch commit-level language data per repo for this author
     const langResults = await Promise.all(
-      repoNames.map((repo) =>
-        contributorLanguages(entry.owner, repo, entry.author as string),
-      ),
+      repoNames.map(async (repo) => contributorLanguages(owner, repo, author)),
     );
-    const repoLangs: RepoLangs[] = repoNames.map((name, i) => ({
+    const repoLangs: RepoLangs[] = repoNames.map((name, index) => ({
+      langs: langResults[index] ?? {},
       name,
-      langs: langResults[i] || {},
     }));
     return { repoLangs };
   }
 
-  const langs = await languages(entry.owner, repoNames);
+  const langs = await languages(owner, repoNames);
 
-  const repoLangs: RepoLangs[] = repoNames.map((name, i) => ({
+  const repoLangs: RepoLangs[] = repoNames.map((name, index) => ({
+    langs: langs[index] ?? {},
     name,
-    langs: langs[i] || {},
   }));
 
   return { repoLangs };
@@ -98,13 +94,13 @@ const buildLangRepoBreakdown = (
   const langTotals: Record<string, number> = {};
   const langRepos: Record<string, { repo: string; bytes: number }[]> = {};
 
-  for (const { name, langs } of repoLangs) {
+  for (const { langs, name } of repoLangs) {
     for (const [lang, bytes] of Object.entries(langs)) {
-      langTotals[lang] = (langTotals[lang] || 0) + bytes;
-      if (!langRepos[lang]) {
+      langTotals[lang] = (langTotals[lang] ?? 0) + bytes;
+      if (langRepos[lang] === undefined) {
         langRepos[lang] = [];
       }
-      langRepos[lang].push({ repo: name, bytes });
+      langRepos[lang].push({ bytes, repo: name });
     }
   }
 
@@ -112,9 +108,9 @@ const buildLangRepoBreakdown = (
   for (const [lang, repos] of Object.entries(langRepos)) {
     const total = langTotals[lang];
     breakdown[lang] = repos
-      .map(({ repo, bytes }) => ({
-        repo,
+      .map(({ bytes, repo }) => ({
         percent: total > 0 ? bytes / total : 0,
+        repo,
       }))
       .sort((a, b) => b.percent - a.percent);
   }
@@ -132,12 +128,12 @@ interface GroupResult {
 const processGroup = async (groupInput: string): Promise<GroupResult> => {
   const entries = groupInput
     .split('+')
-    .map((e) => e.trim())
-    .filter((e) => e.length > 0)
+    .map((part) => part.trim())
+    .filter((part) => part.length > 0)
     .map(parseEntry);
 
   const results = await Promise.all(
-    entries.map((entry) => fetchEntryData(entry)),
+    entries.map(async (entry) => fetchEntryData(entry)),
   );
 
   const allRepoLangs = results.flatMap((r) => r.repoLangs);
@@ -146,34 +142,43 @@ const processGroup = async (groupInput: string): Promise<GroupResult> => {
   const space = getSize(allLangs);
   const langBreakdown = buildLangRepoBreakdown(allRepoLangs);
 
-  return { label: groupInput, allNames, space, langBreakdown };
+  return { allNames, label: groupInput, langBreakdown, space };
 };
 
-const data = async (input: string) => {
+interface DataResult {
+  data:
+    {
+        allNames: string[];
+        langBreakdown: GroupResult['langBreakdown'];
+        space: Record<string, number>;
+      } | { compareGroups: GroupResult[] };
+}
+
+const data = async (input: string): Promise<DataResult> => {
   try {
-    window.history.pushState('', '', `/${input}`);
+    globalThis.history.pushState('', '', `/${input}`);
 
     // Split by ~ for compare mode (? in input becomes ~ in URL)
     const groups = input
       .split('~')
-      .map((g) => g.trim().replace(/^\++|\++$/g, ''))
+      .map((g) => g.trim().replaceAll(/^\++|\++$/gu, ''))
       .filter((g) => g.length > 0);
 
     if (groups.length <= 1) {
       // Single group — standard compile mode
-      const result = await processGroup(groups[0] || input);
+      const result = await processGroup(groups[0] ?? input);
       return {
         data: {
           allNames: result.allNames,
-          space: result.space,
           langBreakdown: result.langBreakdown,
+          space: result.space,
         },
       };
     }
 
     // Multiple groups — compare mode
     const results = await Promise.all(
-      groups.map((group) => processGroup(group)),
+      groups.map(async (group) => processGroup(group)),
     );
 
     return {
