@@ -1,4 +1,6 @@
 <script>
+  import { capture } from '../lib/analytics';
+
   export let count1;
   export let count2;
   export let current;
@@ -13,7 +15,8 @@
     {#if current}
       <a
         class="owner"
-        href={url}>{current}
+        href={url}
+        on:click={() => capture('github_profile_opened')}>{current}
       </a>
     {/if}
     {#if data === undefined}

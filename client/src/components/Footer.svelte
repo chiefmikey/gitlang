@@ -1,4 +1,6 @@
 <script>
+  import { capture } from '../lib/analytics';
+
   const url = "https://github.com/chiefmikey";
 </script>
 
@@ -6,6 +8,7 @@
   <footer class="footer">
     <a
       href={url}
+      on:click={() => capture('author_link_clicked')}
       rel="noopener noreferrer"
       target="_blank"
     >made by Chief Mikey</a>

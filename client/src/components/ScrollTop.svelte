@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { capture } from '../lib/analytics';
 
   onMount(() => {
     setTimeout(() => {
@@ -9,6 +10,7 @@
   });
 
   const scroll = () => {
+    capture('scroll_top_clicked');
     const wrapper = document.querySelector('.wrapper');
     wrapper.scroll({ top: 0, behavior: 'smooth' });
   };
