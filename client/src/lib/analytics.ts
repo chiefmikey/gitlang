@@ -1,53 +1,56 @@
-import posthogJs from 'posthog-js';
+// Wolfe telemetry standard v1: the shared loader tag in public/index.html
+// handles pageviews, vitals, errors and the actor/env tags. This module only
+// forwards the app's core custom events to it. Properties are enumerated values
+// only (never usernames, queries or other user content).
 
-type PostHog = typeof posthogJs;
-type Properties = NonNullable<Parameters<PostHog['capture']>[1]>;
-type CaptureOptions = Parameters<PostHog['capture']>[2];
+type EventProperties = Record<string, boolean | number | string>;
 
-// Kill switch. Analytics intake is the public PostHog endpoint below (cookieless,
-// memory persistence). Set false to make init and capture no-ops (no SDK load,
-// no network requests). Never set ui_host: it would expose the private dashboard.
-const ANALYTICS_ENABLED = true as boolean;
-
-// Public intake endpoint + publishable project key (safe to commit).
-const POSTHOG_HOST = 'https://e.wolfe.works';
-const POSTHOG_KEY = 'phc_qwmTbmBYEBvZfpK8L8wZNmMsknSu2itJDpQjJ5FfndE4';
-
-let posthogInstance: PostHog | undefined;
-
-export function initAnalytics(): PostHog {
-  if (ANALYTICS_ENABLED) {
-    posthogJs.init(POSTHOG_KEY, {
-      api_host: POSTHOG_HOST,
-      autocapture: false,
-      capture_pageview: false,
-      disable_session_recording: true,
-      persistence: 'memory',
-      person_profiles: 'identified_only',
-    });
-  }
-  posthogInstance = posthogJs;
-  return posthogJs;
+interface WolfeTelemetry {
+  capture: (event: string, properties?: EventProperties) => void;
 }
 
-function getInstance(): PostHog {
-  return posthogInstance ?? initAnalytics();
+function isWolfeTelemetry(value: unknown): value is WolfeTelemetry {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof Reflect.get(value, 'capture') === 'function'
+  );
 }
 
-export function capture(
-  event: string,
-  properties?: Properties,
-  options?: CaptureOptions,
-): void {
-  if (!ANALYTICS_ENABLED) {
-    return;
+export function capture(event: string, properties?: EventProperties): void {
+  const telemetry: unknown = Reflect.get(globalThis, 'wolfeTelemetry');
+  if (isWolfeTelemetry(telemetry)) {
+    telemetry.capture(event, properties);
   }
-  getInstance().capture(event, properties, options);
 }
 
-export function capturePageView(properties?: Properties): void {
-  if (!ANALYTICS_ENABLED) {
-    return;
+export type SearchMode =
+  | 'aggregate'
+  | 'compare'
+  | 'contributor'
+  | 'multi_repo'
+  | 'org'
+  | 'repo'
+  | 'user';
+
+// Classify the input format without ever sending its content.
+export function searchMode(input: string): SearchMode {
+  const value = input.trim();
+  if (value.includes('?') || value.includes('~')) {
+    return 'compare';
   }
-  getInstance().capture('$pageview', properties);
+  if (value.startsWith('@') || value.startsWith('org:')) {
+    return 'org';
+  }
+  if (/\s|\+/u.test(value)) {
+    return 'aggregate';
+  }
+  if (value.includes('/')) {
+    const [, repos = ''] = value.split('/');
+    if (repos.includes('@')) {
+      return 'contributor';
+    }
+    return repos.includes(',') ? 'multi_repo' : 'repo';
+  }
+  return 'user';
 }

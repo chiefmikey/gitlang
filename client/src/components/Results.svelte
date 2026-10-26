@@ -6,6 +6,8 @@
 </script>
 
 <script>
+  import { capture } from '../lib/analytics';
+
   export let current;
   export let data;
   export let count1;
@@ -18,6 +20,9 @@
 
   const onToggleLang = (name) => {
     expandedLang = expandedLang === name ? null : name;
+    capture('language_breakdown_toggled', {
+      state: expandedLang === null ? 'closed' : 'open',
+    });
   };
 </script>
 

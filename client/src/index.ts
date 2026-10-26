@@ -4,10 +4,6 @@ import './styles.scss';
 import { mount } from 'svelte';
 
 import App from './components/App.svelte';
-import { capturePageView,initAnalytics } from './lib/analytics';
-
-initAnalytics();
-capturePageView();
 
 const target = document.querySelector('.app');
 

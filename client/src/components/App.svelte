@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { capture } from '../lib/analytics';
+  import { capture, searchMode } from '../lib/analytics';
 
   import handler from '../../lib/index';
 
@@ -31,7 +31,8 @@
   const randomize = async () => {
     const randomUser = RANDOM_USERS[Math.floor(Math.random() * RANDOM_USERS.length)];
     input = randomUser;
-    await submit('window');
+    capture('random_clicked');
+    await submit('window', 'random');
   };
 
   onMount(async () => {
@@ -41,7 +42,7 @@
       .join('/')}`;
     if (windowOwner && windowOwner.length > 0) {
       input = windowOwner;
-      await submit('window');
+      await submit('window', 'url');
     }
   });
 
@@ -109,7 +110,7 @@
     }
   };
 
-  const submit = async (event) => {
+  const submit = async (event, source = 'input') => {
     try {
       if (
         (event === 'window' || !event.key || event.key === 'Enter') &&
@@ -118,7 +119,8 @@
         if (event !== 'window') {
           event.target.blur();
         }
-        capture('search_submitted', { query: input.trim() });
+        const mode = searchMode(input);
+        capture('search_submitted', { mode, source });
         done = false;
         data = undefined;
         langBreakdown = undefined;
@@ -132,8 +134,13 @@
         const allData = await getData(current);
         if (allData) {
           processData(allData);
+          capture('search_completed', { mode, result: 'ok' });
         } else {
           data = [];
+          capture('search_completed', {
+            mode,
+            result: errorMessage ? 'error' : 'empty',
+          });
         }
       }
       return true;
