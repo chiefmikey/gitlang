@@ -158,7 +158,7 @@
     bind:input
   />
   {#if compareGroups}
-    {#each compareGroups as group, i}
+    {#each compareGroups as group, i (i)}
       <div class="compare-label">
         <span>{group.label}</span>
       </div>
