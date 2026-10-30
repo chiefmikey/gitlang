@@ -1,17 +1,17 @@
-@use "sass:map";
+@use 'sass:map';
 
 $font-family: arial, helvetica, sans-serif;
 $font-sizes: (
   'body': 12px,
   'h4': 17px,
-  'input': 18px
+  'input': 18px,
 );
 $colors: (
   'white': #e8e6e2,
   'black': #292a2b,
   'dark-grey': #232323,
   'light-grey': #e8e6e2,
-  'link': #fe9fc9
+  'link': #fe9fc9,
 );
 $sizes: (
   'min-width': 250px,
@@ -19,7 +19,7 @@ $sizes: (
   'min-height': 450px,
   'button-width': 135px,
   'button-height': 35px,
-  'input-min-width': 150px
+  'input-min-width': 150px,
 );
 $padding: 10px;
 $transparent: transparent;
@@ -175,7 +175,7 @@ h6 a {
 }
 
 @keyframes fade-in-height {
-  from {
+  0% {
     height: 0;
     overflow: hidden;
   }
@@ -184,7 +184,7 @@ h6 a {
     overflow: hidden;
   }
 
-  to {
+  100% {
     height: 50px;
     overflow: visible;
   }

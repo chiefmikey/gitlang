@@ -98,7 +98,7 @@
   {#if expandedLang === dat.name && breakdown}
     <div class="breakdown-container" in:slide={{ duration: 300, easing: cubicInOut }} out:slide={{ duration: 200, easing: cubicInOut }}>
       <div class="breakdown-list">
-        {#each breakdown as item, i}
+        {#each breakdown as item, i (i)}
           <div
             class="breakdown-item"
             style:animation="fade-in .3s ease-out {i * 0.04}s both"
